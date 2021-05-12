@@ -20,20 +20,21 @@ public class CodeDOM {
      */
     private CodeDOM(String tableName) {
         this.tableName = tableName;
-        basePackage_ = "cn\\huanzi\\qch\\baseadmin\\sys\\";
+        basePackage_ = "com\\kfgs\\aotc\\sys\\";
         package_ = basePackage_ + StringUtil.camelCaseName(tableName).toLowerCase() + "\\";
         //System.getProperty("user.dir") 获取的是项目所在路径，如果我们是子项目，则需要添加一层路径
         basePath = System.getProperty("user.dir") + "\\src\\main\\java\\" + package_;
-        basePackage_ = "cn\\huanzi\\qch\\baseadmin\\";
+        basePackage_ = "com\\kfgs\\aotc\\";
     }
 
     /**
      * 数据连接相关
      */
-    private static final String URL = "jdbc:mysql://localhost:3306/test?serverTimezone=GMT%2B8&characterEncoding=utf-8";
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "123456";
-    private static final String DRIVER_CLASSNAME = "com.mysql.jdbc.Driver";
+    //private static final String URL = "jdbc:mysql://localhost:3306/test?serverTimezone=GMT%2B8&characterEncoding=utf-8";
+    private static final String URL = "jdbc:oracle:thin:@172.17.1.1:1521:orcl";
+    private static final String USERNAME = "zljg";
+    private static final String PASSWORD = "zljg123456";
+    private static final String DRIVER_CLASSNAME = "oracle.jdbc.driver.OracleDriver";
     /**
      * 表名
      */
