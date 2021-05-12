@@ -125,6 +125,13 @@
             <artifactId>oshi-json</artifactId>
             <version>3.6.1</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+            <scope>true</scope>
+        </dependency>
     </dependencies>
 
     <!--构建工具-->
@@ -136,6 +143,7 @@
                 <configuration>
                     <finalName>${project.artifactId}</finalName>
                     <outputDirectory>package</outputDirectory>
+                    <fork>true</fork>
                 </configuration>
             </plugin>
             <!-- 跳过启动测试 -->
