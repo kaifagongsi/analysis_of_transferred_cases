@@ -25,9 +25,24 @@ public class MenuUtil {
         for (SysMenuVo nav : allMenu) {
             // 遍历所有节点，将所有菜单的父id与传过来的根节点的id比较
             //相等说明：为该根节点的子节点。
+            //标识为oracle
+            if( id == null ){
+                if(null == nav.getMenuParentId()){
+                    childList.add(nav);
+                }
+            }else{
+                if(nav.getMenuParentId() != null){
+                    if (nav.getMenuParentId().equals(id)){
+                        childList.add(nav);
+                    }
+                }
+            }
+            // mysql 这样写
+            /*
             if (nav.getMenuParentId().equals(id)){
                 childList.add(nav);
             }
+            */
         }
         //递归
         for (SysMenuVo nav : childList) {
@@ -66,9 +81,24 @@ public class MenuUtil {
         for (SysShortcutMenuVo nav : allMenu) {
             // 遍历所有节点，将所有菜单的父id与传过来的根节点的id比较
             //相等说明：为该根节点的子节点。
+            // oracle 这样写
+            if(id == null ){
+                if(nav.getShortcutMenuParentId() == null){
+                    childList.add(nav);
+                }
+            }else{
+                if(nav.getShortcutMenuParentId() != null){
+                    if (nav.getShortcutMenuParentId().equals(id)){
+                        childList.add(nav);
+                    }
+                }
+            }
+            //mysql 这样写
+            /*
             if (nav.getShortcutMenuParentId().equals(id)){
                 childList.add(nav);
             }
+            */
         }
         //递归
         for (SysShortcutMenuVo nav : childList) {
