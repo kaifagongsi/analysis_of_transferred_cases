@@ -12,7 +12,7 @@ spring:
   profiles:
     active: ${BASE_ADMIN:dev} #选择配置分支，先读取系统环境变量，如果没有则默认值为 dev
   application:
-    name: base-admin
+    name: analysis_of_transferred_cases
 
   #修改thymeleaf访问根路径
   thymeleaf:
@@ -42,10 +42,15 @@ spring:
 
   #数据库配置
   datasource:
-    url: jdbc:mysql://172.17.1.1:3306/test_base_admin?serverTimezone=GMT%2B8&characterEncoding=utf-8
-    username: root
-    password: root
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    #url: jdbc:mysql://172.17.1.1:3306/test_base_admin?serverTimezone=GMT%2B8&characterEncoding=utf-8
+    #username: root
+    #password: root
+    #driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:oracle:thin:@172.17.1.1:1521:orcl
+    username: zljg
+    password: zljg123456
+    driverClassName: oracle.jdbc.driver.OracleDriver
+
 
 #是否需要输入验证码
 captcha:
