@@ -39,6 +39,9 @@ public class SysShortcutMenuServiceImpl extends CommonServiceImpl<SysShortcutMen
     @Override
     public Result<List<SysShortcutMenuVo>> findByUserId(String userId) {
         List<SysShortcutMenuVo> sysShortcutMenuVoList = CopyUtil.copyList(sysShortcutMenuRepository.findByUserId(userId), SysShortcutMenuVo.class);
-        return Result.of(MenuUtil.getChildBySysShortcutMenuVo("",sysShortcutMenuVoList));
+        //mysql 这样写
+        //return Result.of(MenuUtil.getChildBySysShortcutMenuVo("",sysShortcutMenuVoList));
+        // oracle 这样写
+        return Result.of(MenuUtil.getChildBySysShortcutMenuVo(null,sysShortcutMenuVoList));
     }
 }

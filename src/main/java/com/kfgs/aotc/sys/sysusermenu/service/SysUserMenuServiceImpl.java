@@ -33,8 +33,9 @@ public class SysUserMenuServiceImpl extends CommonServiceImpl<SysUserMenuVo, Sys
         sysUserMenuVoList.forEach((sysUserMenuVo) -> {
             menuVoList.add(sysUserMenuVo.getSysMenu());
         });
-        return Result.of(MenuUtil.getChildBySysMenuVo("",menuVoList));
-
+        // mysql 这样写 “” 这样写
+        //return Result.of(MenuUtil.getChildBySysMenuVo("",menuVoList));
+        return Result.of(MenuUtil.getChildBySysMenuVo(null,menuVoList));
     }
 
     @Override
