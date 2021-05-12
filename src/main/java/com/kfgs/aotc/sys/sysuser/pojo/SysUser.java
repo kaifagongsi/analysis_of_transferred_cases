@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name = "sys_user")
+@Table(name = "aotc_sys_user")
 @Data
 public class SysUser implements Serializable {
     @Id

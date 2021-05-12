@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name = "sys_user_authority")
+@Table(name = "aotc_sys_user_authority")
 @Data
 public class SysUserAuthority implements Serializable {
     @Id

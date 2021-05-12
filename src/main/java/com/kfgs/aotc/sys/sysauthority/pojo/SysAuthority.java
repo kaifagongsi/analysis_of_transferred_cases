@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name = "sys_authority")
+@Table(name = "aotc_sys_authority")
 @Data
 public class SysAuthority implements Serializable {
     @Id
