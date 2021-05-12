@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name = "sys_shortcut_menu")
+@Table(name = "aotc_sys_shortcut_menu")
 @Data
 public class SysShortcutMenu implements Serializable {
     @Id
