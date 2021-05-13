@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<!--解决idea thymeleaf 表达式模板报红波浪线-->
+<!--suppress ALL -->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script th:replace="common/head::static"></script>
+    <style>
+        .layui-card-body {
+            height: 100px;
+        }
+    </style>
+    <script th:src="@{/common/echarts/echarts.js}"></script>
+</head>
+<body >
+<div class="layui-row layui-col-space15" style="padding: 20px;">
+    <!-- 第一行选择 + 复分率按钮 -->
+    <div class=" lay-row">
+        <div class="layui-form">
+            <div class="layui-row">
+                <div class="layui-col-md3">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">起始时间</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="startDate" id="startDate" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md3">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">结束时间</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="endDate" id="endDate" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <button class="layui-btn" id="casesTransferred">
+                     下拉菜单
+                     <i class="layui-icon layui-icon-down layui-font-12"></i>
+                 </button>
+
+                 <button class="layui-btn" id="secondInfo">
+                     下拉菜单
+                     <i class="layui-icon layui-icon-down layui-font-12"></i>
+                 </button>-->
+                <div class="layui-col-md1">
+                    <label class="layui-form-label">联动选择框</label>
+                </div>
+                <div class="layui-col-md2">
+                    <select name="quiz1" class="layui-select" lay-filter="firstClassify">
+                        <option value="">请选择省</option>
+                        <option value="个人转案情况" selected="">个人转案情况</option>
+                        <option value="部级转案情况">部级转案情况</option>
+                        <option value="室级转案情况">室级转案情况</option>
+                        <option value="领域转案情况">领域转案情况</option>
+                    </select>
+                </div>
+                <div class="layui-col-md2">
+                    <select name="quiz2" class="layui-select">
+                        <option value="">请选择市</option>
+                    </select>
+                </div>
+               <div class="layui-col-md1">
+                   <button type="button" class="layui-btn layui-btn-primary layui-border-blue">加复分率</button>
+               </div>
+            </div><!-- end form 中的行-->
+        </div><!-- end form-->
+    </div><!-- end -->
+    <!-- 第一组按钮 -->
+    <div class="layui-row">
+        <div class="layui-col-md2">
+            <button type="button" class="layui-btn layui-btn-primary layui-border-orange">日处理进案</button>
+        </div>
+        <div class="layui-col-md2">
+            <button type="button" class="layui-btn layui-btn-primary layui-border-black" >日转出案件</button>
+        </div>
+        <div class="layui-col-md2">
+            <button type="button" class="layui-btn layui-btn-primary layui-border-orange">周处理进案</button>
+        </div>
+        <div class="layui-col-md2">
+            <button type="button" class="layui-btn layui-btn-primary layui-border-black">周转出案件</button>
+        </div>
+        <div class="layui-col-md2">
+            <button type="button" class="layui-btn layui-btn-primary layui-border-orange">月处理进案</button>
+        </div>
+        <div class="layui-col-md2">
+            <button type="button" class="layui-btn layui-btn-primary layui-border-black">月转出进案</button>
+        </div>
+    </div>
+    <!-- 第二组按钮 -->
+    <div class="layui-row">
+        <div class="layui-col-md2">
+            <button type="button" class="layui-btn layui-btn-primary layui-border-orange">有效转入率</button>
+        </div>
+        <div class="layui-col-md2">
+            <button type="button" class="layui-btn layui-btn-primary layui-border-black">有效转出率</button>
+        </div>
+        <div class="layui-col-md2">
+            <button type="button" class="layui-btn layui-btn-primary layui-border-orange">处理转案率</button>
+        </div>
+        <div class="layui-col-md2">
+            <button type="button" class="layui-btn layui-btn-primary layui-border-black">转出案件率</button>
+        </div>
+        <div class="layui-col-md2">
+            <button type="button" class="layui-btn layui-btn-primary layui-border-orange">转出接受率</button>
+        </div>
+        <div class="layui-col-md2">
+            <button type="button" class="layui-btn layui-btn-primary layui-border-black">转入接受率</button>
+        </div>
+    </div>
+    <!--开始卡片显示 -->
+    <div class="layui-tab layui-tab-brief" lay-filter="tabBrief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">表格统计</li>
+            <li>图表展示</li>
+        </ul>
+        <div class="layui-tab-content" style="height: 100px;">
+            <div class="layui-tab-item layui-show">
+                <table class="layui-hide" id="demoTable"></table>
+            </div>
+            <div class="layui-tab-item">
+                <div id="demoEcharts" style="width:1000px;height:500px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script th:src="@{/ceshi/js/ceshi.js}"></script>
+</html>
