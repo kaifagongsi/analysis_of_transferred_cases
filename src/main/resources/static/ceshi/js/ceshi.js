@@ -1,4 +1,4 @@
-layui.use(['laydate','dropdown','element','table','echarts','form'], function () {
+layui.use(['laydate','dropdown','element','table','echarts','form','layer'], function () {
     // 日期组件
     var laydate = layui.laydate;
     //执行一个laydate实例
@@ -87,7 +87,13 @@ layui.use(['laydate','dropdown','element','table','echarts','form'], function ()
     var form  = layui.form;
 
     form.on('select(firstClassify)',function (data) {
-        console.log(data)
+        console.log(data);
+        layer.msg(data.value,{icon: 1,time: 2000}, function () {});
+        if(data.value == '个人转案情况'){
+            findAllUser();
+        }else{
+
+        }
     });
 
     // 卡片切换
@@ -201,11 +207,10 @@ layui.use(['laydate','dropdown','element','table','echarts','form'], function ()
             ,"logins": "106"
             ,"joinTime": "2016-10-14"
         }],
-        //,skin: 'line' //表格风格
+        skin: 'line', //表格风格
         even: true,
-        page: true, //是否显示分页
-        //,limits: [5, 7, 10]
-        limit: 10 //每页默认显示的数量
+        page: false //是否显示分页
+        //,limit: 10 //每页默认显示的数量
     });
 
     //柱状图
@@ -255,80 +260,19 @@ layui.use(['laydate','dropdown','element','table','echarts','form'], function ()
             }
         }]
     };
-
-    var optionchartZhe = {
-        title: {
-            text: '商品订单'
-        },
-        tooltip: {},
-        legend: { //顶部显示 与series中的数据类型的name一致
-            data: ['销量', '产量', '营业额', '单价']
-        },
-        xAxis: {
-            // type: 'category',
-            // boundaryGap: false, //从起点开始
-            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-        },
-        yAxis: {
-            type: 'value'
-        },
-        series: [{
-            name: '销量',
-            type: 'line', //线性
-            data: [145, 230, 701, 734, 1090, 1130, 1120],
-        }, {
-            name: '产量',
-            type: 'line', //线性
-            data: [720, 832, 801, 834, 1190, 1230, 1220],
-        }, {
-            smooth: true, //曲线 默认折线
-            name: '营业额',
-            type: 'line', //线性
-            data: [820, 932, 901, 934, 1290, 1330, 1320],
-        }, {
-            smooth: true, //曲线
-            name: '单价',
-            type: 'line', //线性
-            data: [220, 332, 401, 534, 690, 730, 820],
-        }]
-    };
-
-    var optionchartBing = {
-        title: {
-            text: '商品订单',
-            subtext: '纯属虚构', //副标题
-            x: 'center' //标题居中
-        },
-        tooltip: {
-            // trigger: 'item' //悬浮显示对比
-        },
-        legend: {
-            orient: 'vertical', //类型垂直,默认水平
-            left: 'left', //类型区分在左 默认居中
-            data: ['单价', '总价', '销量', '产量']
-        },
-        series: [{
-            type: 'pie', //饼状
-            radius: '60%', //圆的大小
-            center: ['50%', '50%'], //居中
-            data: [{
-                value: 335,
-                name: '单价'
-            },
-                {
-                    value: 310,
-                    name: '总价'
-                },
-                {
-                    value: 234,
-                    name: '销量'
-                },
-                {
-                    value: 135,
-                    name: '产量'
-                }
-            ]
-        }]
-    };
     chartZhu.setOption(optionchart, true);
 })
+/**
+ * 有效转出率 Effective transfer out rate
+ */
+function effectiveTransferOutRate() {
+
+   /* $.post(ctx + "/sys/sysAuthority/save",date,function (date) {
+    })*/
+}
+
+function findAllUser() {
+    $.get(ctx + "/ceshi/findAllUser",function (data) {
+        console.log(data);
+    })
+}
