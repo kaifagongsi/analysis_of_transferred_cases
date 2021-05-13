@@ -10,7 +10,7 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "aoct_detailsofthecase")
+@Table(name = "aotc_detailsofthecase")
 @Data
 public class DetailsOfTheCase implements Serializable {
 

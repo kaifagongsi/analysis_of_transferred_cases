@@ -10,7 +10,7 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "aoct_classifier_info")
+@Table(name = "aotc_classifier_info")
 @Data
 public class ClassifierInfo implements Serializable {
 	// 领域组

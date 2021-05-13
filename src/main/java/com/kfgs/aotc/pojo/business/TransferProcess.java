@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "aoct_transfer_process")
+@Table(name = "aotc_transfer_process")
 @Data
 public class TransferProcess implements Serializable {
 
