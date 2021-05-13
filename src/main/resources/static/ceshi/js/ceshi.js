@@ -205,7 +205,7 @@ layui.use(['laydate','dropdown','element','table','echarts','form'], function ()
         even: true,
         page: true, //是否显示分页
         //,limits: [5, 7, 10]
-        limit: 5 //每页默认显示的数量
+        limit: 10 //每页默认显示的数量
     });
 
     //柱状图
@@ -218,7 +218,16 @@ layui.use(['laydate','dropdown','element','table','echarts','form'], function ()
         },
         tooltip: {},
         legend: {
-            data: ['销量']
+            data: ['销量','产量']
+        },
+        toolbox:{
+            show: true,
+            feature:{
+                magicType: {
+                    type: ["line", "bar","stack"]
+                },
+                saveAsImage: {}
+            }
         },
         xAxis: {
             data: ['周一', '周二', '周三', '周四', '周五', '周六', '周天']
