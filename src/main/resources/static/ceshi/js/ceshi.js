@@ -332,3 +332,10 @@ layui.use(['laydate','dropdown','element','table','echarts','form'], function ()
     };
     chartZhu.setOption(optionchart, true);
 })
+
+function ceshi() {
+    //alert("ceshi")
+    $.post(ctx + "/ceshi/count", function (data) {
+        alert(data);
+    });
+}
