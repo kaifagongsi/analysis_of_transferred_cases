@@ -1,4 +1,4 @@
-package com.kfgs.aotc.sys.sysshortcutmenu.pojo;
+package com.kfgs.aotc.pojo.sys;
 
 import lombok.Data;
 

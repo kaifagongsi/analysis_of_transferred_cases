@@ -1,7 +1,5 @@
-package com.kfgs.aotc.sys.sysuserauthority.pojo;
+package com.kfgs.aotc.pojo.sys;
 
-import com.kfgs.aotc.sys.sysauthority.pojo.SysAuthority;
-import com.kfgs.aotc.sys.sysuser.pojo.SysUser;
 import lombok.Data;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
@@ -11,15 +9,15 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name = "aotc_sys_user_authority")
+@Table(name = "aotc_sys_user_menu")
 @Data
-public class SysUserAuthority implements Serializable {
+public class SysUserMenu implements Serializable {
     @Id
-    private String userAuthorityId;//用户权限表id
+    private String userMenuId;//用户菜单表id
 
     private String userId;//用户id
 
-    private String authorityId;//权限id
+    private String menuId;//菜单id
 
     private Date createTime;//创建时间
 
@@ -31,7 +29,7 @@ public class SysUserAuthority implements Serializable {
     private SysUser sysUser;//用户
 
     @OneToOne
-    @JoinColumn(name = "authorityId",referencedColumnName = "authorityId", insertable = false, updatable = false)
+    @JoinColumn(name = "menuId",referencedColumnName = "menuId", insertable = false, updatable = false)
     @NotFound(action= NotFoundAction.IGNORE)
-    private SysAuthority sysAuthority;//权限
+    private SysMenu sysMenu;//菜单
 }

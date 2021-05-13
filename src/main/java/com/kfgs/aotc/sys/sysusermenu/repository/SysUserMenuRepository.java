@@ -1,7 +1,7 @@
 package com.kfgs.aotc.sys.sysusermenu.repository;
 
 import com.kfgs.aotc.common.repository.CommonRepository;
-import com.kfgs.aotc.sys.sysusermenu.pojo.SysUserMenu;
+import com.kfgs.aotc.pojo.sys.SysUserMenu;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

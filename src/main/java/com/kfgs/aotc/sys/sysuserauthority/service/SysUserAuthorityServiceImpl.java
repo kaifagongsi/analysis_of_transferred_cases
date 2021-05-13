@@ -2,7 +2,7 @@ package com.kfgs.aotc.sys.sysuserauthority.service;
 
 import com.kfgs.aotc.common.pojo.Result;
 import com.kfgs.aotc.common.service.CommonServiceImpl;
-import com.kfgs.aotc.sys.sysuserauthority.pojo.SysUserAuthority;
+import com.kfgs.aotc.pojo.sys.SysUserAuthority;
 import com.kfgs.aotc.sys.sysuserauthority.repository.SysUserAuthorityRepository;
 import com.kfgs.aotc.sys.sysuserauthority.vo.SysUserAuthorityVo;
 import com.kfgs.aotc.util.CopyUtil;

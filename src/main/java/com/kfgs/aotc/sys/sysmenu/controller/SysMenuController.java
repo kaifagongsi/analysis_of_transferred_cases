@@ -4,7 +4,7 @@ import com.kfgs.aotc.annotation.Decrypt;
 import com.kfgs.aotc.annotation.Encrypt;
 import com.kfgs.aotc.common.controller.CommonController;
 import com.kfgs.aotc.common.pojo.Result;
-import com.kfgs.aotc.sys.sysmenu.pojo.SysMenu;
+import com.kfgs.aotc.pojo.sys.SysMenu;
 import com.kfgs.aotc.sys.sysmenu.service.SysMenuService;
 import com.kfgs.aotc.sys.sysmenu.vo.SysMenuVo;
 import org.springframework.beans.factory.annotation.Autowired;

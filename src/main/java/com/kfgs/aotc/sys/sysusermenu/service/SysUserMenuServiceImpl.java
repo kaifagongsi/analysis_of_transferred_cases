@@ -3,7 +3,7 @@ package com.kfgs.aotc.sys.sysusermenu.service;
 import com.kfgs.aotc.common.pojo.Result;
 import com.kfgs.aotc.common.service.CommonServiceImpl;
 import com.kfgs.aotc.sys.sysmenu.vo.SysMenuVo;
-import com.kfgs.aotc.sys.sysusermenu.pojo.SysUserMenu;
+import com.kfgs.aotc.pojo.sys.SysUserMenu;
 import com.kfgs.aotc.sys.sysusermenu.repository.SysUserMenuRepository;
 import com.kfgs.aotc.sys.sysusermenu.vo.SysUserMenuVo;
 import com.kfgs.aotc.util.CopyUtil;

@@ -3,7 +3,7 @@ package com.kfgs.aotc.sys.sysuserauthority.service;
 
 import com.kfgs.aotc.common.pojo.Result;
 import com.kfgs.aotc.common.service.CommonService;
-import com.kfgs.aotc.sys.sysuserauthority.pojo.SysUserAuthority;
+import com.kfgs.aotc.pojo.sys.SysUserAuthority;
 import com.kfgs.aotc.sys.sysuserauthority.vo.SysUserAuthorityVo;
 
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.kfgs.aotc.sys.sysauthority.controller;
 
 import com.kfgs.aotc.common.controller.CommonController;
-import com.kfgs.aotc.sys.sysauthority.pojo.SysAuthority;
+import com.kfgs.aotc.pojo.sys.SysAuthority;
 import com.kfgs.aotc.sys.sysauthority.service.SysAuthorityService;
 import com.kfgs.aotc.sys.sysauthority.vo.SysAuthorityVo;
 import org.springframework.beans.factory.annotation.Autowired;

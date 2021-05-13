@@ -5,7 +5,7 @@ import com.kfgs.aotc.annotation.Encrypt;
 import com.kfgs.aotc.common.controller.CommonController;
 import com.kfgs.aotc.common.pojo.PageInfo;
 import com.kfgs.aotc.common.pojo.Result;
-import com.kfgs.aotc.sys.sysuser.pojo.SysUser;
+import com.kfgs.aotc.pojo.sys.SysUser;
 import com.kfgs.aotc.sys.sysuser.service.SysUserService;
 import com.kfgs.aotc.sys.sysuser.vo.SysUserVo;
 import com.kfgs.aotc.util.SecurityUtil;

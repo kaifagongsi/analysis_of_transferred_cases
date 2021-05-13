@@ -1,7 +1,7 @@
 package com.kfgs.aotc.sys.sysshortcutmenu.controller;
 
 import com.kfgs.aotc.common.controller.CommonController;
-import com.kfgs.aotc.sys.sysshortcutmenu.pojo.SysShortcutMenu;
+import com.kfgs.aotc.pojo.sys.SysShortcutMenu;
 import com.kfgs.aotc.sys.sysshortcutmenu.service.SysShortcutMenuService;
 import com.kfgs.aotc.sys.sysshortcutmenu.vo.SysShortcutMenuVo;
 import org.springframework.beans.factory.annotation.Autowired;

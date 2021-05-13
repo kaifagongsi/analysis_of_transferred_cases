@@ -2,7 +2,7 @@ package com.kfgs.aotc.sys.sysshortcutmenu.service;
 
 import com.kfgs.aotc.common.pojo.Result;
 import com.kfgs.aotc.common.service.CommonServiceImpl;
-import com.kfgs.aotc.sys.sysshortcutmenu.pojo.SysShortcutMenu;
+import com.kfgs.aotc.pojo.sys.SysShortcutMenu;
 import com.kfgs.aotc.sys.sysshortcutmenu.repository.SysShortcutMenuRepository;
 import com.kfgs.aotc.sys.sysshortcutmenu.vo.SysShortcutMenuVo;
 import com.kfgs.aotc.util.CopyUtil;

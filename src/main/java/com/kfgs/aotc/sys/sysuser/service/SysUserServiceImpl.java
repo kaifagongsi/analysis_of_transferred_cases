@@ -7,7 +7,7 @@ import com.kfgs.aotc.common.service.CommonServiceImpl;
 import com.kfgs.aotc.sys.sysshortcutmenu.repository.SysShortcutMenuRepository;
 import com.kfgs.aotc.sys.sysshortcutmenu.service.SysShortcutMenuService;
 import com.kfgs.aotc.sys.sysshortcutmenu.vo.SysShortcutMenuVo;
-import com.kfgs.aotc.sys.sysuser.pojo.SysUser;
+import com.kfgs.aotc.pojo.sys.SysUser;
 import com.kfgs.aotc.sys.sysuser.repository.SysUserRepository;
 import com.kfgs.aotc.sys.sysuser.vo.SysUserVo;
 import com.kfgs.aotc.sys.sysuserauthority.service.SysUserAuthorityService;

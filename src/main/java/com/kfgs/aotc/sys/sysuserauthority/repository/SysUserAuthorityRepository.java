@@ -1,7 +1,7 @@
 package com.kfgs.aotc.sys.sysuserauthority.repository;
 
 import com.kfgs.aotc.common.repository.CommonRepository;
-import com.kfgs.aotc.sys.sysuserauthority.pojo.SysUserAuthority;
+import com.kfgs.aotc.pojo.sys.SysUserAuthority;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

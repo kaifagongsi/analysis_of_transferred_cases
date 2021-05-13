@@ -6,7 +6,7 @@ import com.kfgs.aotc.common.controller.CommonController;
 import com.kfgs.aotc.common.pojo.Result;
 import com.kfgs.aotc.sys.sysauthority.service.SysAuthorityService;
 import com.kfgs.aotc.sys.sysauthority.vo.SysAuthorityVo;
-import com.kfgs.aotc.sys.sysuserauthority.pojo.SysUserAuthority;
+import com.kfgs.aotc.pojo.sys.SysUserAuthority;
 import com.kfgs.aotc.sys.sysuserauthority.service.SysUserAuthorityService;
 import com.kfgs.aotc.sys.sysuserauthority.vo.SysUserAuthorityVo;
 import org.springframework.beans.factory.annotation.Autowired;

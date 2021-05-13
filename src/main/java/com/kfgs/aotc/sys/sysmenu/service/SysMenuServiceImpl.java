@@ -2,7 +2,7 @@ package com.kfgs.aotc.sys.sysmenu.service;
 
 import com.kfgs.aotc.common.pojo.Result;
 import com.kfgs.aotc.common.service.CommonServiceImpl;
-import com.kfgs.aotc.sys.sysmenu.pojo.SysMenu;
+import com.kfgs.aotc.pojo.sys.SysMenu;
 import com.kfgs.aotc.sys.sysmenu.repository.SysMenuRepository;
 import com.kfgs.aotc.sys.sysmenu.vo.SysMenuVo;
 import com.kfgs.aotc.sys.sysusermenu.service.SysUserMenuService;

@@ -2,7 +2,7 @@ package com.kfgs.aotc.sys.syssetting.service;
 
 import com.kfgs.aotc.common.pojo.Result;
 import com.kfgs.aotc.common.service.CommonServiceImpl;
-import com.kfgs.aotc.sys.syssetting.pojo.SysSetting;
+import com.kfgs.aotc.pojo.sys.SysSetting;
 import com.kfgs.aotc.sys.syssetting.repository.SysSettingRepository;
 import com.kfgs.aotc.sys.syssetting.vo.SysSettingVo;
 import com.kfgs.aotc.util.SysSettingUtil;

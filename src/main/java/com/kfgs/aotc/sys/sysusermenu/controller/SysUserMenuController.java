@@ -6,7 +6,7 @@ import com.kfgs.aotc.common.controller.CommonController;
 import com.kfgs.aotc.common.pojo.Result;
 import com.kfgs.aotc.sys.sysmenu.service.SysMenuService;
 import com.kfgs.aotc.sys.sysmenu.vo.SysMenuVo;
-import com.kfgs.aotc.sys.sysusermenu.pojo.SysUserMenu;
+import com.kfgs.aotc.pojo.sys.SysUserMenu;
 import com.kfgs.aotc.sys.sysusermenu.service.SysUserMenuService;
 import com.kfgs.aotc.sys.sysusermenu.vo.SysUserMenuVo;
 import org.springframework.beans.factory.annotation.Autowired;

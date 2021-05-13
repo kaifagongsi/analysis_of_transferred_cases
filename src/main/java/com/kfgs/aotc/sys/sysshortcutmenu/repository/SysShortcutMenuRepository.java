@@ -1,7 +1,7 @@
 package com.kfgs.aotc.sys.sysshortcutmenu.repository;
 
 import com.kfgs.aotc.common.repository.CommonRepository;
-import com.kfgs.aotc.sys.sysshortcutmenu.pojo.SysShortcutMenu;
+import com.kfgs.aotc.pojo.sys.SysShortcutMenu;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

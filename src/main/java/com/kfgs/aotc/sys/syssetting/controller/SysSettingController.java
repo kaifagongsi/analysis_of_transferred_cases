@@ -1,7 +1,7 @@
 package com.kfgs.aotc.sys.syssetting.controller;
 
 import com.kfgs.aotc.common.controller.CommonController;
-import com.kfgs.aotc.sys.syssetting.pojo.SysSetting;
+import com.kfgs.aotc.pojo.sys.SysSetting;
 import com.kfgs.aotc.sys.syssetting.service.SysSettingService;
 import com.kfgs.aotc.sys.syssetting.vo.SysSettingVo;
 import com.kfgs.aotc.util.SysSettingUtil;
