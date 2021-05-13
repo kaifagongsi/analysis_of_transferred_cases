@@ -276,3 +276,10 @@ function findAllUser() {
         console.log(data);
     })
 }
+
+function ceshi() {
+    //alert("ceshi")
+    $.post(ctx + "/ceshi/count", function (data) {
+        alert(data);
+    });
+}
