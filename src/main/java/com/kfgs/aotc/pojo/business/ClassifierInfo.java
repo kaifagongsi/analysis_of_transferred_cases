@@ -10,9 +10,9 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "aoct_detailsofthecase")
+@Table(name = "aoct_classifier_info")
 @Data
-public class UserInfo implements Serializable {
+public class ClassifierInfo implements Serializable {
 	// 领域组
 	private String fieldGroup;
 	// 部
