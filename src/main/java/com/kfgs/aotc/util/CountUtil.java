@@ -1,20 +1,15 @@
 package com.kfgs.aotc.util;
 
-import com.kfgs.aotc.ceshi.classifier.repository.ClassifierRepository;
-import com.kfgs.aotc.ceshi.classifier.service.ClassifierService;
-import com.kfgs.aotc.common.pojo.Result;
-import com.kfgs.aotc.pojo.business.ClassifierInfo;
-import lombok.extern.slf4j.Slf4j;
+import com.kfgs.aotc.repository.ClassifierInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
-import java.util.List;
 
 @Component
 public class CountUtil {
     @Autowired
-    private static ClassifierRepository classifierRepository;
+    private static ClassifierInfoRepository classifierRepository;
 
     public static HashMap<String,String> getClassificationCode(){
         HashMap<String,String> map = new HashMap<>();

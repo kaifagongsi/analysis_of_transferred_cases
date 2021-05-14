@@ -1,6 +1,6 @@
 package com.kfgs.aotc.ceshi.classifier.service;
 
-import com.kfgs.aotc.ceshi.classifier.repository.ClassifierRepository;
+import com.kfgs.aotc.repository.ClassifierInfoRepository;
 import com.kfgs.aotc.common.pojo.Result;
 import com.kfgs.aotc.pojo.business.ClassifierInfo;
 import com.kfgs.aotc.util.CopyUtil;
@@ -11,10 +11,10 @@ import java.util.List;
 public class ClassifierServiceImpl implements ClassifierService {
 
     @Autowired
-    private ClassifierRepository classifierRepository;
+    private ClassifierInfoRepository classifierInfoRepository;
 
     @Override
     public Result<List<ClassifierInfo>> getClassifiers() {
-        return Result.of(CopyUtil.copyList(classifierRepository.findAll(),ClassifierInfo.class));
+        return Result.of(CopyUtil.copyList(classifierInfoRepository.findAll(),ClassifierInfo.class));
     }
 }
