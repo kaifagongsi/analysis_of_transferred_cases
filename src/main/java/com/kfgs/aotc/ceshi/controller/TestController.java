@@ -26,4 +26,14 @@ public class TestController {
     public Result<List<ClassifierInfo>> getUserName(){
         return Result.of(testService.getAllUser());
     }
+
+    /*@PostMapping()
+    public Result testPost(){
+
+        return null;
+    }*/
+    @GetMapping("findAllFieldGroup")
+    public Result<List<String>> getFieldGroup(){
+        return Result.of(testService.getFieldGroup());
+    }
 }

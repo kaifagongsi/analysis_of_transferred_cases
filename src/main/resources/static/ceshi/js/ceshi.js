@@ -3,84 +3,14 @@ layui.use(['laydate','dropdown','element','table','echarts','form','layer'], fun
     var laydate = layui.laydate;
     //执行一个laydate实例
     laydate.render({
-        elem: '#startDate' //指定元素
+        elem: '#startDate', //指定元素
+        format: "yyyy-MM-dd HH:mm:ss"
+        ,type: 'datetime'
     });
     laydate.render({
-        elem: '#endDate' //指定元素
-    });
-    // 下拉组件
-    var dropdown = layui.dropdown
-    dropdown.render({
-        elem: '#casesTransferred' //可绑定在任意元素中，此处以上述按钮为例
-        ,data: [{
-            title: 'menu item 1'
-            ,id: 100
-            ,href: '#'
-        },{
-            title: 'menu item 2'
-            ,id: 101
-            ,href: 'https://www.layui.com/' //开启超链接
-            ,target: '_blank' //新窗口方式打开
-        },{type: '-'},{
-            title: 'menu item 3'
-            ,id: 102
-            ,type: 'group'  //菜单类型，支持：normal/group/parent/-
-            ,child: [{
-                title: 'menu item 3-1'
-                ,id: 103
-            },{
-                title: 'menu item 3-2'
-                ,id: 104
-                ,child: [{
-                    title: 'menu item 3-2-1'
-                    ,id: 105
-                },{
-                    title: 'menu item 3-2-2'
-                    ,id: 106
-                }]
-            },{
-                title: 'menu item 3-3'
-                ,id: 107
-            }]
-        },{type: '-'},{
-            title: 'menu item 4'
-            ,id: 108
-        },{
-            title: 'menu item 5'
-            ,id: 109
-            ,child: [{
-                title: 'menu item 5-1'
-                ,id: 11111
-                ,child: [{
-                    title: 'menu item 5-1-1'
-                    ,id: 2111
-                },{
-                    title: 'menu item 5-1-2'
-                    ,id: 3111
-                }]
-            },{
-                title: 'menu item 5-2'
-                ,id: 52
-            }]
-        },{type:'-'},{
-            title: 'menu item 6'
-            ,id: 6
-            ,type: 'group'
-            ,isSpreadItem: false
-            ,child: [{
-                title: 'menu item 6-1'
-                ,id: 61
-            },{
-                title: 'menu item 6-2'
-                ,id: 62
-            }]
-        }]
-        ,id: 'casesTransferred'
-        //菜单被点击的事件
-        ,click: function(obj){
-            console.log(obj);
-            layer.msg('回调返回的参数已显示再控制台');
-        }
+        elem: '#endDate', //指定元素
+        format: "yyyy-MM-dd HH:mm:ss"
+        ,type: 'datetime'
     });
 
     //下拉级联
@@ -89,10 +19,13 @@ layui.use(['laydate','dropdown','element','table','echarts','form','layer'], fun
     form.on('select(firstClassify)',function (data) {
         console.log(data);
         layer.msg(data.value,{icon: 1,time: 2000}, function () {});
+        $("#secondClassify").empty();
         if(data.value == '个人转案情况'){
             findAllUser();
+        }else if(data.value == '领域转案情况'){
+            findFieldGroup();
         }else{
-
+            initSecondClassify(data.value);
         }
     });
 
@@ -271,15 +204,73 @@ function effectiveTransferOutRate() {
     })*/
 }
 
+/**
+ * 查找所有用户，用于级联使用
+ */
 function findAllUser() {
-    $.get(ctx + "/ceshi/findAllUser",function (data) {
-        console.log(data);
+    $.get(ctx + "/ceshi/findAllUser",function (response) {
+        if(response.data.length != 0){
+            //清空下拉框
+
+            $.each(response.data,function (index,item) {
+                //赋值
+                $("#secondClassify").append(new Option(item.ename, item.classifiersCode));
+            })
+        }else{
+            $("#secondClassify").append(new Option("暂无数据", ""));
+        }
+        layui.form.render("select");
     })
+}
+
+/**
+ * 用于级联
+ * @param value
+ */
+function initSecondClassify(value) {
+   // let value = $("#firstClassify").val();
+    if("部级转案情况" == value){
+        $("#secondClassify").append(new Option("一部","一部"));
+        $("#secondClassify").append(new Option("二部","二部"));
+        $("#secondClassify").append(new Option("三部","三部"));
+        $("#secondClassify").append(new Option("四部","四部"));
+    }else if("室级转案情况" == value){
+        $("#secondClassify").append(new Option("一部一室","一部一室"));
+        $("#secondClassify").append(new Option("一部二室","一部二室"));
+        $("#secondClassify").append(new Option("一部三室","一部三室"));
+        $("#secondClassify").append(new Option("二部一室","二部一室"));
+        $("#secondClassify").append(new Option("二部二室","二部二室"));
+        $("#secondClassify").append(new Option("二部三室","二部三室"));
+        $("#secondClassify").append(new Option("三部一室","三部一室"));
+        $("#secondClassify").append(new Option("三部二室","三部二室"));
+        $("#secondClassify").append(new Option("三部三室","三部三室"));
+        $("#secondClassify").append(new Option("三部四室","三部四室"));
+        $("#secondClassify").append(new Option("三部五室","三部五室"));
+        $("#secondClassify").append(new Option("四部一室","四部一室"));
+        $("#secondClassify").append(new Option("四部二室","四部二室"));
+        $("#secondClassify").append(new Option("四部三室","四部三室"));
+        $("#secondClassify").append(new Option("四部四室","四部四室"));
+    }
+    layui.form.render("select");
+}
+
+function findFieldGroup() {
+    $.get(ctx + "/ceshi/findAllFieldGroup", function (response) {
+        console.log(response)
+        if(response.data.length != 0){
+            $.each(response.data,function (index,item) {
+                $("#secondClassify").append(new Option(item, item));
+            });
+        }else{
+            $("#secondClassify").append(new Option("暂无数据", ""));
+        }
+        layui.form.render("select");
+    });
 }
 
 function ceshi() {
     //alert("ceshi")
-    $.post(ctx + "/ceshi/count", function (data) {
+    $.post(ctx + "/ceshi/count/count", function (data) {
         alert(data);
     });
 }
