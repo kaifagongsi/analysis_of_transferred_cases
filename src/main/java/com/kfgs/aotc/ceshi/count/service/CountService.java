@@ -5,6 +5,6 @@ import com.kfgs.aotc.common.pojo.Result;
 import java.util.List;
 import java.util.Map;
 
-public interface TestService {
+public interface CountService {
     Result<Map<String,Float>> countAccuracy(List<String> list);
 }

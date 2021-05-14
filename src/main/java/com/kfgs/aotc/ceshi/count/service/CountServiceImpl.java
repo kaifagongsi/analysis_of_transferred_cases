@@ -9,7 +9,7 @@ import java.util.Map;
 
 @Service
 @Transactional
-public class TestServiceImpl implements TestService {
+public class CountServiceImpl implements CountService {
 
     @Override
     public Result<Map<String, Float>> countAccuracy(List<String> list) {
