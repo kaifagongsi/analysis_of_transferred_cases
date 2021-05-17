@@ -6,5 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface CountService {
-    Result<Map<String,Float>> countAccuracy(List<String> list);
+    Result<List<Map<String,String>>> countAccuracy(List<String> list);
+
+    //Result<Map<String,String>> countAccuracyByID(String classifierID);
 }
