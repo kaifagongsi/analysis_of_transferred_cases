@@ -1,3 +1,6 @@
+var tableThead = [];
+var tableData = [];
+var table ;
 layui.use(['laydate','dropdown','element','table','echarts','form','layer'], function () {
     // 日期组件
     var laydate = layui.laydate;
@@ -18,11 +21,10 @@ layui.use(['laydate','dropdown','element','table','echarts','form','layer'], fun
 
     form.on('select(firstClassify)',function (data) {
         console.log(data);
-        layer.msg(data.value,{icon: 1,time: 2000}, function () {});
         $("#secondClassify").empty();
-        if(data.value == '个人转案情况'){
+        if(data.value == '1'){
             findAllUser();
-        }else if(data.value == '领域转案情况'){
+        }else if(data.value == '4'){
             findFieldGroup();
         }else{
             initSecondClassify(data.value);
@@ -37,113 +39,16 @@ layui.use(['laydate','dropdown','element','table','echarts','form','layer'], fun
     });
 
     // 表格
-    var table = layui.table;
+    table = layui.table;
     //展示已知数据
     table.render({
         elem: '#demoTable',
-        cols: [[ //标题栏
-            {field: 'id', title: 'ID', width: 80, sort: true}
-            ,{field: 'username', title: '用户名', width: 120}
-            ,{field: 'email', title: '邮箱', minWidth: 150}
-            ,{field: 'sign', title: '签名', minWidth: 160}
-            ,{field: 'sex', title: '性别', width: 80}
-            ,{field: 'city', title: '城市', width: 100}
-            ,{field: 'experience', title: '积分', width: 80, sort: true}
-        ]],
-        data: [{
-            "id": "10001"
-            ,"username": "杜甫"
-            ,"email": "xianxin@layui.com"
-            ,"sex": "男"
-            ,"city": "浙江杭州"
-            ,"sign": "人生恰似一场修行"
-            ,"experience": "116"
-            ,"ip": "192.168.0.8"
-            ,"logins": "108"
-            ,"joinTime": "2016-10-14"
-        }, {
-            "id": "10002"
-            ,"username": "李白"
-            ,"email": "xianxin@layui.com"
-            ,"sex": "男"
-            ,"city": "浙江杭州"
-            ,"sign": "人生恰似一场修行"
-            ,"experience": "12"
-            ,"ip": "192.168.0.8"
-            ,"logins": "106"
-            ,"joinTime": "2016-10-14"
-            ,"LAY_CHECKED": true
-        }, {
-            "id": "10003"
-            ,"username": "王勃"
-            ,"email": "xianxin@layui.com"
-            ,"sex": "男"
-            ,"city": "浙江杭州"
-            ,"sign": "人生恰似一场修行"
-            ,"experience": "65"
-            ,"ip": "192.168.0.8"
-            ,"logins": "106"
-            ,"joinTime": "2016-10-14"
-        }, {
-            "id": "10004"
-            ,"username": "贤心"
-            ,"email": "xianxin@layui.com"
-            ,"sex": "男"
-            ,"city": "浙江杭州"
-            ,"sign": "人生恰似一场修行"
-            ,"experience": "666"
-            ,"ip": "192.168.0.8"
-            ,"logins": "106"
-            ,"joinTime": "2016-10-14"
-        }, {
-            "id": "10005"
-            ,"username": "贤心"
-            ,"email": "xianxin@layui.com"
-            ,"sex": "男"
-            ,"city": "浙江杭州"
-            ,"sign": "人生恰似一场修行"
-            ,"experience": "86"
-            ,"ip": "192.168.0.8"
-            ,"logins": "106"
-            ,"joinTime": "2016-10-14"
-        }, {
-            "id": "10006"
-            ,"username": "贤心"
-            ,"email": "xianxin@layui.com"
-            ,"sex": "男"
-            ,"city": "浙江杭州"
-            ,"sign": "人生恰似一场修行"
-            ,"experience": "12"
-            ,"ip": "192.168.0.8"
-            ,"logins": "106"
-            ,"joinTime": "2016-10-14"
-        }, {
-            "id": "10007"
-            ,"username": "贤心"
-            ,"email": "xianxin@layui.com"
-            ,"sex": "男"
-            ,"city": "浙江杭州"
-            ,"sign": "人生恰似一场修行"
-            ,"experience": "16"
-            ,"ip": "192.168.0.8"
-            ,"logins": "106"
-            ,"joinTime": "2016-10-14"
-        }, {
-            "id": "10008"
-            ,"username": "贤心"
-            ,"email": "xianxin@layui.com"
-            ,"sex": "男"
-            ,"city": "浙江杭州"
-            ,"sign": "人生恰似一场修行"
-            ,"experience": "106"
-            ,"ip": "192.168.0.8"
-            ,"logins": "106"
-            ,"joinTime": "2016-10-14"
-        }],
+        cols: tableThead,
+        data: tableData,
         skin: 'line', //表格风格
         even: true,
         page: false //是否显示分页
-        //,limit: 10 //每页默认显示的数量
+        ,limit: 10 //每页默认显示的数量
     });
 
     //柱状图
@@ -211,7 +116,6 @@ function findAllUser() {
     $.get(ctx + "/ceshi/findAllUser",function (response) {
         if(response.data.length != 0){
             //清空下拉框
-
             $.each(response.data,function (index,item) {
                 //赋值
                 $("#secondClassify").append(new Option(item.ename, item.classifiersCode));
@@ -228,13 +132,12 @@ function findAllUser() {
  * @param value
  */
 function initSecondClassify(value) {
-   // let value = $("#firstClassify").val();
-    if("部级转案情况" == value){
+    if("2" == value){
         $("#secondClassify").append(new Option("一部","一部"));
         $("#secondClassify").append(new Option("二部","二部"));
         $("#secondClassify").append(new Option("三部","三部"));
         $("#secondClassify").append(new Option("四部","四部"));
-    }else if("室级转案情况" == value){
+    }else if("3" == value){
         $("#secondClassify").append(new Option("一部一室","一部一室"));
         $("#secondClassify").append(new Option("一部二室","一部二室"));
         $("#secondClassify").append(new Option("一部三室","一部三室"));
@@ -269,8 +172,37 @@ function findFieldGroup() {
 }
 
 function ceshi() {
-    //alert("ceshi")
-    $.post(ctx + "/ceshi/count/count", function (data) {
+    $.post(ctx + "/ceshi/count/count", function (response) {
+        if(response.flag){
+            // 获取表头：
+            let entityObj = response.data[0];
+            let h = [];
+            // 拼装表头
+            $.each(entityObj,function (index,obj) {
+                h.push({field: index, title: index});
+            })
+            tableThead.push(h);
+            // 拼装 数据
+            $.each(response.data,function (index,object) {
+                console.log(index)
+                console.log(object)
+                tableData.push(object)
+            })
+            // 表格重载
+            table.reload('demoTable',{
+                cols: tableThead ,
+                data: tableData,
+            })
+        }else{
+            layer.msg('数据加载失败，请稍候重试', {icon: 5})
+        }
+    });
+}
+
+function testPost() {
+    let infoForm = $("#infoForm").serializeObject();
+
+    $.post(ctx + "/ceshi/testPost", infoForm,function (data) {
         alert(data);
     });
 }
