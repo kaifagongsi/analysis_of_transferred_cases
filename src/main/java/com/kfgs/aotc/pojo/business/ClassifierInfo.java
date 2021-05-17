@@ -25,7 +25,7 @@ public class ClassifierInfo implements Serializable {
 	private String ename;
 	@Id
 	@GeneratedValue
-	private Integer classifiersCode;
+	private String classifiersCode;
 	// 业务类型
 	private String businessType;
 	// 分类领域（大类）

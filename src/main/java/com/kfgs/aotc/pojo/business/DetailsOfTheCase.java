@@ -18,7 +18,7 @@ public class DetailsOfTheCase implements Serializable {
 	@GeneratedValue
 	private Integer id;
 	//分类员代码
-	private Integer classifiersCode;
+	private String classifiersCode;
 	//分类员姓名
 	private String classifiersName;
 	//申请号
