@@ -17,7 +17,7 @@
 <div class="layui-row layui-col-space15" style="padding: 20px;">
     <!-- 第一行选择 + 复分率按钮 -->
     <div class=" lay-row">
-        <div class="layui-form">
+        <form class="layui-form" id="infoForm">
             <div class="layui-row">
                 <div class="layui-col-md3">
                     <div class="layui-inline">
@@ -50,11 +50,11 @@
                 </div>
                 <div class="layui-col-md2" >
                     <select name="firstClassify" class="layui-select" lay-filter="firstClassify" id="firstClassify">
-                        <option value=""></option>
-                        <option value="个人转案情况" selected="">个人转案情况</option>
-                        <option value="部级转案情况">部级转案情况</option>
-                        <option value="室级转案情况">室级转案情况</option>
-                        <option value="领域转案情况">领域转案情况</option>
+                        <option value="" selected=""></option>
+                        <option value="1" >个人转案情况</option>
+                        <option value="2">部级转案情况</option>
+                        <option value="3">室级转案情况</option>
+                        <option value="4">领域转案情况</option>
                     </select>
                 </div>
                 <div class="layui-col-md2" >
@@ -66,7 +66,7 @@
                    <button type="button" class="layui-btn layui-btn-primary layui-border-blue" onclick="ceshi()">加副分率</button>
                </div>
             </div><!-- end form 中的行-->
-        </div><!-- end form-->
+        </form><!-- end form-->
     </div><!-- end -->
     <!-- 第一组按钮 -->
     <div class="layui-row">
@@ -110,6 +110,13 @@
             <button type="button" class="layui-btn layui-btn-primary layui-border-black">转入接受率</button>
         </div>
     </div>
+
+    <div class="layui-row">
+        <div class="layui-col-md1">
+            <button  onclick="testPost()">测试按钮testPost方法</button>
+        </div>
+    </div>
+
     <!--开始卡片显示 -->
     <div class="layui-tab layui-tab-brief" lay-filter="tabBrief">
         <ul class="layui-tab-title">
@@ -125,6 +132,8 @@
             </div>
         </div>
     </div>
+
+
 </div>
 </body>
 <script th:src="@{/ceshi/js/ceshi.js}"></script>

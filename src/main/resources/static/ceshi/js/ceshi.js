@@ -1,6 +1,7 @@
 var tableThead = [];
 var tableData = [];
 var table ;
+var loadingSpinner ;
 layui.use(['laydate','dropdown','element','table','echarts','form','layer'], function () {
     // 日期组件
     var laydate = layui.laydate;
@@ -42,13 +43,14 @@ layui.use(['laydate','dropdown','element','table','echarts','form','layer'], fun
     table = layui.table;
     //展示已知数据
     table.render({
-        elem: '#demoTable',
-        cols: tableThead,
-        data: tableData,
-        skin: 'line', //表格风格
-        even: true,
-        page: false //是否显示分页
-        ,limit: 10 //每页默认显示的数量
+        elem: '#demoTable'
+        ,cols: tableThead
+        ,data: tableData
+        ,skin: 'line' //表格风格
+        ,even: true
+        ,page: true //是否显示分页
+        ,limit: 8 //每页默认显示的数量
+        ,limits: [8, 30, 50, 100] //自定义每页条数的选择项
     });
 
     //柱状图
@@ -99,6 +101,8 @@ layui.use(['laydate','dropdown','element','table','echarts','form','layer'], fun
         }]
     };
     chartZhu.setOption(optionchart, true);
+
+
 })
 /**
  * 有效转出率 Effective transfer out rate
@@ -172,6 +176,7 @@ function findFieldGroup() {
 }
 
 function ceshi() {
+    loadingSpinner = layer.msg('正在加载...', {icon: 16, shade: 0.3, time:0});
     $.post(ctx + "/ceshi/count/count", function (response) {
         if(response.flag){
             // 获取表头：
@@ -196,6 +201,7 @@ function ceshi() {
         }else{
             layer.msg('数据加载失败，请稍候重试', {icon: 5})
         }
+        layer.close(loadingSpinner);
     });
 }
 
