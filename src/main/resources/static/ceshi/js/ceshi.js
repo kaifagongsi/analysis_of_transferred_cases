@@ -219,7 +219,34 @@ function testPost() {
  * */
 function etir() {
     let infoForm = $("#infoForm").serializeObject();
+    loadingSpinner = layer.msg('正在加载...', {icon: 16, shade: 0.3, time:0});
     $.post(ctx + "/etir/init", infoForm,function (response) {
-        console.log(response)
+        tableThead = [];
+        tableData = [];
+        if(response.flag){
+            // 获取表头：
+            let entityObj = response.data[0];
+            let h = [];
+            // 拼装表头
+            $.each(entityObj,function (index,obj) {
+                h.push({field: index, title: index});
+            })
+            tableThead.push(h);
+            // 拼装 数据
+            $.each(response.data,function (index,object) {
+                console.log(index)
+                console.log(object)
+                tableData.push(object)
+            })
+            // 表格重载
+            table.reload('demoTable',{
+                cols: tableThead ,
+                data: tableData,
+            })
+        }else{
+            layer.msg('数据加载失败，请稍候重试', {icon: 5})
+        }
+        layer.close(loadingSpinner);
+
     });
 }
