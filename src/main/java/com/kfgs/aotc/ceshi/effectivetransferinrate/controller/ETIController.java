@@ -18,6 +18,7 @@ public class ETIController {
     @Autowired
     ETIService etiService;
 
+    @RequestMapping("init")
     public Result getEffectiveTransferInRate(ParameterVo parameterVo){
         return etiService.getEffectiveTransferInRate(parameterVo);
     }

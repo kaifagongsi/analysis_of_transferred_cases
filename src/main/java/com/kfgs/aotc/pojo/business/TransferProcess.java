@@ -2,10 +2,7 @@ package com.kfgs.aotc.pojo.business;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
@@ -31,7 +28,7 @@ public class TransferProcess implements Serializable {
 	//处理转案日期
 	private String receiveTime;
 	//提示标题
-	private String tipeTitle;
+	private String tipsTitle;
 	//提示内容
 	private String tipsContent;
 	//提示状态
