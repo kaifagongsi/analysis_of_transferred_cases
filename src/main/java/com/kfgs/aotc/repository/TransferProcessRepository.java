@@ -26,7 +26,7 @@ public interface TransferProcessRepository extends CommonRepository<TransferProc
     public Integer getAcceptReferralCountNumberByReceiveTimeBetweenAndTipeTitleAndReceiveId( String startDate,  String endDate,String tips_title,String receive_id );
 
     @Query(value = "select  * from aotc_transfer_process where receive_time between ?1 and ?2 and tips_state = ?3 ",nativeQuery = true)
-    public Page<TransferProcess> getAllConditionsByReceiveTimeAndTipeTitle(String startDate, String endDate, String tips_title, Pageable pageable);
+    public Page<TransferProcess> getAllConditionsByReceiveTimeAndTipeTitle(String startDate, String endDate, String tips_state, Pageable pageable);
 
     @Query(value= "select count(CASE_ID) from aotc_transfer_process where receive_time between ?1 and ?2",nativeQuery = true)
     public Integer getCountNumberByReceiveTimeBetween(String startDate,String endDate);
@@ -35,7 +35,15 @@ public interface TransferProcessRepository extends CommonRepository<TransferProc
     public Integer getAcceptReferralCountNumberByReceiveTimeBetweenAndReceiveId(String startDate,String endDate,String receiveId);
 
 
-    List<String> getRefuseReferralByReceiveTimeBetweenAndTipeTitleAndReceiveId(String startDate, String endDate, String 拒绝转案, String secondClassify);
+    @Query(value = " select ipcmi || ',' || ipcoi || ',' || ipca " +
+            "    from aotc_detailsofthecase dotc" +
+            "   where EXISTS (select case_id " +
+            "            from aotc_transfer_process tp " +
+            "           where receive_id = ?4 " +
+            "             and receive_time between  ?1 and ?2 " +
+            "             and tips_state =  ?3 " +
+            "             and dotc.case_id = tp.case_id)", nativeQuery = true)
+    List<String> getRefuseReferralByReceiveTimeBetweenAndTipeTitleAndReceiveId(String startDate, String endDate, String tips_state, String secondClassify);
 
     //public List<TransferProcess> findAllConditionsByReceiveTimeAndTipeTitleAAndReceiveId(String startDate,String endDate,String tips_state,String receiveId);
 
