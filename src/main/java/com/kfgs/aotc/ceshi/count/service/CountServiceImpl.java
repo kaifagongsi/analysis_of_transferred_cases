@@ -8,16 +8,16 @@ import com.kfgs.aotc.pojo.business.DetailOfCaseFinished;
 import com.kfgs.aotc.repository.ClassifierInfoRepository;
 import com.kfgs.aotc.repository.DetailOfCaseFinishedRepository;
 import com.kfgs.aotc.repository.TransferProcessRepository;
+import com.kfgs.aotc.util.CountUtil;
 import com.kfgs.aotc.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+
 
 @Service
 @Transactional
@@ -43,10 +43,8 @@ public class CountServiceImpl implements CountService {
         return Result.of(resultList);
     }
 
-    //@Override
     public Map<String,String> countAccuracyByID(String classifierID) {
         double accuracy_num = 0;//有效转案率
-        Map<String, ClassifierInfo> classifierInfoMap = new ConcurrentHashMap<>();
         DecimalFormat df = (DecimalFormat) NumberFormat.getInstance();
         //分子1:获取接收转案案件数量
         int receiveTotals = transferProcessRepository.getSumOfReceiveBySendID(classifierID);
@@ -61,39 +59,45 @@ public class CountServiceImpl implements CountService {
         if (totalTrans == 0){ //分母不能为0
             return null;
         }else{
+            /*
+            有效转案案件
+             */
             for (int i=0;i<detailOfCaseFinisheds.size();i++){
                 DetailOfCaseFinished detailOfCaseTransProcess = detailOfCaseFinisheds.get(i);
-                //分类员ID
-                String classifiersCode = detailOfCaseTransProcess.getClassifiersCode().toString();
-                //分类员分类信息
-                ClassifierInfo classifierInfo = classifierInfoRepository.getOne(classifiersCode);
-                //获取案件出案分类号信息
-                String finishIpcmi = "";
-                String finishIpcoi = "";
-                String finishIpca = "";
+                //案件ID
+                String case_id = detailOfCaseTransProcess.getId();
+                //接收分类员ID
+                String classifiersCode = detailOfCaseTransProcess.getClassifiersCode();
+                //获取接收分类员分类号CLASSIFIERS_AND_CODE
+                List<String> detailCodes = CountUtil.CLASSIFIERS_AND_CODE.get(classifiersCode);
+                if (detailCodes == null){
+                    continue;
+                }
+                String ipc = "";
                 if (detailOfCaseTransProcess.getIpcmi() != null){
-                    finishIpcmi = detailOfCaseTransProcess.getIpcmi().substring(0,4);
+                    ipc += detailOfCaseTransProcess.getIpcmi();
                 }
                 if (detailOfCaseTransProcess.getIpcoi() != null){
-                    finishIpcoi = detailOfCaseTransProcess.getIpcoi().substring(0,4);
+                    ipc += ",";
+                    ipc += detailOfCaseTransProcess.getIpcoi();
                 }
                 if (detailOfCaseTransProcess.getIpca() != null){
-                    finishIpca = detailOfCaseTransProcess.getIpca().substring(0,4);
+                    ipc += ",";
+                    ipc += detailOfCaseTransProcess.getIpca();
                 }
-                List<String> finishCodes = new ArrayList<>();
-                finishCodes.add(finishIpcmi);
-                finishCodes.add(finishIpcoi);
-                finishCodes.add(finishIpca);
-                //获取分类员分类号
-                String classification_field = classifierInfo.getClassificationField();
-                String[] codes = classification_field.split(",");
-                List<String> detailCodes = new ArrayList<>();
-                for (int j=0;j<codes.length;j++){
-                        detailCodes.add(codes[j]);
+                String[] finishCodes = ipc.split(",");
+                for(int j=0;j<finishCodes.length;j++) {
+                    if (finishCodes[j] != null && finishCodes[j].length()>=4){
+                        finishCodes[j] = finishCodes[j].substring(0, 4);
+                    }
                 }
+                System.out.println(case_id+classifiersCode);
+
                 //比对
-                if (!Collections.disjoint(finishCodes,detailCodes)){
+                if (!Collections.disjoint(Arrays.asList(finishCodes),detailCodes)){
                     validTrans ++;
+                }else{
+                    System.out.println(case_id + classifiersCode);
                 }
             }
             accuracy_num = (receiveTotals + validTrans)*100/totalTrans;

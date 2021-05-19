@@ -38,10 +38,8 @@ public class CountController {
     @PostMapping("count")
     public Result<List<Map<String,String>>> countAccuracy(){
         List<String> list = new ArrayList<>();
-        List<ClassifierInfo> classifierInfos = classifierInfoRepository.findAll();
-        for(int i=0;i<classifierInfos.size();i++){
-            String classifierCode = classifierInfos.get(i).getClassifiersCode();
-            list.add(classifierCode);
+        for (Map.Entry<String,List<String>> entry : CountUtil.CLASSIFIERS_AND_CODE.entrySet()) {
+            list.add(entry.getKey());
         }
         return countService.countAccuracy(list);
     }
@@ -52,7 +50,7 @@ public class CountController {
      * @return
      */
     /*@PostMapping("countone")
-    public Result<Map<String,String>> countAccuracyByID(String classifierID){
-        return countService.countAccuracyByID("220545");
+    public Map<String,String> countAccuracyByID(String classifierID){
+        return countService.countAccuracyByID(classifierID);
     }*/
 }

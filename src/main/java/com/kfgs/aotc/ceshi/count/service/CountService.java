@@ -8,5 +8,5 @@ import java.util.Map;
 public interface CountService {
     Result<List<Map<String,String>>> countAccuracy(List<String> list);
 
-    //Result<Map<String,String>> countAccuracyByID(String classifierID);
+    //Map<String,String> countAccuracyByID(String classifierID);
 }
