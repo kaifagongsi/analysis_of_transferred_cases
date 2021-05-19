@@ -29,7 +29,6 @@ public class CountUtil {
      * @return
      */
     public static Map<String,List<String>> CLASSIFIERS_AND_CODE = new HashMap<>();
-    //public static Map<String,List<String>> FINISHED_CASE_CODE = new HashMap<>();
 
     @PostConstruct
     public void init(){

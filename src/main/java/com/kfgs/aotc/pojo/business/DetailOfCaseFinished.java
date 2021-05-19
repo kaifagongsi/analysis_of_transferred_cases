@@ -28,8 +28,6 @@ public class DetailOfCaseFinished implements Serializable {
     private String ipcoi;
     //IPC附加分类号
     private String ipca;
-    // 分类领域（小类）
-    //private String classificationField;
 
     public DetailOfCaseFinished (String id,String classifiersCode,String ipcmi,String ipcoi,String ipca){
         super();
@@ -38,7 +36,6 @@ public class DetailOfCaseFinished implements Serializable {
         this.ipcmi = ipcmi;
         this.ipcoi = ipcoi;
         this.ipca = ipca;
-        //this.classificationField = classificationField;
     }
 
 }
