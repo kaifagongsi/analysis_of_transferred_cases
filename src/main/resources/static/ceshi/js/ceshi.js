@@ -8,13 +8,13 @@ layui.use(['laydate','dropdown','element','table','echarts','form','layer'], fun
     //执行一个laydate实例
     laydate.render({
         elem: '#startDate', //指定元素
-        format: "yyyy-MM-dd HH:mm:ss"
-        ,type: 'datetime'
+        format: "yyyyMMdd"
+        ,type: 'date'
     });
     laydate.render({
         elem: '#endDate', //指定元素
-        format: "yyyy-MM-dd HH:mm:ss"
-        ,type: 'datetime'
+        format: "yyyyMMdd"
+        ,type: 'date'
     });
 
     //下拉级联
@@ -210,5 +210,16 @@ function testPost() {
 
     $.post(ctx + "/ceshi/testPost", infoForm,function (data) {
         alert(data);
+    });
+}
+
+
+/**
+ * 有效转入率
+ * */
+function etir() {
+    let infoForm = $("#infoForm").serializeObject();
+    $.post(ctx + "/etir/init", infoForm,function (response) {
+        console.log(response)
     });
 }

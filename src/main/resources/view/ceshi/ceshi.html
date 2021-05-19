@@ -50,7 +50,7 @@
                 </div>
                 <div class="layui-col-md2" >
                     <select name="firstClassify" class="layui-select" lay-filter="firstClassify" id="firstClassify">
-                        <option value="" selected=""></option>
+                        <option value="0" selected=""></option>
                         <option value="1" >个人转案情况</option>
                         <option value="2">部级转案情况</option>
                         <option value="3">室级转案情况</option>
@@ -92,7 +92,7 @@
     <!-- 第二组按钮 -->
     <div class="layui-row">
         <div class="layui-col-md2">
-            <button type="button" class="layui-btn layui-btn-primary layui-border-orange">有效转入率</button>
+            <button type="button" class="layui-btn layui-btn-primary layui-border-orange" onclick="etir()">有效转入率</button>
         </div>
         <div class="layui-col-md2">
             <button type="button" class="layui-btn layui-btn-primary layui-border-black" onclick="effectiveTransferOutRate()">有效转出率</button>
