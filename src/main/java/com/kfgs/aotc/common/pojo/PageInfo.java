@@ -42,6 +42,22 @@ public class PageInfo<M> {
         return pageInfo;
     }
 
+    public static PageInfo  ofMap(Page page, List list) {
+        int records = (int) page.getTotalElements();
+        int pageSize = page.getSize();
+        int total = records % pageSize == 0 ? records / pageSize : records / pageSize + 1;
+
+        PageInfo<List> pageInfo = new PageInfo<>();
+        pageInfo.setPage(page.getNumber() + 1);//页码
+        pageInfo.setPageSize(pageSize);//页面大小
+        // 将linkedHashMap转为List
+        //List list = JSON.parseObject(JSON.toJSONString(linkedHashMap), new TypeReference<List>() {});
+        pageInfo.setRows(list);//分页结果
+        pageInfo.setRecords(records);//总记录数
+        pageInfo.setTotal(total);//总页数
+        return pageInfo;
+    }
+
     /**
      * 获取JPA的分页对象
      */
