@@ -92,7 +92,7 @@ public class ETIServiceImpl implements ETIService{
             result.put("转案接收总次数", "0");
             result.put("转案退回且出案数","0");
             result.put("转案退回有效次数","0");
-            result.put("有效转案率","0%");
+            result.put("有效转入率","0%");
         }else{
             //1 按照处理转案时间、提示状态为接受转案的集合
             int case_1 = transferProcessRepository.getAcceptReferralCountNumberByReceiveTimeBetweenAndTipeTitleAndReceiveId(startDate, endDate, "接收转案", classifierID);
@@ -124,7 +124,7 @@ public class ETIServiceImpl implements ETIService{
             result.put("转案接收总次数", Integer.toString(case_1));
             result.put("转案退回且出案数",Integer.toString( ipc.size()));
             result.put("转案退回有效次数",Integer.toString(validTrans));
-            result.put("有效转案率",df.format(accuracy_num)+"%");
+            result.put("有效转入率",df.format(accuracy_num)+"%");
             System.out.println(result);
         }
         return result;
