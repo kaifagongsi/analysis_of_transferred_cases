@@ -2,6 +2,8 @@ package com.kfgs.aotc.repository;
 
 import com.kfgs.aotc.common.repository.CommonRepository;
 import com.kfgs.aotc.pojo.business.ClassifierInfo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -12,4 +14,15 @@ public interface ClassifierInfoRepository extends CommonRepository<ClassifierInf
 
     @Query(value = "select distinct field_group from aotc_classifier_info" , nativeQuery = true)
     public List<String> findDistinctByFieldGroup();
+
+    @Query( value="select * from AOTC_CLASSIFIER_INFO t where dep1 = ?1 ",
+            countQuery = " select count(classifiers_code) from AOTC_CLASSIFIER_INFO t where dep1 = ?1  ",
+            nativeQuery = true)
+    public Page<ClassifierInfo> findClassifiersCodeByDep1(String dep1, Pageable pageable);
+
+
+    @Query( value="select * from AOTC_CLASSIFIER_INFO t where classifiers_code = ?1 ",
+            countQuery = " select count(classifiers_code) from AOTC_CLASSIFIER_INFO t where classifiers_code = ?1  ",
+            nativeQuery = true)
+    Page<ClassifierInfo> findClassifiersCodeByClassifierCode(String secondClassify, Pageable pageable);
 }

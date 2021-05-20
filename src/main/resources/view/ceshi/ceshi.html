@@ -92,7 +92,7 @@
     <!-- 第二组按钮 -->
     <div class="layui-row">
         <div class="layui-col-md2">
-            <button type="button" class="layui-btn layui-btn-primary layui-border-orange" onclick="etir()">有效转入率</button>
+            <button type="button" class="layui-btn layui-btn-primary layui-border-orange" onclick="etir(1,10)">有效转入率</button>
         </div>
         <div class="layui-col-md2">
             <button type="button" class="layui-btn layui-btn-primary layui-border-black" onclick="effectiveTransferOutRate()">有效转出率</button>
@@ -126,9 +126,10 @@
         <div class="layui-tab-content" style="height: 100px;">
             <div class="layui-tab-item layui-show">
                 <table class="layui-hide" id="demoTable"></table>
+                <div id="pageNav"></div>
             </div>
             <div class="layui-tab-item">
-                <div id="demoEcharts" style="width:1000px;height:500px;"></div>
+                <div id="demoEcharts" style="width:800px;height:800px;"></div>
             </div>
         </div>
     </div>
