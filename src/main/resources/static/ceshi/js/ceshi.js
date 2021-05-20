@@ -245,14 +245,15 @@ function etir( page,rows) {
                 // 表格重载
                 table.reload('demoTable',{
                     cols: tableThead ,
-                    data: tableData
+                    data: tableData,
+                    limit: rows
                 })
                 laypage.render({
                     elem : 'pageNav',
                     count : response.data.records,
                     limit : rows
                     ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
-                    ,curr : page
+                    ,curr: page
                     ,jump: function(obj, first){
                         //obj包含了当前分页的所有参数，比如：
                         console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
