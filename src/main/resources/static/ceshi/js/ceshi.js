@@ -52,6 +52,12 @@ layui.use(['laydate','dropdown','element','table','echarts','form','layer','layp
         ,page: false //是否显示分页
     });
 
+    table.render({
+        elem: 'depTable'
+        ,skin: 'line' //表格风格
+        ,even: true
+    })
+
     laypage = layui.laypage;
 
     laypage.render({
@@ -275,6 +281,16 @@ function etir( page,rows) {
     }
 }
 
+function etirAll( ) {
+    let infoForm = $("#infoForm").serialize();
+    if(vaildateForm()){
+        if($("#secondClassify").val() != 1){
+            $.post(ctx + "/etir/initAll",infoForm,function (response) {
+                console.log(response)
+            })
+        }
+    }
+}
 function vaildateForm() {
     let startDate =  $("#startDate").val();
     let endDate =  $("#endDate").val();
