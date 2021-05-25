@@ -20,6 +20,10 @@ public interface ClassifierInfoRepository extends CommonRepository<ClassifierInf
             nativeQuery = true)
     public Page<ClassifierInfo> findClassifiersCodeByDep1(String dep1, Pageable pageable);
 
+    @Query(value = "select * from AOTC_CLASSIFIER_INFO t where dep1 = ?1 and dep2 = ?2",
+           countQuery = "select count (classifiers_code) from  AOTC_CLASSIFIER_INFO t where dep1 = ?1 and dep2 = ?2",
+            nativeQuery = true)
+    public Page<ClassifierInfo> findClassifiersCodeByDep1AndDep2(String dep1,String dep2,Pageable pageable);
 
     @Query( value="select * from AOTC_CLASSIFIER_INFO t where classifiers_code = ?1 ",
             countQuery = " select count(classifiers_code) from AOTC_CLASSIFIER_INFO t where classifiers_code = ?1  ",

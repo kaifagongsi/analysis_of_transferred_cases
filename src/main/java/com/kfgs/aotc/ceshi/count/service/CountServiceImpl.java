@@ -54,7 +54,7 @@ public class CountServiceImpl implements CountService {
             case 2: //按部计算
                 return countAccuracyByDepartment(parameterVo.getRows(),parameterVo.getPage(),parameterVo.getStartDate(),parameterVo.getEndDate(),parameterVo.getSecondClassify());
             case 3: //按室计算
-                System.out.println("3");
+                return countAccuracyByBranch(parameterVo.getRows(),parameterVo.getPage(),parameterVo.getStartDate(),parameterVo.getEndDate(),parameterVo.getSecondClassify());
             case 4: //按领域计算
                 System.out.println("4");
                 break;
@@ -77,6 +77,46 @@ public class CountServiceImpl implements CountService {
         }
         return Result.of(resultList);
     }*/
+
+    /**
+     * 按科室计算
+     * @param rows
+     * @param pageNum
+     * @param startDate
+     * @param endDate
+     * @param branch
+     * @return
+     */
+    private Result countAccuracyByBranch(int rows,int pageNum,String startDate,String endDate,String branch){
+        double accuracy_num = 0;//有效转案率
+        PageInfo pageInfo = new PageInfo();
+        List<Map<String,String>> resultList = new ArrayList<>();
+        Pageable pageable = new PageRequest(pageNum,rows, Sort.Direction.DESC,"dep1");
+        String dep1 = branch.substring(0,2);
+        String dep2 = branch.substring(2,4);
+        Page<ClassifierInfo> page = classifierInfoRepository.findClassifiersCodeByDep1AndDep2(dep1,dep2,pageable);
+        pageInfo.setPage(pageNum); //当前页
+        pageInfo.setPageSize(rows); //每页条数
+        pageInfo.setRecords((int)page.getTotalElements()); //总记录数
+        pageInfo.setTotal(page.getTotalPages()); //总页数
+        LinkedHashMap<String,String> workerResult = new LinkedHashMap<>();
+        for (ClassifierInfo classifierInfo:page.getContent()){
+            //System.out.println(classifierInfo.toString());
+            workerResult = countAccuracyByWorkerID(startDate,endDate,classifierInfo.getClassifiersCode());
+            resultList.add(workerResult);
+        }
+        pageInfo.setRows(resultList);
+        return Result.of(pageInfo);
+    }
+    /**
+     * 按部门计算
+     * @param rows
+     * @param pageNum
+     * @param startDate
+     * @param endDate
+     * @param department
+     * @return
+     */
     private Result countAccuracyByDepartment(int rows, int pageNum, String startDate, String endDate, String department){
         double accuracy_num = 0;//有效转案率
         PageInfo pageInfo = new PageInfo();
@@ -94,7 +134,7 @@ public class CountServiceImpl implements CountService {
         pageInfo.setTotal(page.getTotalPages()); //总页数
         LinkedHashMap<String,String> workerResult = new LinkedHashMap<>();
         for (ClassifierInfo classifierInfo:page.getContent()){
-            System.out.println(classifierInfo.toString());
+            //System.out.println(classifierInfo.toString());
             workerResult = countAccuracyByWorkerID(startDate,endDate,classifierInfo.getClassifiersCode());
             resultList.add(workerResult);
         }

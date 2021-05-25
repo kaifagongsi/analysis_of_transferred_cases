@@ -281,6 +281,7 @@ function effectiveTransferOutRate(page,rows) {
                     elem : 'pageNav',
                     count : response.data.records,
                     limit : rows
+                    ,limits : [5,10, 20, 30, 40]
                     ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
                     ,curr: page
                     ,jump: function(obj, first){
