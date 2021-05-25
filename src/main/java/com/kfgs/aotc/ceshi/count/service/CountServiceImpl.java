@@ -2,6 +2,7 @@ package com.kfgs.aotc.ceshi.count.service;
 
 import com.kfgs.aotc.annotation.In;
 import com.kfgs.aotc.ceshi.classifier.service.ClassifierService;
+import com.kfgs.aotc.common.pojo.PageInfo;
 import com.kfgs.aotc.common.pojo.Result;
 import com.kfgs.aotc.pojo.business.ClassifierInfo;
 import com.kfgs.aotc.pojo.business.DetailOfCaseFinished;
@@ -12,6 +13,10 @@ import com.kfgs.aotc.repository.TransferProcessRepository;
 import com.kfgs.aotc.util.CountUtil;
 import com.kfgs.aotc.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,11 +41,22 @@ public class CountServiceImpl implements CountService {
     public Result getEffectiveTransferRate(ParameterVo parameterVo) {
         switch (parameterVo.getFirstClassify()){
             case 1: //按人计算
-                return countAccuracyByWorkerID(parameterVo.getStartDate(),parameterVo.getEndDate(),parameterVo.getSecondClassify());
+                LinkedHashMap<String,String> result = countAccuracyByWorkerID(parameterVo.getStartDate(),parameterVo.getEndDate(),parameterVo.getSecondClassify());
+                List<Map<String,String>> resultList = new ArrayList<>();
+                PageInfo pageInfo = new PageInfo();
+                resultList.add(result);
+                pageInfo.setPage(parameterVo.getPage()); //当前页
+                pageInfo.setPageSize(parameterVo.getRows()); //每页条数
+                pageInfo.setRecords(resultList.size()); //总记录数
+                pageInfo.setTotal(1); //总页数
+                pageInfo.setRows(resultList);
+                return Result.of(pageInfo);
             case 2: //按部计算
-                return countAccuracyByDepartment(parameterVo.getStartDate(),parameterVo.getEndDate(),parameterVo.getSecondClassify());
+                return countAccuracyByDepartment(parameterVo.getRows(),parameterVo.getPage(),parameterVo.getStartDate(),parameterVo.getEndDate(),parameterVo.getSecondClassify());
             case 3: //按室计算
                 System.out.println("3");
+            case 4: //按领域计算
+                System.out.println("4");
                 break;
             default:
         }
@@ -61,13 +77,36 @@ public class CountServiceImpl implements CountService {
         }
         return Result.of(resultList);
     }*/
-    private Result countAccuracyByDepartment(String startDate,String endDate,String department){
-        return null;
+    private Result countAccuracyByDepartment(int rows, int pageNum, String startDate, String endDate, String department){
+        double accuracy_num = 0;//有效转案率
+        PageInfo pageInfo = new PageInfo();
+        List<Map<String,String>> resultList = new ArrayList<>();
+        //LinkedHashMap<String,String> result = new LinkedHashMap<>();
+        Pageable pageable = new PageRequest(pageNum,rows, Sort.Direction.DESC,"dep2");
+        Page<ClassifierInfo> page = classifierInfoRepository.findClassifiersCodeByDep1(department,pageable);
+        //查询结果总行数
+        //System.out.println(page.getTotalElements());
+        //按照当前分页大小，总页数
+        //System.out.println(page.getTotalPages());
+        pageInfo.setPage(pageNum); //当前页
+        pageInfo.setPageSize(rows); //每页条数
+        pageInfo.setRecords((int)page.getTotalElements()); //总记录数
+        pageInfo.setTotal(page.getTotalPages()); //总页数
+        LinkedHashMap<String,String> workerResult = new LinkedHashMap<>();
+        for (ClassifierInfo classifierInfo:page.getContent()){
+            System.out.println(classifierInfo.toString());
+            workerResult = countAccuracyByWorkerID(startDate,endDate,classifierInfo.getClassifiersCode());
+            resultList.add(workerResult);
+        }
+        pageInfo.setRows(resultList);
+        return Result.of(pageInfo);
+        //return Result.of(resultList);
     }
 
-    private Result countAccuracyByWorkerID(String startDate,String endDate,String classifierID) {
+    //private Result countAccuracyByWorkerID(String startDate,String endDate,String classifierID) {
+    private LinkedHashMap<String, String> countAccuracyByWorkerID(String startDate, String endDate, String classifierID) {
         double accuracy_num = 0;//有效转案率
-        List<Map<String,String>> resultList = new ArrayList<>();
+        //List<Map<String,String>> resultList = new ArrayList<>();
         LinkedHashMap<String,String> result = new LinkedHashMap<>();
         DecimalFormat df = (DecimalFormat) NumberFormat.getInstance();
         //分子1:获取接收转案案件数量
@@ -88,46 +127,6 @@ public class CountServiceImpl implements CountService {
             result.put("转案退回有效次数","0");
             result.put("有效转案率","0%");
         }else{
-            /*
-            有效转案案件
-             */
-            /*for (int i=0;i<detailOfCaseFinisheds.size();i++){
-                DetailOfCaseFinished detailOfCaseTransProcess = detailOfCaseFinisheds.get(i);
-                //案件ID
-                String case_id = detailOfCaseTransProcess.getId();
-                //接收分类员ID
-                String classifiersCode = detailOfCaseTransProcess.getClassifiersCode();
-                //获取接收分类员分类号CLASSIFIERS_AND_CODE
-                List<String> detailCodes = CountUtil.CLASSIFIERS_AND_CODE.get(classifiersCode);
-                if (detailCodes == null){
-                    continue;
-                }
-                String ipc = "";
-                if (detailOfCaseTransProcess.getIpcmi() != null){
-                    ipc += detailOfCaseTransProcess.getIpcmi();
-                }
-                if (detailOfCaseTransProcess.getIpcoi() != null){
-                    ipc += ",";
-                    ipc += detailOfCaseTransProcess.getIpcoi();
-                }
-                if (detailOfCaseTransProcess.getIpca() != null){
-                    ipc += ",";
-                    ipc += detailOfCaseTransProcess.getIpca();
-                }
-                String[] finishCodes = ipc.split(",");
-                for(int j=0;j<finishCodes.length;j++) {
-                    if (finishCodes[j] != null && finishCodes[j].length()>=4){
-                        finishCodes[j] = finishCodes[j].substring(0, 4);
-                    }
-                }
-                //System.out.println(case_id+classifiersCode);
-                //比对
-                if (!Collections.disjoint(Arrays.asList(finishCodes),detailCodes)){
-                    validTrans ++;
-                }else{
-                    System.out.println(case_id + classifiersCode);
-                }
-            }*/
             //2.拒绝转案并且在已出案中的所有ipc
             validTrans = 0; //有效转案
             List<String> ipc =  transferProcessRepository.getRefuseReferralBySendTimeBetweenAndTipeTitleAndSendId(startDate, endDate, "拒绝转案", classifierID);
@@ -158,7 +157,8 @@ public class CountServiceImpl implements CountService {
             result.put("有效转案率",df.format(accuracy_num)+"%");
             System.out.println(result);
         }
-        resultList.add(result);
-        return Result.of(resultList);
+        return result;
+        /*resultList.add(result);
+        return Result.of(resultList);*/
     }
 }

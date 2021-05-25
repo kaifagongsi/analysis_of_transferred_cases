@@ -255,12 +255,12 @@ function effectiveTransferOutRate(page,rows) {
     if (vaildateForm()){
         loadingSpinner = layer.msg('正在加载...',{icon:16,shade:0.3,time:0});
         $.post(ctx + "/ceshi/count/count",infoForm,function(response){
-            console.log(response.data)
+            console.log(response.data.rows)
             tableThead = [];
             tableData = [];
             if(response.flag){
                 // 获取表头：
-                let entityObj = response.data[0];
+                let entityObj = response.data.rows[0];
                 let h = [];
                 // 拼装表头
                 $.each(entityObj,function (index,obj) {
@@ -268,7 +268,7 @@ function effectiveTransferOutRate(page,rows) {
                 })
                 tableThead.push(h);
                 // 拼装 数据
-                $.each(response.data,function (index,object) {
+                $.each(response.data.rows,function (index,object) {
                     tableData.push(object)
                 })
                 // 表格重载
@@ -279,7 +279,7 @@ function effectiveTransferOutRate(page,rows) {
                 })
                 laypage.render({
                     elem : 'pageNav',
-                    count : response.data.length,
+                    count : response.data.records,
                     limit : rows
                     ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
                     ,curr: page
