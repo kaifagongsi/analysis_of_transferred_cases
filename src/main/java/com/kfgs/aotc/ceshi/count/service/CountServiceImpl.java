@@ -56,11 +56,17 @@ public class CountServiceImpl implements CountService {
             case 3: //按室计算
                 return countAccuracyByBranch(parameterVo.getRows(),parameterVo.getPage(),parameterVo.getStartDate(),parameterVo.getEndDate(),parameterVo.getSecondClassify());
             case 4: //按领域计算
-                System.out.println("4");
-                break;
+                return countAccuracyByFiled(parameterVo.getRows(),parameterVo.getPage(),parameterVo.getStartDate(),parameterVo.getEndDate(),parameterVo.getSecondClassify());
             default:
         }
         return null;
+    }
+
+    @Override
+    public Result getAllFieldGroup() {
+        List<String> filedslist = new ArrayList<>();
+        filedslist = classifierInfoRepository.findDistinctByFieldGroup();
+        return Result.of(filedslist);
     }
 
     /*@Override
@@ -78,6 +84,21 @@ public class CountServiceImpl implements CountService {
         return Result.of(resultList);
     }*/
 
+    /**
+     * 按照分类员领域计算
+     * @param rows
+     * @param pageNum
+     * @param startDate
+     * @param endDate
+     * @param filed
+     * @return
+     */
+    private Result countAccuracyByFiled(int rows,int pageNum,String startDate,String endDate,String filed){
+        double accuracy_num = 0;//有效转案率
+        PageInfo pageInfo = new PageInfo();
+        List<Map<String,String>> resultList = new ArrayList<>();
+        return null;
+    }
     /**
      * 按科室计算
      * @param rows

@@ -47,6 +47,11 @@ public class CountController {
         return countService.getEffectiveTransferRate(parameterVo);
     }
 
+    @PostMapping("findAllFieldGroup")
+    public Result findAllFieldGroup(){
+        return countService.getAllFieldGroup();
+    }
+
     /**
      * 个人有效转出率
      * @param classifierID

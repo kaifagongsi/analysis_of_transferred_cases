@@ -113,7 +113,6 @@ layui.use(['laydate','dropdown','element','table','echarts','form','layer','layp
     };
     chartZhu.setOption(optionchart, true);
 
-
 })
 
 /**
@@ -165,7 +164,7 @@ function initSecondClassify(value) {
 }
 
 function findFieldGroup() {
-    $.get(ctx + "/ceshi/findAllFieldGroup", function (response) {
+    $.post(ctx + "/ceshi/count/findAllFieldGroup", function (response) {
         console.log(response)
         if(response.data.length != 0){
             $.each(response.data,function (index,item) {

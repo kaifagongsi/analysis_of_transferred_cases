@@ -11,4 +11,6 @@ public interface CountService {
 
     Result getEffectiveTransferRate(ParameterVo parameterVo);
     //Map<String,String> countAccuracyByID(String classifierID);
+
+    Result getAllFieldGroup();
 }
