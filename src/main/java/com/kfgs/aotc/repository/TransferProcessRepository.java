@@ -18,8 +18,8 @@ public interface TransferProcessRepository extends CommonRepository<TransferProc
     @Query(value = "select count (case_id) from aotc_transfer_process where send_id=?1 and tips_state='接收转案'", nativeQuery = true)
     public int getSumOfReceiveBySendID(String classifierID);
 
-    @Query(value = "select count(t.case_id) from aotc_transfer_process t inner join aotc_detailsofthecase d on t.case_id=d.case_id and t.tips_state='拒绝转案' and t.send_id=?1",nativeQuery = true)
-    public int getSumOFRejectBySendID(String classifierID);
+    @Query(value = "select count(t.case_id) from aotc_transfer_process t inner join aotc_detailsofthecase d on t.case_id=d.case_id and t.tips_state='拒绝转案' and send_time between ?1 and ?2 and t.send_id=?3",nativeQuery = true)
+    public int getSumOFRejectBySendID(String startDate,String endDate,String classifierID);
 
     @Query(value = "select  * from aotc_transfer_process where receive_time between ?1 and ?2 and tips_state = ?3 and receive_id = ?4 ",nativeQuery = true)
     public List<TransferProcess> getAllConditionsByReceiveTimeAndTipeTitleAndReceiveId( String startDate,  String endDate,String tips_title,String receive_id );
@@ -58,6 +58,16 @@ public interface TransferProcessRepository extends CommonRepository<TransferProc
     int getAcceptReferralCountNumberByReceiveTimeBetweenAndTipeTitleAndReceiveIds(String startDate, String endDate, String tipsState, List classifierInfoCode);
 
 
+
+    @Query(value = " select ipcmi || ',' || ipcoi || ',' || ipca " +
+            "    from aotc_detailsofthecase dotc" +
+            "   where EXISTS (select case_id " +
+            "            from aotc_transfer_process tp " +
+            "           where send_id = ?4 " +
+            "             and send_time between  ?1 and ?2 " +
+            "             and tips_state =  ?3 " +
+            "             and dotc.case_id = tp.case_id)", nativeQuery = true)
+    List<String> getRefuseReferralBySendTimeBetweenAndTipeTitleAndSendId(String startDate,String endDate,String tips_state,String secondClassify);
     //public List<TransferProcess> findAllConditionsByReceiveTimeAndTipeTitleAAndReceiveId(String startDate,String endDate,String tips_state,String receiveId);
 
 }

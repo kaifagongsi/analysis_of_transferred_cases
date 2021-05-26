@@ -1,16 +1,14 @@
 package com.kfgs.aotc.ceshi.count.controller;
 import com.kfgs.aotc.ceshi.count.service.CountService;
 import com.kfgs.aotc.common.pojo.Result;
-import com.kfgs.aotc.pojo.business.ClassifierInfo;
+import com.kfgs.aotc.pojo.business.vo.ParameterVo;
 import com.kfgs.aotc.repository.ClassifierInfoRepository;
 import com.kfgs.aotc.util.CountUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,24 +22,34 @@ public class CountController {
     @Autowired
     private ClassifierInfoRepository classifierInfoRepository;
 
-
-    //public static HashMap<String,String> classifiers_Code = CountUtil.getClassificationCode(); //分类员id和分类号
-    //public static HashMap<String,String> classifiers_Name = CountUtil.getClassificationName(); //分类员id和姓名
-    //public static List<ClassifierInfo> classifiersMap = classifierInfoRepository.findAll();
-
     @GetMapping("")
     public ModelAndView authority(){
         return new ModelAndView("ceshi/ceshi");
     }
 
-
-    @PostMapping("count")
-    public Result<List<Map<String,String>>> countAccuracy(){
+    /*@PostMapping("count")
+    public Result<List<Map<String,String>>> countAccuracy(@RequestParam(value = "page",required = false)Integer page,@RequestParam(value = "limit",required = false)Integer limit, ParameterVo parameterVo){
         List<String> list = new ArrayList<>();
         for (Map.Entry<String,List<String>> entry : CountUtil.CLASSIFIERS_AND_CODE.entrySet()) {
             list.add(entry.getKey());
         }
-        return countService.countAccuracy(list);
+        //return countService.countAccuracy(list,parameterVo);
+        return countService.getEffectiveTransferRate(parameterVo);
+    }*/
+
+    @PostMapping("count")
+    public Result countAccuracy(ParameterVo parameterVo){
+        /*List<String> list = new ArrayList<>();
+        for (Map.Entry<String,List<String>> entry : CountUtil.CLASSIFIERS_AND_CODE.entrySet()) {
+            list.add(entry.getKey());
+        }*/
+        //return countService.countAccuracy(list,parameterVo);
+        return countService.getEffectiveTransferRate(parameterVo);
+    }
+
+    @PostMapping("findAllFieldGroup")
+    public Result findAllFieldGroup(){
+        return countService.getAllFieldGroup();
     }
 
     /**

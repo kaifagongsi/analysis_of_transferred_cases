@@ -1,21 +1,14 @@
 package com.kfgs.aotc.util;
-
 import com.kfgs.aotc.pojo.business.ClassifierInfo;
 import com.kfgs.aotc.pojo.business.DetailsOfTheCase;
 import com.kfgs.aotc.repository.ClassifierInfoRepository;
 import com.kfgs.aotc.repository.DetailsOfTheCaseRepository;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.ServletContextAware;
-
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.servlet.ServletContext;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class CountUtil {
