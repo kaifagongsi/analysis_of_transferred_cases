@@ -7,4 +7,5 @@ public interface ETIService {
     public Result getEffectiveTransferInRate(ParameterVo parameterVo);
 
 
+    Result getEffectiveTransferInRateAll(ParameterVo parameterVo);
 }

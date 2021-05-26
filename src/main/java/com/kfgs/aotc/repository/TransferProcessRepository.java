@@ -9,6 +9,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * in 和 exists的区别: 如果子查询得出的结果集记录较少，主查询中的表较大且又有索引时应该用in, 反之如果外层的主查询记录较少，子查询中的表大，又有索引时使用exists。
+ */
 @Repository
 public interface TransferProcessRepository extends CommonRepository<TransferProcess, String> {
 
@@ -44,6 +47,16 @@ public interface TransferProcessRepository extends CommonRepository<TransferProc
             "             and tips_state =  ?3 " +
             "             and dotc.case_id = tp.case_id)", nativeQuery = true)
     List<String> getRefuseReferralByReceiveTimeBetweenAndTipeTitleAndReceiveId(String startDate, String endDate, String tips_state, String secondClassify);
+
+    @Query( nativeQuery = true,value =  "select count(tp.case_id)  from aotc_transfer_process tp where tp.receive_time between ?1 and ?2 " +
+            "and receive_id in ( ?3 ) " )
+    int getSumOfTheDateAndReceiveIdList(String startDate, String endDate, List<String> codeInfo);
+
+    @Query(nativeQuery = true, value = " select count(tp.case_id) from aotc_transfer_process tp where tp.receive_time between ?1 and ?2 " +
+            "and tp.tips_state = ?3 " +
+            "and tp.receive_id in (?4) " )
+    int getAcceptReferralCountNumberByReceiveTimeBetweenAndTipeTitleAndReceiveIds(String startDate, String endDate, String tipsState, List classifierInfoCode);
+
 
     //public List<TransferProcess> findAllConditionsByReceiveTimeAndTipeTitleAAndReceiveId(String startDate,String endDate,String tips_state,String receiveId);
 

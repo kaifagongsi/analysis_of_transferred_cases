@@ -22,4 +22,9 @@ public class ETIController {
     public Result getEffectiveTransferInRate(ParameterVo parameterVo){
         return etiService.getEffectiveTransferInRate(parameterVo);
     }
+
+    @RequestMapping("initAll")
+    public Result getEffectiveTransferInRateAll(ParameterVo parameterVo){
+        return etiService.getEffectiveTransferInRateAll(parameterVo);
+    }
 }

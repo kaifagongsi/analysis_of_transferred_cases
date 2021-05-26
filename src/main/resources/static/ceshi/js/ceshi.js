@@ -3,6 +3,8 @@ var tableData = [];
 var table ;
 var loadingSpinner ;
 var laypage;
+var tableTheadDep = [];
+var tableDataDep = [];
 layui.use(['laydate','dropdown','element','table','echarts','form','layer','laypage'], function () {
     // 日期组件
     var laydate = layui.laydate;
@@ -52,11 +54,7 @@ layui.use(['laydate','dropdown','element','table','echarts','form','layer','layp
         ,page: false //是否显示分页
     });
 
-    table.render({
-        elem: 'depTable'
-        ,skin: 'line' //表格风格
-        ,even: true
-    })
+
 
     laypage = layui.laypage;
 
@@ -64,6 +62,15 @@ layui.use(['laydate','dropdown','element','table','echarts','form','layer','layp
         elem: 'pageNav' //注意，这里的 test1 是 ID，不用加 # 号
     });
 
+    //展示已知数据
+    table.render({
+        elem: '#depTable'
+        ,cols: tableTheadDep
+        ,data: tableDataDep
+        ,skin: 'line' //表格风格
+        ,even: true
+        ,page: false //是否显示分页
+    });
     //柱状图
     var echarts = layui.echarts;
     var chartZhu = echarts.init(document.getElementById('demoEcharts'));
@@ -242,18 +249,18 @@ function etir( page,rows) {
                 // 拼装表头
                 $.each(entityObj,function (index,obj) {
                     h.push({field: index, title: index});
-                })
+                });
                 tableThead.push(h);
                 // 拼装 数据
                 $.each(response.data.rows,function (index,object) {
                     tableData.push(object)
-                })
+                });
                 // 表格重载
                 table.reload('demoTable',{
                     cols: tableThead ,
                     data: tableData,
                     limit: rows
-                })
+                });
                 laypage.render({
                     elem : 'pageNav',
                     count : response.data.records,
@@ -270,7 +277,7 @@ function etir( page,rows) {
                             etir( obj.curr,obj.limit);
                         }
                     }
-                })
+                });
             }else{
                 layer.msg('数据加载失败，请稍候重试', {icon: 5})
             }
@@ -283,11 +290,37 @@ function etir( page,rows) {
 
 function etirAll( ) {
     let infoForm = $("#infoForm").serialize();
-    if(vaildateForm()){
-        if($("#secondClassify").val() != 1){
-            $.post(ctx + "/etir/initAll",infoForm,function (response) {
-                console.log(response)
-            })
+    let firstClassify =  $("#firstClassify").val();
+    if(firstClassify != 0 && firstClassify != 1 ){
+        if(vaildateForm()){
+            if($("#secondClassify").val() != 1){
+                $.post(ctx + "/etir/initAll",infoForm,function (response) {
+                    console.log(response)
+                    tableTheadDep = [];
+                    tableDataDep = [];
+                    if(response.flag){
+                        // 获取表头：
+                        let entityObj = response.data.rows[0];
+                        let h = [];
+                        // 拼装表头
+                        $.each(entityObj,function (index,obj) {
+                            h.push({field: index, title: index});
+                        })
+                        tableTheadDep.push(h);
+                        // 拼装 数据
+                        $.each(response.data.rows,function (index,object) {
+                            tableDataDep.push(object)
+                        })
+                        // 表格重载
+                        table.reload('depTable',{
+                            cols: tableTheadDep ,
+                            data: tableDataDep
+                        })
+                    }else{
+                        layer.msg('数据加载失败，请稍候重试', {icon: 5})
+                    }
+                });
+            }
         }
     }
 }
