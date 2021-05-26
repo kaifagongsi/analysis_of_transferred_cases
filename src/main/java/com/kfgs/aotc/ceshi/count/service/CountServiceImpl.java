@@ -57,7 +57,7 @@ public class CountServiceImpl implements CountService {
                 return countAccuracyByBranch(parameterVo.getRows(),parameterVo.getPage(),parameterVo.getStartDate(),parameterVo.getEndDate(),parameterVo.getSecondClassify());
             case 4: //按领域计算
                 return countAccuracyByFiled(parameterVo.getRows(),parameterVo.getPage(),parameterVo.getStartDate(),parameterVo.getEndDate(),parameterVo.getSecondClassify());
-            default:
+            //default:
         }
         return null;
     }
@@ -94,10 +94,22 @@ public class CountServiceImpl implements CountService {
      * @return
      */
     private Result countAccuracyByFiled(int rows,int pageNum,String startDate,String endDate,String filed){
-        double accuracy_num = 0;//有效转案率
         PageInfo pageInfo = new PageInfo();
         List<Map<String,String>> resultList = new ArrayList<>();
-        return null;
+        Pageable pageable = new PageRequest(pageNum,rows, Sort.Direction.DESC,"dep1");
+        Page<ClassifierInfo> page = classifierInfoRepository.findClassifiersCodeByFieldGroup(filed,pageable);
+        pageInfo.setPage(pageNum); //当前页
+        pageInfo.setPageSize(rows); //每页条数
+        pageInfo.setRecords((int)page.getTotalElements()); //总记录数
+        pageInfo.setTotal(page.getTotalPages()); //总页数
+        LinkedHashMap<String,String> workerResult = new LinkedHashMap<>();
+        for (ClassifierInfo classifierInfo:page.getContent()){
+            //System.out.println(classifierInfo.toString());
+            workerResult = countAccuracyByWorkerID(startDate,endDate,classifierInfo.getClassifiersCode());
+            resultList.add(workerResult);
+        }
+        pageInfo.setRows(resultList);
+        return Result.of(pageInfo);
     }
     /**
      * 按科室计算
@@ -109,7 +121,6 @@ public class CountServiceImpl implements CountService {
      * @return
      */
     private Result countAccuracyByBranch(int rows,int pageNum,String startDate,String endDate,String branch){
-        double accuracy_num = 0;//有效转案率
         PageInfo pageInfo = new PageInfo();
         List<Map<String,String>> resultList = new ArrayList<>();
         Pageable pageable = new PageRequest(pageNum,rows, Sort.Direction.DESC,"dep1");
@@ -139,7 +150,6 @@ public class CountServiceImpl implements CountService {
      * @return
      */
     private Result countAccuracyByDepartment(int rows, int pageNum, String startDate, String endDate, String department){
-        double accuracy_num = 0;//有效转案率
         PageInfo pageInfo = new PageInfo();
         List<Map<String,String>> resultList = new ArrayList<>();
         //LinkedHashMap<String,String> result = new LinkedHashMap<>();

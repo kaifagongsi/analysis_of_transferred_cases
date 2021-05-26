@@ -165,7 +165,7 @@ function initSecondClassify(value) {
 
 function findFieldGroup() {
     $.post(ctx + "/ceshi/count/findAllFieldGroup", function (response) {
-        console.log(response)
+        //console.log(response)
         if(response.data.length != 0){
             $.each(response.data,function (index,item) {
                 $("#secondClassify").append(new Option(item, item));
@@ -280,7 +280,6 @@ function effectiveTransferOutRate(page,rows) {
                     elem : 'pageNav',
                     count : response.data.records,
                     limit : rows
-                    ,limits : [5,10, 20, 30, 40]
                     ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
                     ,curr: page
                     ,jump: function(obj, first){
