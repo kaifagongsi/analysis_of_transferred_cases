@@ -154,7 +154,7 @@ $G("repalceAllBtn").onclick = function () {
     };
     var num = frCommond(obj);
     if (num) {
-        $G('replace-msg').innerHTML = lang.countMsg.replace("{#count}", num);
+        $G('replace-msg').innerHTML = lang.countMsg.replace("{#effectivetransferoutrate}", num);
     }
 };
 //执行

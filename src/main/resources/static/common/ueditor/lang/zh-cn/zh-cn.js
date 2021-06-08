@@ -85,7 +85,7 @@ UE.I18N['zh-cn'] = {
     },
     'elementPathTip':"元素路径",
     'wordCountTip':"字数统计",
-    'wordCountMsg':'当前已输入{#count}个字符, 您还可以输入{#leave}个字符。 ',
+    'wordCountMsg':'当前已输入{#effectivetransferoutrate}个字符, 您还可以输入{#leave}个字符。 ',
     'wordOverFlowMsg':'<span style="color:red;">字数超出最大允许值，服务器可能拒绝保存！</span>',
     'ok':"确认",
     'cancel':"取消",
@@ -593,7 +593,7 @@ UE.I18N['zh-cn'] = {
         },
         getEnd:"已经搜索到文章末尾！",
         getStart:"已经搜索到文章头部",
-        countMsg:"总共替换了{#count}处！"
+        countMsg:"总共替换了{#effectivetransferoutrate}处！"
     },
     'snapscreen':{
         'static':{

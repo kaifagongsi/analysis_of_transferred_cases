@@ -85,7 +85,7 @@ UE.I18N['en'] = {
     },
     'elementPathTip':"Path",
     'wordCountTip':"Word Count",
-    'wordCountMsg':'{#count} characters entered,{#leave} left. ',
+    'wordCountMsg':'{#effectivetransferoutrate} characters entered,{#leave} left. ',
     'wordOverFlowMsg':'<span style="color:red;">The number of characters has exceeded allowable maximum values, the server may refuse to save!</span>',
     'ok':"OK",
     'cancel':"Cancel",
@@ -591,7 +591,7 @@ UE.I18N['en'] = {
         },
         getEnd:"Has the search to the bottom!",
         getStart:"Has the search to the top!",
-        countMsg:"Altogether replaced {#count} character(s)!"
+        countMsg:"Altogether replaced {#effectivetransferoutrate} character(s)!"
     },
     snapscreen:{
         'static':{

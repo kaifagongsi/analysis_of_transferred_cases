@@ -187,7 +187,7 @@ function findFieldGroup() {
 function ceshi() {
     let infoForm = $("#infoForm").serializeObject();
     loadingSpinner = layer.msg('正在加载...', {icon: 16, shade: 0.3, time:0});
-    $.post(ctx + "/ceshi/count/count",infoForm,function (response) {
+    $.post(ctx + "/ceshi/effectivetransferoutrate/effectivetransferoutrate",infoForm,function (response) {
         tableThead = [];
         tableData = [];
         if(response.flag){
@@ -226,6 +226,62 @@ function testPost() {
 }
 
 /**
+ *
+ */
+function accuracyOfTransOut(page,rows){
+    let infoForm = $.param({"rows":rows}) + "&" +  $.param({"page":page}) + "&" + $("#infoForm").serialize();
+    if (vaildateForm()){
+        loadingSpinner = layer.msg('正在加载...',{icon:16,shade:0.3,time:0});
+        $.post(ctx + "/ceshi/effectivetransferoutrate/accuracyOfTransOut",infoForm,function(response){
+            console.log(response.data.rows)
+            tableThead = [];
+            tableData = [];
+            if(response.flag){
+                // 获取表头：
+                let entityObj = response.data.rows[0];
+                let h = [];
+                // 拼装表头
+                $.each(entityObj,function (index,obj) {
+                    h.push({field: index, title: index});
+                })
+                tableThead.push(h);
+                // 拼装 数据
+                $.each(response.data.rows,function (index,object) {
+                    tableData.push(object)
+                })
+                // 表格重载
+                table.reload('demoTable',{
+                    cols: tableThead ,
+                    data: tableData,
+                    limit: rows
+                })
+                laypage.render({
+                    elem : 'pageNav',
+                    count : response.data.records,
+                    limit : rows
+                    ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+                    ,curr: page
+                    ,jump: function(obj, first){
+                        //obj包含了当前分页的所有参数，比如：
+                        console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+                        console.log(obj.limit); //得到每页显示的条数
+                        console.log(obj);
+                        //首次不执行
+                        if(!first){
+                            effectiveTransferOutRate( obj.curr,obj.limit);
+                        }
+                    }
+                })
+            }else{
+                layer.msg('数据加载失败，请稍候重试', {icon: 5})
+            }
+            layer.close(loadingSpinner);
+        });
+    }else{
+        layer.msg("请正确选择，开始时间、结束时间、以及统计维度")
+    }
+}
+/**
  * 有效转出率 Effective transfer out rate
  */
 /*function effectiveTransferOutRate(page,rows) {
@@ -237,7 +293,7 @@ function testPost() {
     if(vaildateForm()){
         table.render({
             elem: '#pageNav',
-            url: '/ceshi/count/count',
+            url: '/ceshi/effectivetransferoutrate/effectivetransferoutrate',
             cols: [
                 [
                     {checkbox:true,fixed: true},
@@ -256,11 +312,47 @@ function testPost() {
         });
     }
 }*/
+function effectiveAll() {
+    let infoForm = $("#infoForm").serialize();
+    let firstClassify =  $("#firstClassify").val();
+    if(firstClassify != 0 && firstClassify != 1 ){
+        if(vaildateForm()){
+            if($("#secondClassify").val() != 1){
+                $.post(ctx + "/ceshi/count/countAll",infoForm,function (response) {
+                    console.log(response)
+                    tableTheadDep = [];
+                    tableDataDep = [];
+                    if(response.flag){
+                        // 获取表头：
+                        let entityObj = response.data.rows[0];
+                        let h = [];
+                        // 拼装表头
+                        $.each(entityObj,function (index,obj) {
+                            h.push({field: index, title: index});
+                        })
+                        tableTheadDep.push(h);
+                        // 拼装 数据
+                        $.each(response.data.rows,function (index,object) {
+                            tableDataDep.push(object)
+                        })
+                        // 表格重载
+                        table.reload('depTable',{
+                            cols: tableTheadDep ,
+                            data: tableDataDep
+                        })
+                    }else{
+                        layer.msg('数据加载失败，请稍候重试', {icon: 5})
+                    }
+                });
+            }
+        }
+    }
+}
 function effectiveTransferOutRate(page,rows) {
     let infoForm = $.param({"rows":rows}) + "&" +  $.param({"page":page}) + "&" + $("#infoForm").serialize();
     if (vaildateForm()){
         loadingSpinner = layer.msg('正在加载...',{icon:16,shade:0.3,time:0});
-        $.post(ctx + "/ceshi/count/count",infoForm,function(response){
+        $.post(ctx + "/ceshi/count/countAccuracy",infoForm,function(response){
             console.log(response.data.rows)
             tableThead = [];
             tableData = [];
@@ -372,6 +464,42 @@ function etirAll( ) {
         if(vaildateForm()){
             if($("#secondClassify").val() != 1){
                 $.post(ctx + "/etir/initAll",infoForm,function (response) {
+                    console.log(response)
+                    tableTheadDep = [];
+                    tableDataDep = [];
+                    if(response.flag){
+                        // 获取表头：
+                        let entityObj = response.data.rows[0];
+                        let h = [];
+                        // 拼装表头
+                        $.each(entityObj,function (index,obj) {
+                            h.push({field: index, title: index});
+                        })
+                        tableTheadDep.push(h);
+                        // 拼装 数据
+                        $.each(response.data.rows,function (index,object) {
+                            tableDataDep.push(object)
+                        })
+                        // 表格重载
+                        table.reload('depTable',{
+                            cols: tableTheadDep ,
+                            data: tableDataDep
+                        })
+                    }else{
+                        layer.msg('数据加载失败，请稍候重试', {icon: 5})
+                    }
+                });
+            }
+        }
+    }
+}
+function effectiveAll() {
+    let infoForm = $("#infoForm").serialize();
+    let firstClassify =  $("#firstClassify").val();
+    if(firstClassify != 0 && firstClassify != 1 ){
+        if(vaildateForm()){
+            if($("#secondClassify").val() != 1){
+                $.post(ctx + "/ceshi/count/countAll",infoForm,function (response) {
                     console.log(response)
                     tableTheadDep = [];
                     tableDataDep = [];

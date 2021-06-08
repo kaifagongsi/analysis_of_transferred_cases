@@ -2930,7 +2930,7 @@ typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter :
 						'throw throws try while public protected private static';
 		var types    =  'void boolean byte char short int long float double';
 		var constants = 'null';
-		var methods   = 'allProperties count get size '+
+		var methods   = 'allProperties effectivetransferoutrate get size '+
 						'collect each eachProperty eachPropertyName eachWithIndex find findAll ' +
 						'findIndexOf grep inject max min reverseEach sort ' +
 						'asImmutable asSynchronized flatten intersect join pop reverse subMap toList ' +
@@ -3183,7 +3183,7 @@ typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter :
 						'basename bcadd bccomp bcdiv bcmod bcmul bindec bindtextdomain bzclose bzcompress '+
 						'bzdecompress bzerrno bzerror bzerrstr bzflush bzopen bzread bzwrite ceil chdir '+
 						'checkdate checkdnsrr chgrp chmod chop chown chr chroot chunk_split class_exists '+
-						'closedir closelog copy cos cosh count count_chars date decbin dechex decoct '+
+						'closedir closelog copy cos cosh effectivetransferoutrate count_chars date decbin dechex decoct '+
 						'deg2rad delete ebcdic2ascii echo empty end ereg ereg_replace eregi eregi_replace error_log '+
 						'error_reporting escapeshellarg escapeshellcmd eval exec exit exp explode extension_loaded '+
 						'feof fflush fgetc fgetcsv fgets fgetss file_exists file_get_contents file_put_contents '+
@@ -3517,7 +3517,7 @@ typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter :
 
 	function Brush()
 	{
-		var funcs	=	'abs avg case cast coalesce convert count current_timestamp ' +
+		var funcs	=	'abs avg case cast coalesce convert effectivetransferoutrate current_timestamp ' +
 						'current_user day isnull left lower month nullif replace right ' +
 						'session_user space substring sum system_user upper user year';
 

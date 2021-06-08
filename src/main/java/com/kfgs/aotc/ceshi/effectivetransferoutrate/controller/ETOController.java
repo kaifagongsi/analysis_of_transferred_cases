@@ -1,23 +1,21 @@
-package com.kfgs.aotc.ceshi.count.controller;
-import com.kfgs.aotc.ceshi.count.service.CountService;
+package com.kfgs.aotc.ceshi.effectivetransferoutrate.controller;
+import com.kfgs.aotc.ceshi.effectivetransferoutrate.service.ETOService;
 import com.kfgs.aotc.common.pojo.Result;
 import com.kfgs.aotc.pojo.business.vo.ParameterVo;
 import com.kfgs.aotc.repository.ClassifierInfoRepository;
-import com.kfgs.aotc.util.CountUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
+/**
+ * 有效转出率
+ */
 @RestController
 @RequestMapping("/ceshi/count/")
-public class CountController {
+public class ETOController {
 
     @Autowired
-    private CountService countService;
+    private ETOService ETOService;
 
     @Autowired
     private ClassifierInfoRepository classifierInfoRepository;
@@ -27,29 +25,34 @@ public class CountController {
         return new ModelAndView("ceshi/ceshi");
     }
 
-    /*@PostMapping("count")
+    /*@PostMapping("effectivetransferoutrate")
     public Result<List<Map<String,String>>> countAccuracy(@RequestParam(value = "page",required = false)Integer page,@RequestParam(value = "limit",required = false)Integer limit, ParameterVo parameterVo){
         List<String> list = new ArrayList<>();
         for (Map.Entry<String,List<String>> entry : CountUtil.CLASSIFIERS_AND_CODE.entrySet()) {
             list.add(entry.getKey());
         }
-        //return countService.countAccuracy(list,parameterVo);
-        return countService.getEffectiveTransferRate(parameterVo);
+        //return ETOService.countAccuracy(list,parameterVo);
+        return ETOService.getEffectiveTransferRate(parameterVo);
     }*/
 
-    @PostMapping("count")
+    @PostMapping("countAccuracy")
     public Result countAccuracy(ParameterVo parameterVo){
         /*List<String> list = new ArrayList<>();
         for (Map.Entry<String,List<String>> entry : CountUtil.CLASSIFIERS_AND_CODE.entrySet()) {
             list.add(entry.getKey());
         }*/
-        //return countService.countAccuracy(list,parameterVo);
-        return countService.getEffectiveTransferRate(parameterVo);
+        //return ETOService.countAccuracy(list,parameterVo);
+        return ETOService.getEffectiveTransferRate(parameterVo);
+    }
+
+    @RequestMapping("countAll")
+    public Result getEffectiveTransferInRateAll(ParameterVo parameterVo){
+        return ETOService.getEffectiveTransferOutRateAll(parameterVo);
     }
 
     @PostMapping("findAllFieldGroup")
     public Result findAllFieldGroup(){
-        return countService.getAllFieldGroup();
+        return ETOService.getAllFieldGroup();
     }
 
     /**
@@ -59,6 +62,6 @@ public class CountController {
      */
     /*@PostMapping("countone")
     public Map<String,String> countAccuracyByID(String classifierID){
-        return countService.countAccuracyByID(classifierID);
+        return ETOService.countAccuracyByID(classifierID);
     }*/
 }

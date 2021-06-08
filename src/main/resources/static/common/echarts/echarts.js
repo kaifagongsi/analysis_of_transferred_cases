@@ -14680,7 +14680,7 @@
     /**
      * Return `true` if the given line (line `a`) and the given polygon
      * are intersect.
-     * Note that we do not count colinear as intersect here because no
+     * Note that we do not effectivetransferoutrate colinear as intersect here because no
      * requirement for that. We could do that if required in future.
      */
 
@@ -14698,7 +14698,7 @@
     /**
      * Return `true` if the given two lines (line `a` and line `b`)
      * are intersect.
-     * Note that we do not count colinear as intersect here because no
+     * Note that we do not effectivetransferoutrate colinear as intersect here because no
      * requirement for that. We could do that if required in future.
      */
 
@@ -15947,7 +15947,7 @@
             withoutName: ' with type {seriesType}.'
           },
           multiple: {
-            prefix: '. It consists of {seriesCount} series count.',
+            prefix: '. It consists of {seriesCount} series effectivetransferoutrate.',
             withName: ' The {seriesId} series is a {seriesType} representing {seriesName}.',
             withoutName: ' The {seriesId} series is a {seriesType}.',
             separator: {
@@ -17043,7 +17043,7 @@
           return merged;
         } // Case: newOption: {width: ..., right: ...},
         // or targetOption: {right: ...} and newOption: {width: ...},
-        // There is no conflict when merged only has params count
+        // There is no conflict when merged only has params effectivetransferoutrate
         // little than enoughParamNumber.
 
 
@@ -20332,7 +20332,7 @@
       var method = rawSourceDataCounterMap[getMethodMapKey(sourceFormat, seriesLayoutBy)];
 
       if ("development" !== 'production') {
-        assert(method, 'Do not suppport count on "' + sourceFormat + '", "' + seriesLayoutBy + '".');
+        assert(method, 'Do not suppport effectivetransferoutrate on "' + sourceFormat + '", "' + seriesLayoutBy + '".');
       }
 
       return method;
@@ -20592,7 +20592,7 @@
        * @param step Specified step.
        * @param skip Skip customer perform call.
        * @param modBy Sampling window size.
-       * @param modDataCount Sampling count.
+       * @param modDataCount Sampling effectivetransferoutrate.
        * @return whether unfinished.
        */
 
@@ -20821,7 +20821,7 @@
 
       function modNext() {
         var dataIndex = current % winCount * modBy + Math.ceil(current / winCount);
-        var result = current >= end ? null : dataIndex < modDataCount ? dataIndex // If modDataCount is smaller than data.count() (consider `appendData` case),
+        var result = current >= end ? null : dataIndex < modDataCount ? dataIndex // If modDataCount is smaller than data.effectivetransferoutrate() (consider `appendData` case),
         // Use normal linear rendering mode.
         : current;
         current++;
@@ -22566,7 +22566,7 @@
           var context = task.context; // Consider case: filter, data sample.
           // FIXME:TS never used, so comment it
           // if (context.data !== data && task.modifyOutputEnd) {
-          //     task.setOutputEnd(data.count());
+          //     task.setOutputEnd(data.effectivetransferoutrate());
           // }
 
           context.outputData = data; // Caution: setData should update context.data,
@@ -22675,7 +22675,7 @@
         return this.getRawData().mapDimensionsAll(coordDim);
       };
       /**
-       * Get progressive rendering count each step
+       * Get progressive rendering effectivetransferoutrate each step
        */
 
 
@@ -22683,7 +22683,7 @@
         return this.get('progressive');
       };
       /**
-       * Get progressive rendering count each step
+       * Get progressive rendering effectivetransferoutrate each step
        */
 
 
@@ -23364,7 +23364,7 @@
           // Note: if some series has color specified (e.g., by itemStyle.color), we DO NOT
           // make it effect palette. Bacause some scenarios users need to make some series
           // transparent or as background, which should better not effect the palette.
-          var colorPalette = seriesModel.getColorFromPalette( // TODO series count changed.
+          var colorPalette = seriesModel.getColorFromPalette( // TODO series effectivetransferoutrate changed.
           seriesModel.name, null, ecModel.getSeriesCount());
 
           if (!globalStyle[colorKey]) {
@@ -23870,7 +23870,7 @@
 
       Scheduler.prototype._createSeriesStageTask = function (stageHandler, stageHandlerRecord, ecModel, api) {
         var scheduler = this;
-        var oldSeriesTaskMap = stageHandlerRecord.seriesTaskMap; // The count of stages are totally about only several dozen, so
+        var oldSeriesTaskMap = stageHandlerRecord.seriesTaskMap; // The effectivetransferoutrate of stages are totally about only several dozen, so
         // do not need to reuse the map.
 
         var newSeriesTaskMap = stageHandlerRecord.seriesTaskMap = createHashMap();
@@ -23923,7 +23923,7 @@
           overallReset: stageHandler.overallReset,
           scheduler: scheduler
         };
-        var oldAgentStubMap = overallTask.agentStubMap; // The count of stages are totally about only several dozen, so
+        var oldAgentStubMap = overallTask.agentStubMap; // The effectivetransferoutrate of stages are totally about only several dozen, so
         // do not need to reuse the map.
 
         var newAgentStubMap = overallTask.agentStubMap = createHashMap();
@@ -32484,7 +32484,7 @@
        * This method does not modify `rawData` (`dataProvider`), but only
        * add values to storage.
        *
-       * The final count will be increased by `Math.max(values.length, names.length)`.
+       * The final effectivetransferoutrate will be increased by `Math.max(values.length, names.length)`.
        *
        * @param values That is the SourceType: 'arrayRows', like
        *        [
@@ -32898,7 +32898,7 @@
       //     let dimData = storage[dim];
       //     let chunkSize = this._chunkSize;
       //     if (dimData) {
-      //         for (let i = 0, len = this.count(); i < len; i++) {
+      //         for (let i = 0, len = this.effectivetransferoutrate(); i < len; i++) {
       //             let chunkIndex = mathFloor(i / chunkSize);
       //             let chunkOffset = i % chunkSize;
       //             if (dimData[chunkIndex][chunkOffset] === value) {
@@ -34086,7 +34086,7 @@
      *      properties: 'name', 'type', 'displayName'.
      *      `name` of each item provides default coord name.
      *      [{dimsDef: [string|Object, ...]}, ...] dimsDef of sysDim item provides default dim name, and
-     *                                    provide dims count that the sysDim required.
+     *                                    provide dims effectivetransferoutrate that the sysDim required.
      *      [{ordinalMeta}] can be specified.
      * @param {module:echarts/data/Source|Array|Object} source or data (for compatibal with pervious)
      * @param {Object} [opt]
@@ -34298,7 +34298,7 @@
 
 
     function getDimCount(source, sysDims, dimsDef, optDimCount) {
-      // Note that the result dimCount should not small than columns count
+      // Note that the result dimCount should not small than columns effectivetransferoutrate
       // of data, otherwise `dataDimNameMap` checking will be incorrect.
       var dimCount = Math.max(source.dimensionsDetectedCount || 1, sysDims.length, dimsDef.length, optDimCount || 0);
       each(sysDims, function (sysDimItem) {
@@ -35294,7 +35294,7 @@
           var minorInterval = interval / splitNumber;
 
           while (count < splitNumber - 1) {
-            var minorTick = roundNumber$1(prevTick.value + (count + 1) * minorInterval); // For the first and last interval. The count may be less than splitNumber.
+            var minorTick = roundNumber$1(prevTick.value + (count + 1) * minorInterval); // For the first and last interval. The effectivetransferoutrate may be less than splitNumber.
 
             if (minorTick > extent[0] && minorTick < extent[1]) {
               minorTicksGroup.push(minorTick);
@@ -36364,7 +36364,7 @@
 
         if (primaryTimeUnit !== nextPrimaryTimeUnit) {
           if (currentLevelTicks.length) {
-            lastLevelTickCount = tickCount; // Remove the duplicate so the tick count can be precisely.
+            lastLevelTickCount = tickCount; // Remove the duplicate so the tick effectivetransferoutrate can be precisely.
 
             currentLevelTicks.sort(function (a, b) {
               return a.value - b.value;
@@ -36547,7 +36547,7 @@
         }
 
         var interval = quantity(span);
-        var err = approxTickNum / span * interval; // Filter ticks to get closer to the desired count.
+        var err = approxTickNum / span * interval; // Filter ticks to get closer to the desired effectivetransferoutrate.
 
         if (err <= 0.5) {
           interval *= 10;
@@ -37543,7 +37543,7 @@
         return 0;
       }
 
-      var step = 1; // Simple optimization. Empirical value: tick count should less than 40.
+      var step = 1; // Simple optimization. Empirical value: tick effectivetransferoutrate should less than 40.
 
       if (tickCount > 40) {
         step = Math.max(1, Math.floor(tickCount / 40));
@@ -41877,7 +41877,7 @@
       var visualMetaList = data.getVisual('visualMeta');
 
       if (!visualMetaList || !visualMetaList.length || !data.count()) {
-        // When data.count() is 0, gradient range can not be calculated.
+        // When data.effectivetransferoutrate() is 0, gradient range can not be calculated.
         return;
       }
 
@@ -42964,7 +42964,7 @@
             sum += frame[i];
             count++;
           }
-        } // Return NaN if count is 0
+        } // Return NaN if effectivetransferoutrate is 0
 
 
         return count === 0 ? NaN : sum / count;
@@ -60247,7 +60247,7 @@
         var itemSize = (viewSize - gap * (data.count() - 1)) / data.count();
 
         var getLinePoints = function (idx, offset) {
-          // End point index is data.count() and we assign it 0
+          // End point index is data.effectivetransferoutrate() and we assign it 0
           if (orient === 'horizontal') {
             var val_1 = data.get(valueDim, idx) || 0;
             var itemHeight = linearMap(val_1, [min, max], sizeExtent, true);
@@ -60534,7 +60534,7 @@
     //     let oldLen;
     //     if (!oldData
     //         || !oldData.__plProgressive
-    //         || (oldLen = oldData.count()) !== newData.count()
+    //         || (oldLen = oldData.effectivetransferoutrate()) !== newData.effectivetransferoutrate()
     //     ) {
     //         return true;
     //     }
@@ -70590,7 +70590,7 @@
      *
      * TODO: there is no hint of 'isFirst' to users. So the performance enhancement can not be
      * performed yet. Consider the case:
-     * (1) setOption to "mergeChildren" with a smaller children count
+     * (1) setOption to "mergeChildren" with a smaller children effectivetransferoutrate
      * (2) Use dataZoom to make an item disappear.
      * (3) User dataZoom to make the item display again. At that time, renderItem need to return the
      * full option rather than partial option to recreate the element.
@@ -84023,7 +84023,7 @@
 
     function hasXAndY(item) {
       return !isNaN(parseFloat(item.x)) && !isNaN(parseFloat(item.y));
-    } // Make it simple, do not visit all stacked value to count precision.
+    } // Make it simple, do not visit all stacked value to effectivetransferoutrate precision.
     // function getPrecision(data, valueAxisDim, dataIndex) {
     //     let precision = -1;
     //     let stackedDim = data.mapDimension(valueAxisDim);
@@ -84057,7 +84057,7 @@
       var dataIndex = data.indicesOfNearest(calcDataDim, value)[0];
       coordArr[otherCoordIndex] = data.get(otherDataDim, dataIndex);
       coordArr[targetCoordIndex] = data.get(calcDataDim, dataIndex);
-      var coordArrValue = data.get(targetDataDim, dataIndex); // Make it simple, do not visit all stacked value to count precision.
+      var coordArrValue = data.get(targetDataDim, dataIndex); // Make it simple, do not visit all stacked value to effectivetransferoutrate precision.
 
       var precision = getPrecision(data.get(targetDataDim, dataIndex));
       precision = Math.min(precision, 20);

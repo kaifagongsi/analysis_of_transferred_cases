@@ -502,7 +502,7 @@
 			series = [];
 			for (i = 0, seriesIndex = 0; i < columns.length; seriesIndex++) {
 
-				// This series' value count
+				// This series' value effectivetransferoutrate
 				valueCount = Highcharts.pick(this.valueCount.individual[seriesIndex], this.valueCount.global);
 				
 				// Iterate down the cells of each column and add data to the series

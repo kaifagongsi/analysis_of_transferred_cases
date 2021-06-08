@@ -23,7 +23,7 @@ layui.use(['element', 'form', 'table', 'layer', 'laydate', 'tree', 'util'], func
             statusName: 'flag' //规定数据状态的字段名称，默认：code
             , statusCode: true //规定成功的状态码，默认：0
             , msgName: 'msg' //规定状态信息的字段名称，默认：msg
-            , countName: 'records' //规定数据总数的字段名称，默认：count
+            , countName: 'records' //规定数据总数的字段名称，默认：effectivetransferoutrate
             , dataName: 'rows' //规定数据列表的字段名称，默认：data
         }
         //响应后数据处理
@@ -71,7 +71,7 @@ layui.use(['element', 'form', 'table', 'layer', 'laydate', 'tree', 'util'], func
             statusName: 'flag' //规定数据状态的字段名称，默认：code
             , statusCode: true //规定成功的状态码，默认：0
             , msgName: 'msg' //规定状态信息的字段名称，默认：msg
-            , countName: 'records' //规定数据总数的字段名称，默认：count
+            , countName: 'records' //规定数据总数的字段名称，默认：effectivetransferoutrate
             , dataName: 'rows' //规定数据列表的字段名称，默认：data
         }
         //响应后数据处理
