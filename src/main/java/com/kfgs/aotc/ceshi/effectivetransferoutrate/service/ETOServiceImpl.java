@@ -47,7 +47,8 @@ public class ETOServiceImpl implements ETOService {
     public Result getEffectiveTransferRate(ParameterVo parameterVo) {
         switch (parameterVo.getFirstClassify()){
             case 1: //按人计算个人
-                LinkedHashMap<String,String> result = countAccuracyByWorkerID(parameterVo.getStartDate(),parameterVo.getEndDate(),parameterVo.getSecondClassify());
+                return countAccuracyByPeople(parameterVo);
+                /*LinkedHashMap<String,String> result = countAccuracyByWorkerID(parameterVo.getStartDate(),parameterVo.getEndDate(),parameterVo.getSecondClassify(),"");
                 List<Map<String,String>> resultList = new ArrayList<>();
                 PageInfo pageInfo = new PageInfo();
                 resultList.add(result);
@@ -56,7 +57,7 @@ public class ETOServiceImpl implements ETOService {
                 pageInfo.setRecords(resultList.size()); //总记录数
                 pageInfo.setTotal(1); //总页数
                 pageInfo.setRows(resultList);
-                return Result.of(pageInfo);
+                return Result.of(pageInfo);*/
             case 2: //按部计算个人
                 return countAccuracyByDepartment(parameterVo.getRows(),parameterVo.getPage(),parameterVo.getStartDate(),parameterVo.getEndDate(),parameterVo.getSecondClassify());
             case 3: //按室计算个人
@@ -88,6 +89,20 @@ public class ETOServiceImpl implements ETOService {
         return Result.of(filedslist);
     }
 
+    /**
+     * 获取个人有效转出率
+     */
+    private Result countAccuracyByPeople(ParameterVo parameterVo){
+        List resultList = new ArrayList<>();
+        PageCondition page = (PageCondition)parameterVo;
+        Page<ClassifierInfo> classifierCode = classifierInfoRepository.findClassifiersCodeByClassifierCode(parameterVo.getSecondClassify() ,page.getPageable());
+        for(ClassifierInfo  id : classifierCode.getContent()){
+            resultList.add(countAccuracyByWorkerID(parameterVo.getStartDate(),parameterVo.getEndDate(),id.getClassifiersCode(),id.getEname()));
+        }
+        PageInfo pageInfo = PageInfo.ofMap(classifierCode,resultList);
+        Result<PageInfo> of = Result.of(pageInfo);
+        return of;
+    }
     /**
      * 获取部门有效转出率
      * @return
@@ -241,7 +256,7 @@ public class ETOServiceImpl implements ETOService {
         pageInfo.setTotal(page.getTotalPages()); //总页数
         LinkedHashMap<String,String> workerResult = new LinkedHashMap<>();
         for (ClassifierInfo classifierInfo:page.getContent()){
-            workerResult = countAccuracyByWorkerID(startDate,endDate,classifierInfo.getClassifiersCode());
+            workerResult = countAccuracyByWorkerID(startDate,endDate,classifierInfo.getClassifiersCode(),classifierInfo.getEname());
             resultList.add(workerResult);
         }
         pageInfo.setRows(resultList);
@@ -270,7 +285,7 @@ public class ETOServiceImpl implements ETOService {
         LinkedHashMap<String,String> workerResult = new LinkedHashMap<>();
         for (ClassifierInfo classifierInfo:page.getContent()){
             //System.out.println(classifierInfo.toString());
-            workerResult = countAccuracyByWorkerID(startDate,endDate,classifierInfo.getClassifiersCode());
+            workerResult = countAccuracyByWorkerID(startDate,endDate,classifierInfo.getClassifiersCode(),classifierInfo.getEname());
             resultList.add(workerResult);
         }
         pageInfo.setRows(resultList);
@@ -300,7 +315,7 @@ public class ETOServiceImpl implements ETOService {
         pageInfo.setTotal(page.getTotalPages()); //总页数
         LinkedHashMap<String,String> workerResult = new LinkedHashMap<>();
         for (ClassifierInfo classifierInfo:page.getContent()){
-            workerResult = countAccuracyByWorkerID(startDate,endDate,classifierInfo.getClassifiersCode());
+            workerResult = countAccuracyByWorkerID(startDate,endDate,classifierInfo.getClassifiersCode(),classifierInfo.getEname());
             resultList.add(workerResult);
         }
         pageInfo.setRows(resultList);
@@ -309,7 +324,7 @@ public class ETOServiceImpl implements ETOService {
     }
 
     //private Result countAccuracyByWorkerID(String startDate,String endDate,String classifierID) {
-    private LinkedHashMap<String, String> countAccuracyByWorkerID(String startDate, String endDate, String classifierID) { //发送分类员
+    private LinkedHashMap<String, String> countAccuracyByWorkerID(String startDate, String endDate, String classifierID,String ename) { //发送分类员
         double accuracy_num = 0;//有效转案率
         //List<Map<String,String>> resultList = new ArrayList<>();
         LinkedHashMap<String,String> result = new LinkedHashMap<>();
@@ -322,6 +337,7 @@ public class ETOServiceImpl implements ETOService {
         int validTrans = 0; //有效转案
         if (totalTrans == 0){ //分母不能为0
             result.put("分类员代码",classifierID);
+            result.put("分类员姓名",ename);
             result.put("转案总次数","0");
             result.put("转案接收总次数","0");
             result.put("转案退回且出案数","0");
@@ -332,6 +348,7 @@ public class ETOServiceImpl implements ETOService {
             validTrans = getRefuseReferralNumber(transferProcessList);
             accuracy_num = (receiveTotals + validTrans)*100/totalTrans;
             result.put("分类员代码",classifierID);
+            result.put("分类员姓名",ename);
             result.put("转案总次数",Integer.toString(totalTrans));
             result.put("转案接收总次数", Integer.toString(receiveTotals));
             result.put("转案退回且出案数",Integer.toString(rejectTotals));
