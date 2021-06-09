@@ -232,7 +232,7 @@ function accuracyOfTransOut(page,rows){
     let infoForm = $.param({"rows":rows}) + "&" +  $.param({"page":page}) + "&" + $("#infoForm").serialize();
     if (vaildateForm()){
         loadingSpinner = layer.msg('正在加载...',{icon:16,shade:0.3,time:0});
-        $.post(ctx + "/ceshi/effectivetransferoutrate/accuracyOfTransOut",infoForm,function(response){
+        $.post(ctx + "/count/transferout/accuracyOfTransOut",infoForm,function(response){
             console.log(response.data.rows)
             tableThead = [];
             tableData = [];
@@ -268,7 +268,7 @@ function accuracyOfTransOut(page,rows){
                         console.log(obj);
                         //首次不执行
                         if(!first){
-                            effectiveTransferOutRate( obj.curr,obj.limit);
+                            accuracyOfTransOut( obj.curr,obj.limit);
                         }
                     }
                 })

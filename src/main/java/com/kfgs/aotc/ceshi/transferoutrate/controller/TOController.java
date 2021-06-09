@@ -17,6 +17,7 @@ public class TOController {
     @Autowired
     private TOService toService;
 
+    @RequestMapping("accuracyOfTransOut")
     public Result getTransferOutRate(ParameterVo parameterVo){
         return toService.getTransferOutRate(parameterVo);
     }
