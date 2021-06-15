@@ -39,8 +39,11 @@ public interface TransferProcessRepository extends CommonRepository<TransferProc
     @Query(value= "select count(CASE_ID) from aotc_transfer_process where receive_time between ?1 and ?2 and receive_id = ?3",nativeQuery = true)
     public Integer getAcceptReferralCountNumberByReceiveTimeBetweenAndReceiveId(String startDate,String endDate,String receiveId);
 
-    @Query(value= "select count(CASE_ID) from aotc_transfer_process where send_time between ?1 and ?2 and send_id = ?3",nativeQuery = true)
+    @Query(value= "select count(CASE_ID) from aotc_transfer_process where send_time between ?1 and ?2 and send_id = ?3 and tips_state='接收转案'",nativeQuery = true)
     public Integer getAcceptReferralCountNumberBySendTimeBetweenAndSendId(String startDate,String endDate,String sendId);
+
+    @Query(value = "select count(CASE_ID) from aotc_transfer_process where send_time between ?1 and ?2 and send_id = ?3",nativeQuery = true)
+    public Integer getCountNumberBySendTimeBetweenAndSendId(String startDate,String endDate,String sendId);
 
     @Query(value = " select ipcmi || ',' || ipcoi || ',' || ipca " +
             "    from aotc_detailsofthecase dotc" +

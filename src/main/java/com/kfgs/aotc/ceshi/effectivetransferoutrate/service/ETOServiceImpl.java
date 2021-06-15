@@ -330,7 +330,7 @@ public class ETOServiceImpl implements ETOService {
         LinkedHashMap<String,String> result = new LinkedHashMap<>();
         DecimalFormat df = (DecimalFormat) NumberFormat.getInstance();
         //分子1:获取接收转案案件数量
-        int receiveTotals = transferProcessRepository.getSumOfReceiveBySendID(classifierID);
+        int receiveTotals = transferProcessRepository.getAcceptReferralCountNumberBySendTimeBetweenAndSendId(startDate,endDate,classifierID);
         List<Object[]> transferProcessList = detailsOfTheCaseExtRepository.getRefuseReferralBySendTimeBetweenAndTipeStateAndSendIds(startDate,endDate,"拒绝转案",Arrays.asList(classifierID));
         int rejectTotals = transferProcessList.size();
         int totalTrans = receiveTotals + rejectTotals; //分母
