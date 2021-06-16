@@ -232,7 +232,7 @@ function receiveRateOfTransOut(page,rows){
     let infoForm = $.param({"rows":rows}) + "&" +  $.param({"page":page}) + "&" + $("#infoForm").serialize();
     if (vaildateForm()){
         loadingSpinner = layer.msg('正在加载...',{icon:16,shade:0.3,time:0});
-        $.post(ctx + "/count/transferout/accuracyOfTransOut",infoForm,function(response){
+        $.post(ctx + "/ceshi/count/receiveRateOfTransOut",infoForm,function(response){
             console.log(response.data.rows)
             tableThead = [];
             tableData = [];
@@ -268,7 +268,7 @@ function receiveRateOfTransOut(page,rows){
                         console.log(obj);
                         //首次不执行
                         if(!first){
-                            accuracyOfTransOut( obj.curr,obj.limit);
+                            receiveRateOfTransOut( obj.curr,obj.limit);
                         }
                     }
                 })
@@ -282,6 +282,42 @@ function receiveRateOfTransOut(page,rows){
     }
 }
 
+function receiveRateOfTransOutAll(){
+    let infoForm = $("#infoForm").serialize();
+    let firstClassify =  $("#firstClassify").val();
+    if(firstClassify != 0 && firstClassify != 1 ){
+        if(vaildateForm()){
+            if($("#secondClassify").val() != 1){
+                $.post(ctx + "/ceshi/count/receiveRateOfTransOutAll",infoForm,function (response) {
+                    console.log(response)
+                    tableTheadDep = [];
+                    tableDataDep = [];
+                    if(response.flag){
+                        // 获取表头：
+                        let entityObj = response.data.rows[0];
+                        let h = [];
+                        // 拼装表头
+                        $.each(entityObj,function (index,obj) {
+                            h.push({field: index, title: index});
+                        })
+                        tableTheadDep.push(h);
+                        // 拼装 数据
+                        $.each(response.data.rows,function (index,object) {
+                            tableDataDep.push(object)
+                        })
+                        // 表格重载
+                        table.reload('depTable',{
+                            cols: tableTheadDep ,
+                            data: tableDataDep
+                        })
+                    }else{
+                        layer.msg('数据加载失败，请稍候重试', {icon: 5})
+                    }
+                });
+            }
+        }
+    }
+}
 /**
  *转出案件率
  */
@@ -336,6 +372,42 @@ function accuracyOfTransOut(page,rows){
         });
     }else{
         layer.msg("请正确选择，开始时间、结束时间、以及统计维度")
+    }
+}
+function accuracyOfTransOutAll() {
+    let infoForm = $("#infoForm").serialize();
+    let firstClassify =  $("#firstClassify").val();
+    if(firstClassify != 0 && firstClassify != 1 ){
+        if(vaildateForm()){
+            if($("#secondClassify").val() != 1){
+                $.post(ctx + "/count/transferout/accuracyOfTransOutAll",infoForm,function (response) {
+                    console.log(response)
+                    tableTheadDep = [];
+                    tableDataDep = [];
+                    if(response.flag){
+                        // 获取表头：
+                        let entityObj = response.data.rows[0];
+                        let h = [];
+                        // 拼装表头
+                        $.each(entityObj,function (index,obj) {
+                            h.push({field: index, title: index});
+                        })
+                        tableTheadDep.push(h);
+                        // 拼装 数据
+                        $.each(response.data.rows,function (index,object) {
+                            tableDataDep.push(object)
+                        })
+                        // 表格重载
+                        table.reload('depTable',{
+                            cols: tableTheadDep ,
+                            data: tableDataDep
+                        })
+                    }else{
+                        layer.msg('数据加载失败，请稍候重试', {icon: 5})
+                    }
+                });
+            }
+        }
     }
 }
 /**

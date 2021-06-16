@@ -6,4 +6,6 @@ import com.kfgs.aotc.pojo.business.vo.ParameterVo;
 public interface TOService {
 
     Result getTransferOutRate(ParameterVo parameterVo);
+
+    Result getTransferOutRateAll(ParameterVo parameterVo);
 }

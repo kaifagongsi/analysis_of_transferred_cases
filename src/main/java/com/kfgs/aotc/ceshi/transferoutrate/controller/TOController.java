@@ -21,4 +21,9 @@ public class TOController {
     public Result getTransferOutRate(ParameterVo parameterVo){
         return toService.getTransferOutRate(parameterVo);
     }
+
+    @RequestMapping("accuracyOfTransOutAll")
+    public Result accuracyOfTransOutAll(ParameterVo parameterVo){
+        return toService.getTransferOutRateAll(parameterVo);
+    }
 }

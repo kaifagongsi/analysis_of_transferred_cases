@@ -4,6 +4,7 @@ import com.kfgs.aotc.ceshi.receiverateoftransout.service.RTOService;
 import com.kfgs.aotc.common.pojo.Result;
 import com.kfgs.aotc.pojo.business.vo.ParameterVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,5 +22,10 @@ public class RTOController {
     @PostMapping("receiveRateOfTransOut")
     public Result receiveRateOfTransOut(ParameterVo parameterVo){
         return rtoService.receiveRateOfTransOut(parameterVo);
+    }
+
+    @PostMapping("receiveRateOfTransOutAll")
+    public Result receiveRateOfTransOutAll(ParameterVo parameterVo){
+        return rtoService.getReceiveRateOfTransOutAll(parameterVo);
     }
 }

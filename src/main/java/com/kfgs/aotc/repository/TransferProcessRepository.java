@@ -59,6 +59,10 @@ public interface TransferProcessRepository extends CommonRepository<TransferProc
             "and receive_id in ( ?3 ) " )
     int getSumOfTheDateAndReceiveIdList(String startDate, String endDate, List<String> codeInfo);
 
+    @Query( nativeQuery = true,value = "select count(tp.case_id) from aotc_transfer_process tp where tp.send_time between ?1 and ?2 " +
+            "and send_id in ( ?3 ) ")
+    int getSumOfTheDateAndSendIdList(String startDate,String endDate,List<String> codeInfo);
+
     @Query(nativeQuery = true, value = " select count(tp.case_id) from aotc_transfer_process tp where tp.receive_time between ?1 and ?2 " +
             "and tp.tips_state = ?3 " +
             "and tp.receive_id in (?4) " )

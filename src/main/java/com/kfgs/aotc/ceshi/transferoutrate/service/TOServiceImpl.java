@@ -10,6 +10,7 @@ import com.kfgs.aotc.repository.DetailOfCaseFinishedRepository;
 import com.kfgs.aotc.repository.TransferProcessRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +33,8 @@ public class TOServiceImpl implements TOService {
     @Autowired
     private DetailOfCaseFinishedRepository detailOfCaseFinishedRepository;
 
+    static final DecimalFormat df = (DecimalFormat) NumberFormat.getInstance();
+
     @Override
     public Result getTransferOutRate(ParameterVo parameterVo) {
         switch (parameterVo.getFirstClassify()){
@@ -46,6 +49,25 @@ public class TOServiceImpl implements TOService {
         }
         return null;
     }
+
+    /**
+     * 计算整体转出案件率
+     * @param parameterVo
+     * @return
+     */
+    @Override
+    public Result getTransferOutRateAll(ParameterVo parameterVo) {
+        switch (parameterVo.getFirstClassify()){
+            case 2:
+                return getTransferOutRateByDepAll(parameterVo);
+            case 3:
+                return getTransferOutRateBySectionAll(parameterVo);
+            case 4:
+                return getTransferOutRateByFiledAll(parameterVo);
+        }
+        return null;
+    }
+
 
     /**
      * 个人转出案件率
@@ -79,6 +101,37 @@ public class TOServiceImpl implements TOService {
     }
 
     /**
+     * 部门整体转出案件率
+     */
+    private Result getTransferOutRateByDepAll(ParameterVo parameterVo){
+        LinkedHashMap<String,String> result = new LinkedHashMap<>();
+        //0.查询该部门所有人员
+        parameterVo.setRows(1000);
+        Page<ClassifierInfo> classifiersCodeByDep1WithPageable = classifierInfoRepository.findClassifiersCodeByDep1WithPageable(parameterVo.getSecondClassify(),(Pageable)parameterVo.getPageable());
+        List<ClassifierInfo> content = classifiersCodeByDep1WithPageable.getContent();
+        List classifierInfoCode = new ArrayList();
+        content.forEach((info)->{
+            classifierInfoCode.add(info.getClassifiersCode());
+        });
+        Double accuracy_num = 0d;
+        //1.分子：转出总次数
+        int transferTotal = transferProcessRepository.getSumOfTheDateAndSendIdList(parameterVo.getStartDate(),parameterVo.getEndDate(),classifierInfoCode);
+        //2.分母: 出案案件数
+        int transoutNum = detailOfCaseFinishedRepository.getCountTransOutByClassifiersCodes(parameterVo.getStartDate(),parameterVo.getEndDate(),classifierInfoCode);
+        accuracy_num = Double.valueOf(transferTotal*100/transoutNum);
+        result.put("当前所选",parameterVo.getSecondClassify());
+        result.put("转出总次数",Integer.toString(transferTotal));
+        result.put("出案案件数", Integer.toString(transoutNum));
+        result.put("转出案件率",df.format(accuracy_num)+"%");
+        System.out.println(result);
+        List list= new ArrayList<>();
+        list.add(result);
+        PageInfo pageInfo = PageInfo.ofMap(classifiersCodeByDep1WithPageable,list);
+        Result<PageInfo> of = Result.of(pageInfo);
+        return of;
+    }
+
+    /**
      * 处室转出案件率
      */
     private Result countTransOutRateBySection(ParameterVo parameterVo){
@@ -98,7 +151,42 @@ public class TOServiceImpl implements TOService {
             return null;
         }
     }
-
+    /**
+     * 处室整体转出案件率
+     */
+    private Result getTransferOutRateBySectionAll(ParameterVo parameterVo){
+        LinkedHashMap<String,String> result = new LinkedHashMap<>();
+        //0.查询该处室所有人员
+        PageCondition page = (PageCondition)parameterVo;
+        parameterVo.setRows(1000);
+        if(parameterVo.getSecondClassify().length() == 4){
+            String dep1 = parameterVo.getSecondClassify().substring(0,2);
+            String dep2 = parameterVo.getSecondClassify().substring(2,4);
+            Page<ClassifierInfo> classifierCode =  classifierInfoRepository.findClassifiersCodeByDep2WithPageable(dep1,dep2,page.getPageable());
+            List classifierInfoCode = new ArrayList();
+            classifierCode.forEach((info)->{
+                classifierInfoCode.add(info.getClassifiersCode());
+            });
+            Double accuracy_num = 0d;
+            //1.分子：转出总次数
+            int transferTotal = transferProcessRepository.getSumOfTheDateAndSendIdList(parameterVo.getStartDate(),parameterVo.getEndDate(),classifierInfoCode);
+            //2.分母: 出案案件数
+            int transoutNum = detailOfCaseFinishedRepository.getCountTransOutByClassifiersCodes(parameterVo.getStartDate(),parameterVo.getEndDate(),classifierInfoCode);
+            accuracy_num = Double.valueOf(transferTotal*100/transoutNum);
+            result.put("当前所选",parameterVo.getSecondClassify());
+            result.put("转出总次数",Integer.toString(transferTotal));
+            result.put("出案案件数", Integer.toString(transoutNum));
+            result.put("转出案件率",df.format(accuracy_num)+"%");
+            System.out.println(result);
+            List list= new ArrayList<>();
+            list.add(result);
+            PageInfo pageInfo = PageInfo.ofMap(classifierCode,list);
+            Result<PageInfo> of = Result.of(pageInfo);
+            return of;
+        }else {
+            return null;
+        }
+    }
     /**
      * 领域转出案件率
      */
@@ -111,6 +199,36 @@ public class TOServiceImpl implements TOService {
         }
         PageInfo pageInfo = PageInfo.ofMap(classifierCode,resultList);
         return Result.of(pageInfo);
+    }
+    /**
+     * 领域整体转出案件率
+     */
+    private Result getTransferOutRateByFiledAll(ParameterVo parameterVo){
+        LinkedHashMap<String,String> result = new LinkedHashMap<>();
+        PageCondition page = (PageCondition)parameterVo;
+        //0.查询该部门所有人员
+        parameterVo.setRows(1000);
+        Page<ClassifierInfo> classifiersCodeByFieldWithPageable = classifierInfoRepository.findClassifiersCodeByFieldWithPageable(parameterVo.getSecondClassify(), page.getPageable());
+        List classifierInfoCode = new ArrayList();
+        for(ClassifierInfo info : classifiersCodeByFieldWithPageable){
+            classifierInfoCode.add(info.getClassifiersCode());
+        }
+        Double accuracy_num = 0d;
+        //1.分子：转出总次数
+        int transferTotal = transferProcessRepository.getSumOfTheDateAndSendIdList(parameterVo.getStartDate(),parameterVo.getEndDate(),classifierInfoCode);
+        //2.分母: 出案案件数
+        int transoutNum = detailOfCaseFinishedRepository.getCountTransOutByClassifiersCodes(parameterVo.getStartDate(),parameterVo.getEndDate(),classifierInfoCode);
+        accuracy_num = Double.valueOf(transferTotal*100/transoutNum);
+        result.put("当前所选",parameterVo.getSecondClassify());
+        result.put("转出总次数",Integer.toString(transferTotal));
+        result.put("出案案件数", Integer.toString(transoutNum));
+        result.put("转出案件率",df.format(accuracy_num)+"%");
+        System.out.println(result);
+        List list= new ArrayList<>();
+        list.add(result);
+        PageInfo pageInfo = PageInfo.ofMap(classifiersCodeByFieldWithPageable,list);
+        Result<PageInfo> of = Result.of(pageInfo);
+        return of;
     }
 
     /**

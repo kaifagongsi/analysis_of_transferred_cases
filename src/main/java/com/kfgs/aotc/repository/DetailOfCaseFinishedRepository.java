@@ -21,4 +21,7 @@ public interface DetailOfCaseFinishedRepository extends CommonRepository<DetailO
             "select count(d.case_id) from aotc_detailsofthecase d where d.out_time between ?1 and ?2 and d.classifiers_code = ?3" +
             " ",nativeQuery = true)
     Integer getSumTransferOut(String startDate, String endDate, String classifierID);
+
+    @Query(nativeQuery = true,value = "select count(d.case_id) from aotc_detailsofthecase d where d.out_time between ?1 and ?2 and d.classifiers_code in (?3)")
+    int getCountTransOutByClassifiersCodes(String startDate, String endDate,List<String> codeInfo);
 }
