@@ -24,18 +24,42 @@ public interface TransferProcessRepository extends CommonRepository<TransferProc
     @Query(value = "select  * from aotc_transfer_process where receive_time between ?1 and ?2 and tips_state = ?3 and receive_id = ?4 ",nativeQuery = true)
     public List<TransferProcess> getAllConditionsByReceiveTimeAndTipeTitleAndReceiveId( String startDate,  String endDate,String tips_title,String receive_id );
 
-
+    /**
+     *  根据tips_state 来获取该状态下总共有多少案件数量
+     * @param startDate 开始时间
+     * @param endDate 结束时间
+     * @param tips_state 接收案件或者拒绝案件
+     * @param receive_id 接收人
+     * @return
+     */
     @Query(value = "select  count(CASE_ID) from aotc_transfer_process where receive_time between ?1 and ?2 and tips_state = ?3 and receive_id = ?4 ",nativeQuery = true)
-    public Integer getAcceptReferralCountNumberByReceiveTimeBetweenAndTipeTitleAndReceiveId( String startDate,  String endDate,String tips_title,String receive_id );
+    public Integer getAcceptReferralCountNumberByReceiveTimeBetweenAndTipeTitleAndReceiveId( String startDate,  String endDate,String tips_state,String receive_id );
 
     @Query(value = "select  * from aotc_transfer_process where receive_time between ?1 and ?2 and tips_state = ?3 ",nativeQuery = true)
     public Page<TransferProcess> getAllConditionsByReceiveTimeAndTipeTitle(String startDate, String endDate, String tips_state, Pageable pageable);
 
+    /**
+     * 根据传入的开始时间和结束时间开统计aotc_transfer_process 表中转案次数
+     * @param startDate 开始时间
+     * @param endDate 结束时间
+     * @return
+     */
     @Query(value= "select count(CASE_ID) from aotc_transfer_process where receive_time between ?1 and ?2",nativeQuery = true)
     public Integer getCountNumberByReceiveTimeBetween(String startDate,String endDate);
 
+    /**
+     * 根据传入的开始时间、结束时间、转案人员 统计aotc_transfer_process 表中转案次数
+     * @param startDate 开始时间
+     * @param endDate 结束时间
+     * @param receiveId 接收转案人员ID
+     * @return
+     */
     @Query(value= "select count(CASE_ID) from aotc_transfer_process where receive_time between ?1 and ?2 and receive_id = ?3",nativeQuery = true)
-    public Integer getAcceptReferralCountNumberByReceiveTimeBetweenAndReceiveId(String startDate,String endDate,String receiveId);
+    public Integer getCountNumberByReceiveTimeBetweenAndReceiveId(String startDate,String endDate,String receiveId);
+
+    @Query( value= "select count(tp.case_id) from aotc_transfer_process tp where tp.receive_time between ?1 and ?2 and tp.receive_id = ?3 " +
+            " ", nativeQuery = true)
+    public Integer getSumTransferIn(String startDate, String endDate, String classifierID);
 
 
     @Query(value = " select ipcmi || ',' || ipcoi || ',' || ipca " +
@@ -52,6 +76,14 @@ public interface TransferProcessRepository extends CommonRepository<TransferProc
             "and receive_id in ( ?3 ) " )
     int getSumOfTheDateAndReceiveIdList(String startDate, String endDate, List<String> codeInfo);
 
+    /**
+     *  根据tips_state 来获取该状态下总共有多少案件数量
+     * @param startDate 开始时间
+     * @param endDate 结束时间
+     * @param tipsState 接收案件或者拒绝案件
+     * @param classifierInfoCode 接收人的List集合
+     * @return
+     */
     @Query(nativeQuery = true, value = " select count(tp.case_id) from aotc_transfer_process tp where tp.receive_time between ?1 and ?2 " +
             "and tp.tips_state = ?3 " +
             "and tp.receive_id in (?4) " )
@@ -68,6 +100,5 @@ public interface TransferProcessRepository extends CommonRepository<TransferProc
             "             and tips_state =  ?3 " +
             "             and dotc.case_id = tp.case_id)", nativeQuery = true)
     List<String> getRefuseReferralBySendTimeBetweenAndTipeTitleAndSendId(String startDate,String endDate,String tips_state,String secondClassify);
-    //public List<TransferProcess> findAllConditionsByReceiveTimeAndTipeTitleAAndReceiveId(String startDate,String endDate,String tips_state,String receiveId);
 
 }

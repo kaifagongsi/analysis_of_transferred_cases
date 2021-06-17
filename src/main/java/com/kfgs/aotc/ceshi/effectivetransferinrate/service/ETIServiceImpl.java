@@ -100,7 +100,6 @@ public class ETIServiceImpl implements ETIService{
         result.put("当前所选",parameterVo.getSecondClassify());
         result.put("转入总次数",Integer.toString(sum));
         result.put("转入接收总次数", Integer.toString(acceptReferral));
-        result.put("转入退回且出案数",Integer.toString(refuseReferral.size()));
         result.put("转入退回有效次数",Integer.toString(validTrans));
         result.put("有效转入率",df.format(accuracy_num)+"%");
         System.out.println(result);
@@ -161,7 +160,6 @@ public class ETIServiceImpl implements ETIService{
             result.put("当前所选",parameterVo.getSecondClassify());
             result.put("转入总次数",Integer.toString(sum));
             result.put("转入接收总次数", Integer.toString(acceptReferral));
-            result.put("转入退回且出案数",Integer.toString(refuseReferral.size()));
             result.put("转入退回有效次数",Integer.toString(validTrans));
             result.put("有效转入率",df.format(accuracy_num)+"%");
             System.out.println(result);
@@ -228,7 +226,6 @@ public class ETIServiceImpl implements ETIService{
         result.put("当前所选",parameterVo.getSecondClassify());
         result.put("转入总次数",Integer.toString(sum));
         result.put("转入接收总次数", Integer.toString(acceptReferral));
-        result.put("转入退回且出案数",Integer.toString(refuseReferral.size()));
         result.put("转入退回有效次数",Integer.toString(validTrans));
         result.put("有效转入率",df.format(accuracy_num)+"%");
         System.out.println(result);
@@ -285,14 +282,13 @@ public class ETIServiceImpl implements ETIService{
 
         double accuracy_num = 0;//有效转入率
         //0.转入总数
-        int fengmu = detailOfCaseFinishedRepository.getSumTransferIn(startDate, endDate,classifierID);
+        int fengmu = transferProcessRepository.getSumTransferIn(startDate, endDate,classifierID);
         //int fengmu = transferProcessRepository.getAcceptReferralCountNumberByReceiveTimeBetweenAndReceiveId(startDate, endDate,classifierID);
         if(fengmu ==0){
             result.put("分类员代码",classifierID);
             result.put("分类员姓名",ename);
             result.put("转入总次数","0");
             result.put("转入接收总次数", "0");
-            result.put("转入退回且出案数","0");
             result.put("转入退回有效次数","0");
             result.put("有效转入率","0%");
         }else{
@@ -324,7 +320,6 @@ public class ETIServiceImpl implements ETIService{
             result.put("分类员姓名",ename);
             result.put("转入总次数",Integer.toString(fengmu));
             result.put("转入接收总次数", Integer.toString(case_1));
-            result.put("转入退回且出案数",Integer.toString( ipc.size()));
             result.put("转入退回有效次数",Integer.toString(validTrans));
             result.put("有效转入率",df.format(accuracy_num)+"%");
             System.out.println(result);

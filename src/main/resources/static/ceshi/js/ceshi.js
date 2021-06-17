@@ -228,34 +228,6 @@ function testPost() {
 /**
  * 有效转出率 Effective transfer out rate
  */
-/*function effectiveTransferOutRate(page,rows) {
-    let infoForm = $.param({"rows":rows}) + "&" +  $.param({"page":page}) + "&" + $("#infoForm").serialize();
-    var table = layui.table;
-    var layer = layui.layer;
-    var form = layui.form;
-    var laydate = layui.laydate;
-    if(vaildateForm()){
-        table.render({
-            elem: '#pageNav',
-            url: '/ceshi/count/count',
-            cols: [
-                [
-                    {checkbox:true,fixed: true},
-                    {field:'id',title:'分类员代码',width:180,sort:true,align:'center'},
-                    {field:'totals',title:'转案总次数',width:180,sort:true,align:'center'},
-                    {field:'receiveTotals',title:'转案接收总次数',width:180,sort:true,align:'center'},
-                    {field:'rejectTotals',title:'转案退回且出案数',width:180,sort:true,align:'center'},
-                    {field:'validTrans',title:'转案退回有效次数',width:180,sort:true,align:'center'},
-                    {field:'accuracy_num',title:'有效转案率',width:180,sort:true,align:'center'}
-                ]
-            ],
-            id:'testReload',
-            limit: [5,10,15,20,25],
-            height:470,
-            page:true
-        });
-    }
-}*/
 function effectiveTransferOutRate(page,rows) {
     let infoForm = $.param({"rows":rows}) + "&" +  $.param({"page":page}) + "&" + $("#infoForm").serialize();
     if (vaildateForm()){
@@ -401,6 +373,49 @@ function etirAll( ) {
         }
     }
 }
+
+/**
+ * 处理转案率 handlingrateoftransferredcases
+ * @param page 页码
+ * @param rows 每页大小
+ */
+function handlingRateOfTransferredCases(page,rows) {
+    if(vaildateForm()){
+        let infoForm = $("#infoForm").serialize();
+        loadingSpinner = layer.msg('正在加载...', {icon: 16, shade: 0.3, time:0});
+        $.post(ctx + "/hrotc/init",infoForm,function (response) {
+            if(response.flag){
+                tableThead = [];
+                tableData = [];
+                    // 获取表头：
+                    let entityObj = response.data.rows[0];
+                    let h = [];
+                    // 拼装表头
+                    $.each(entityObj,function (index,obj) {
+                        h.push({field: index, title: index});
+                    })
+                    tableThead.push(h);
+                    // 拼装 数据
+                    $.each(response.data.rows,function (index,object) {
+                        console.log(index)
+                        console.log(object)
+                        tableData.push(object)
+                    })
+                    // 表格重载
+                    table.reload('demoTable',{
+                        cols: tableThead ,
+                        data: tableData,
+                    })
+            }else{
+                layer.msg('数据加载失败，请稍候重试', {icon: 5})
+            }
+            layer.close(loadingSpinner)
+        } )
+    }else{
+        layer.msg("请正确选择，开始时间、结束时间、以及统计维度")
+    }
+}
+
 function vaildateForm() {
     let startDate =  $("#startDate").val();
     let endDate =  $("#endDate").val();

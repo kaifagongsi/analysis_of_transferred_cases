@@ -46,4 +46,7 @@ public interface ClassifierInfoRepository extends CommonRepository<ClassifierInf
             countQuery = " select count(classifiers_code) from AOTC_CLASSIFIER_INFO where field_group = ?1   ",
             nativeQuery = true)
     Page<ClassifierInfo> findClassifiersCodeByFieldWithPageable(String fieldGroup, Pageable pageable);
+
+    ClassifierInfo findClassifierInfoByClassifiersCode(String classifiersCode);
+
 }

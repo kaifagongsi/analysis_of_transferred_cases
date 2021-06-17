@@ -1,7 +1,5 @@
 package com.kfgs.aotc.ceshi.count.service;
 
-import com.kfgs.aotc.annotation.In;
-import com.kfgs.aotc.ceshi.classifier.service.ClassifierService;
 import com.kfgs.aotc.common.pojo.PageInfo;
 import com.kfgs.aotc.common.pojo.Result;
 import com.kfgs.aotc.pojo.business.ClassifierInfo;
@@ -56,9 +54,7 @@ public class CountServiceImpl implements CountService {
             case 3: //按室计算
                 return countAccuracyByBranch(parameterVo.getRows(),parameterVo.getPage(),parameterVo.getStartDate(),parameterVo.getEndDate(),parameterVo.getSecondClassify());
             case 4: //按领域计算
-                return countAccuracyByFiled(parameterVo.getRows(),parameterVo.getPage(),parameterVo.getStartDate(),parameterVo.getEndDate(),parameterVo.getSecondClassify());
-            //default:
-        }
+                return countAccuracyByFiled(parameterVo.getRows(),parameterVo.getPage(),parameterVo.getStartDate(),parameterVo.getEndDate(),parameterVo.getSecondClassify()); }
         return null;
     }
 
@@ -154,7 +150,7 @@ public class CountServiceImpl implements CountService {
         List<Map<String,String>> resultList = new ArrayList<>();
         //LinkedHashMap<String,String> result = new LinkedHashMap<>();
         Pageable pageable = new PageRequest(pageNum,rows, Sort.Direction.DESC,"dep2");
-        Page<ClassifierInfo> page = classifierInfoRepository.findClassifiersCodeByDep1(department,pageable);
+        Page<ClassifierInfo> page = classifierInfoRepository.findClassifiersCodeByDep1WithPageable(department,pageable);
         //查询结果总行数
         //System.out.println(page.getTotalElements());
         //按照当前分页大小，总页数

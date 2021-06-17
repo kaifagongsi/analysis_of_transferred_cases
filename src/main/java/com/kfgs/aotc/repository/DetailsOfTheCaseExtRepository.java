@@ -6,6 +6,9 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
+/**
+ * lxl
+ */
 public interface DetailsOfTheCaseExtRepository extends CommonRepository<DetailsOfTheCaseExt,String> {
 
 
@@ -18,5 +21,18 @@ public interface DetailsOfTheCaseExtRepository extends CommonRepository<DetailsO
             " and tp.receive_id in (?4)  ")
     List<Object[]> getRefuseReferralByReceiveTimeBetweenAndTipeStateAndReceiveIds(String startDate, String endDate, String tipsState, List classifierInfoCode);
 
+    /**
+     * 获取出案案件数
+     * @param startDate 开始时间
+     * @param endDate 结束时间
+     * @param classifiersCode  用户的6位ID
+     * @return
+     */
+    @Query(nativeQuery = true,value = "select count(distinct case_id) " +
+            "  from aotc_detailsofthecase " +
+            " where out_time between ?1 and ?2 " +
+            "   and " +
+            "   classifiers_code = ?3 ")
+    public Integer getSumNumberOfCaseByClassifiersCodeAndOutTime(String startDate,String endDate,String classifiersCode);
 
 }
