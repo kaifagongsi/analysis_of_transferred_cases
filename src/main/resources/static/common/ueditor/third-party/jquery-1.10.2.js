@@ -3270,7 +3270,7 @@ jQuery.extend({
 			resolveValues = core_slice.call( arguments ),
 			length = resolveValues.length,
 
-			// the count of uncompleted subordinates
+			// the effectivetransferoutrate of uncompleted subordinates
 			remaining = length !== 1 || ( subordinate && jQuery.isFunction( subordinate.promise ) ) ? length : 0,
 
 			// the master Deferred. If resolveValues consist of only a single Deferred, just use that.

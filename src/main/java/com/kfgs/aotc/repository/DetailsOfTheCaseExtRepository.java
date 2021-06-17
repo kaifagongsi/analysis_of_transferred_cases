@@ -35,4 +35,12 @@ public interface DetailsOfTheCaseExtRepository extends CommonRepository<DetailsO
             "   classifiers_code = ?3 ")
     public Integer getSumNumberOfCaseByClassifiersCodeAndOutTime(String startDate,String endDate,String classifiersCode);
 
+    @Query(nativeQuery = true,value = " select  dotc.ipcmi || ',' || dotc.ipcoi || ',' || dotc.ipca  as ipc,tp.receive_id as receiveId, dotc.case_id as caseId  from aotc_detailsofthecase dotc  left join    aotc_transfer_process  tp " +
+            " on dotc.case_id = tp.case_id  " +
+            " where tp.send_time between ?1 and ?2 " +
+            " and tp.tips_state = ?3 " +
+            " and dotc.case_id = tp.case_id  " +
+            " and tp.send_id in (?4)  ")
+    List<Object[]> getRefuseReferralBySendTimeBetweenAndTipeStateAndSendIds(String startDate, String endDate, String tipsState, List classifierInfoCode);
+
 }

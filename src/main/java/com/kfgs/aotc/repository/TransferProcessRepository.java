@@ -1,5 +1,7 @@
 package com.kfgs.aotc.repository;
 
+import ch.qos.logback.core.rolling.helper.IntegerTokenConverter;
+import com.kfgs.aotc.annotation.In;
 import com.kfgs.aotc.common.repository.CommonRepository;
 import com.kfgs.aotc.pojo.business.TransferProcess;
 import org.springframework.data.domain.Page;
@@ -61,6 +63,11 @@ public interface TransferProcessRepository extends CommonRepository<TransferProc
             " ", nativeQuery = true)
     public Integer getSumTransferIn(String startDate, String endDate, String classifierID);
 
+    @Query(value= "select count(CASE_ID) from aotc_transfer_process where send_time between ?1 and ?2 and send_id = ?3 and tips_state='接收转案'",nativeQuery = true)
+    public Integer getAcceptReferralCountNumberBySendTimeBetweenAndSendId(String startDate,String endDate,String sendId);
+
+    @Query(value = "select count(CASE_ID) from aotc_transfer_process where send_time between ?1 and ?2 and send_id = ?3",nativeQuery = true)
+    public Integer getCountNumberBySendTimeBetweenAndSendId(String startDate,String endDate,String sendId);
 
     @Query(value = " select ipcmi || ',' || ipcoi || ',' || ipca " +
             "    from aotc_detailsofthecase dotc" +
@@ -76,6 +83,10 @@ public interface TransferProcessRepository extends CommonRepository<TransferProc
             "and receive_id in ( ?3 ) " )
     int getSumOfTheDateAndReceiveIdList(String startDate, String endDate, List<String> codeInfo);
 
+
+    @Query( nativeQuery = true,value = "select count(tp.case_id) from aotc_transfer_process tp where tp.send_time between ?1 and ?2 " +
+            "and send_id in ( ?3 ) ")
+    int getSumOfTheDateAndSendIdList(String startDate,String endDate,List<String> codeInfo);
     /**
      *  根据tips_state 来获取该状态下总共有多少案件数量
      * @param startDate 开始时间
@@ -89,6 +100,10 @@ public interface TransferProcessRepository extends CommonRepository<TransferProc
             "and tp.receive_id in (?4) " )
     int getAcceptReferralCountNumberByReceiveTimeBetweenAndTipeTitleAndReceiveIds(String startDate, String endDate, String tipsState, List classifierInfoCode);
 
+    @Query(nativeQuery = true, value = " select count(tp.case_id) from aotc_transfer_process tp where tp.send_time between ?1 and ?2 " +
+            "and tp.tips_state = ?3 " +
+            "and tp.send_id in (?4) " )
+    int getAcceptReferralCountNumberBySendTimeBetweenAndTipeTitleAndSendIds(String startDate,String endDate,String tipsState,List classifierInfoCode);
 
 
     @Query(value = " select ipcmi || ',' || ipcoi || ',' || ipca " +

@@ -1,16 +1,15 @@
-package com.kfgs.aotc.ceshi.count.service;
+package com.kfgs.aotc.ceshi.effectivetransferoutrate.service;
 
 import com.kfgs.aotc.common.pojo.Result;
 import com.kfgs.aotc.pojo.business.vo.ParameterVo;
 
-import java.util.List;
-import java.util.Map;
-
-public interface CountService {
+public interface ETOService {
     //Result<List<Map<String,String>>> countAccuracy(List<String> list, ParameterVo parameterVo);
 
     Result getEffectiveTransferRate(ParameterVo parameterVo);
     //Map<String,String> countAccuracyByID(String classifierID);
 
     Result getAllFieldGroup();
+
+    Result getEffectiveTransferOutRateAll(ParameterVo parameterVo);
 }

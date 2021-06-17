@@ -620,7 +620,7 @@ function normalizeTickInterval(interval, multiples, magnitude, options) {
 
 /**
  * Get a normalized tick interval for dates. Returns a configuration object with
- * unit range (interval), count and name. Used to prepare data for getTimeTicks. 
+ * unit range (interval), effectivetransferoutrate and name. Used to prepare data for getTimeTicks. 
  * Previously this logic was part of getTimeTicks, but as getTimeTicks now runs
  * of segments in stock charts, the normalizing logic was extracted in order to 
  * prevent it for running over again for each segment having the same interval. 
@@ -682,7 +682,7 @@ function normalizeTimeTickInterval(tickInterval, unitsOption) {
 		multiples = [1, 2, 5];
 	}
 
-	// get the count
+	// get the effectivetransferoutrate
 	count = normalizeTickInterval(
 		tickInterval / interval, 
 		multiples,
@@ -702,7 +702,7 @@ function normalizeTimeTickInterval(tickInterval, unitsOption) {
  * with the time positions. Used in datetime axes as well as for grouping
  * data on a datetime axis.
  *
- * @param {Object} normalizedInterval The interval in axis values (ms) and the count
+ * @param {Object} normalizedInterval The interval in axis values (ms) and the effectivetransferoutrate
  * @param {Number} min The minimum in axis values
  * @param {Number} max The maximum in axis values
  * @param {Number} startOfWeek
@@ -752,7 +752,7 @@ function getTimeTicks(normalizedInterval, min, max, startOfWeek) {
 	
 		// week is a special case that runs outside the hierarchy
 		if (interval === timeUnits[WEEK]) {
-			// get start of current week, independent of count
+			// get start of current week, independent of effectivetransferoutrate
 			minDate[setDate](minDate[getDate]() - minDate[getDay]() +
 				pick(startOfWeek, 1));
 		}
