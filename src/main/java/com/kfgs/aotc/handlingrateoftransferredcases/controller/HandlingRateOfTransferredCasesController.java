@@ -22,4 +22,10 @@ public class HandlingRateOfTransferredCasesController {
     public Result getHandlingRateOfTransferredCases(ParameterVo parameterVo){
         return handlingRateOfTransferredCasesService.getHandlingRateOfTransferredCases(parameterVo);
     }
+
+    @PostMapping("initAll")
+    public Result getHandlingRateOfTransferredCasesByDepOrField(ParameterVo parameterVo){
+        return handlingRateOfTransferredCasesService.getHandlingRateOfTransferredCasesByDepOrField(parameterVo);
+    }
+
 }

@@ -43,4 +43,10 @@ public interface DetailsOfTheCaseExtRepository extends CommonRepository<DetailsO
             " and tp.send_id in (?4)  ")
     List<Object[]> getRefuseReferralBySendTimeBetweenAndTipeStateAndSendIds(String startDate, String endDate, String tipsState, List classifierInfoCode);
 
+    @Query(nativeQuery = true,value = "select * " +
+            "  from aotc_detailsofthecase " +
+            " where out_time between ?1 and ?2 " +
+            "   and " +
+            "   classifiers_code in (?3) ")
+    List<Object[]> getSumAllNumberOfCaseByClassifiersCodeAndOutTime(String startDate, String endDate, List classifierInfoCode);
 }
