@@ -640,7 +640,7 @@ function handlingRateOfTransferredCases(page,rows) {
                         //obj包含了当前分页的所有参数，比如：
                         //首次不执行
                         if(!first){
-                            etir( obj.curr,obj.limit);
+                            handlingRateOfTransferredCases( obj.curr,obj.limit);
                         }
                     }
                 });
@@ -663,6 +663,100 @@ function handlingRateOfTransferredCasesAll() {
         if(vaildateForm()){
             if($("#secondClassify").val() != 1){
                 $.post(ctx + "/hrotc/initAll",infoForm,function (response) {
+                    tableTheadDep = [];
+                    tableDataDep = [];
+                    if(response.flag){
+                        // 获取表头：
+                        let entityObj = response.data.rows[0];
+                        let h = [];
+                        // 拼装表头
+                        $.each(entityObj,function (index,obj) {
+                            h.push({field: index, title: index});
+                        })
+                        tableTheadDep.push(h);
+                        // 拼装 数据
+                        $.each(response.data.rows,function (index,object) {
+                            tableDataDep.push(object)
+                        })
+                        // 表格重载
+                        table.reload('depTable',{
+                            cols: tableTheadDep ,
+                            data: tableDataDep
+                        })
+                    }else{
+                        layer.msg('数据加载失败，请稍候重试', {icon: 5})
+                    }
+                });
+            }
+        }
+    }
+}
+
+/**
+ * 转入接受率 transfer in acceptance rate
+ * @param page 当前页码
+ * @param size 每页显示条数
+ */
+function transferInAcceptanceRate(page,size ) {
+    if(vaildateForm()){
+        let infoForm = $.param({"rows":size}) + "&" +  $.param({"page":page}) + "&" + $("#infoForm").serialize();
+        loadingSpinner = layer.msg('正在加载...', {icon: 16, shade: 0.3, time:0});
+        $.post(ctx + "/tiar/init",infoForm,function (response) {
+            if(response.flag){
+                tableThead = [];
+                tableData = [];
+                // 获取表头：
+                let entityObj = response.data.rows[0];
+                let h = [];
+                // 拼装表头
+                $.each(entityObj,function (index,obj) {
+                    h.push({field: index, title: index});
+                })
+                tableThead.push(h);
+                // 拼装 数据
+                $.each(response.data.rows,function (index,object) {
+                    tableData.push(object)
+                })
+                // 表格重载
+                table.reload('demoTable',{
+                    cols: tableThead ,
+                    data: tableData,
+                })
+                laypage.render({
+                    elem : 'pageNav',
+                    count : response.data.records,
+                    limit : size
+                    ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+                    ,curr: page
+                    ,jump: function(obj, first){
+                        //obj包含了当前分页的所有参数，比如：
+                        //首次不执行
+                        console.log(obj)
+                        if(!first){
+                            transferInAcceptanceRate( obj.curr,obj.limit);
+                        }
+                    }
+                });
+            }else{
+                layer.msg('数据加载失败，请稍候重试', {icon: 5})
+            }
+            layer.close(loadingSpinner)
+        } )
+    }else{
+        layer.msg("请正确选择，开始时间、结束时间、以及统计维度")
+    }
+}
+
+/**
+ * 转入接收率 计算总量
+ */
+function transferInAcceptanceRateAll() {
+    let infoForm = $("#infoForm").serialize();
+    let firstClassify =  $("#firstClassify").val();
+    if(firstClassify != 0 && firstClassify != 1 ){
+        if(vaildateForm()){
+            if($("#secondClassify").val() != 1){
+                $.post(ctx + "/tiar/initAll",infoForm,function (response) {
                     tableTheadDep = [];
                     tableDataDep = [];
                     if(response.flag){

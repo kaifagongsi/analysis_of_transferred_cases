@@ -1,7 +1,5 @@
 package com.kfgs.aotc.repository;
 
-import ch.qos.logback.core.rolling.helper.IntegerTokenConverter;
-import com.kfgs.aotc.annotation.In;
 import com.kfgs.aotc.common.repository.CommonRepository;
 import com.kfgs.aotc.pojo.business.TransferProcess;
 import org.springframework.data.domain.Page;
@@ -116,4 +114,12 @@ public interface TransferProcessRepository extends CommonRepository<TransferProc
             "             and dotc.case_id = tp.case_id)", nativeQuery = true)
     List<String> getRefuseReferralBySendTimeBetweenAndTipeTitleAndSendId(String startDate,String endDate,String tips_state,String secondClassify);
 
+    @Query(nativeQuery = true, value = " select count(tp.case_id) from aotc_transfer_process tp where tp.receive_time between ?1 and ?2 " +
+            "and tp.tips_state = ?3 " +
+            "and tp.receive_id in (?4) " )
+    int getAcceptReferralCountNumberBySendTimeBetweenAndTipeTitleAndReciveIds(String startDate, String endDate, String tips_state, List<String> classifierInfoCode);
+
+    @Query(nativeQuery = true, value = " select count(tp.case_id) from aotc_transfer_process tp where tp.receive_time between ?1 and ?2 " +
+            "and tp.receive_id in (?3) " )
+    int getAcceptReferralCountNumberBySendTimeBetweenAndReciveIds(String startDate, String endDate, List<String> asList);
 }
