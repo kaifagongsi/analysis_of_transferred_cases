@@ -57,13 +57,13 @@ public class HandlingRateOfTransferredCasesService {
         List<Object[]> sumAllNumberOfCaseByClassifiersCodeAndOutTime = detailsOfTheCaseExtRepository.getSumAllNumberOfCaseByClassifiersCodeAndOutTime(parameterVo.getStartDate(), parameterVo.getEndDate(), classifierInfoCode);
         LinkedHashMap linkedHashMap = new LinkedHashMap();
         if((sumAllNumberOfCaseByClassifiersCodeAndOutTime.size() + sumOfTheDateAndReceiveIdList) ==0){
-            linkedHashMap.put("接受分类员部门",parameterVo.getSecondClassify());
+            linkedHashMap.put("接收分类员部门",parameterVo.getSecondClassify());
             linkedHashMap.put("出案案件数",0);
             linkedHashMap.put("转入总次数",0);
             linkedHashMap.put("处理转案率",0);
 
         }else{
-            linkedHashMap.put("接受分类员部门",parameterVo.getSecondClassify());
+            linkedHashMap.put("接收分类员部门",parameterVo.getSecondClassify());
             linkedHashMap.put("出案案件数",sumAllNumberOfCaseByClassifiersCodeAndOutTime.size());
             linkedHashMap.put("转入总次数",sumOfTheDateAndReceiveIdList);
             linkedHashMap.put("处理转案率",Double.valueOf((sumOfTheDateAndReceiveIdList * 100 / (sumOfTheDateAndReceiveIdList + sumAllNumberOfCaseByClassifiersCodeAndOutTime.size()))) + "%");
@@ -90,13 +90,13 @@ public class HandlingRateOfTransferredCasesService {
         List<Object[]> sumAllNumberOfCaseByClassifiersCodeAndOutTime = detailsOfTheCaseExtRepository.getSumAllNumberOfCaseByClassifiersCodeAndOutTime(parameterVo.getStartDate(), parameterVo.getEndDate(), classifierInfoCode);
         LinkedHashMap linkedHashMap = new LinkedHashMap();
         if((sumAllNumberOfCaseByClassifiersCodeAndOutTime.size() + sumOfTheDateAndReceiveIdList) ==0){
-            linkedHashMap.put("接受分类员部门",parameterVo.getSecondClassify());
+            linkedHashMap.put("接收分类员部门",parameterVo.getSecondClassify());
             linkedHashMap.put("出案案件数",0);
             linkedHashMap.put("转入总次数",0);
             linkedHashMap.put("处理转案率",0);
 
         }else{
-            linkedHashMap.put("接受分类员部门",parameterVo.getSecondClassify());
+            linkedHashMap.put("接收分类员部门",parameterVo.getSecondClassify());
             linkedHashMap.put("出案案件数",sumAllNumberOfCaseByClassifiersCodeAndOutTime.size());
             linkedHashMap.put("转入总次数",sumOfTheDateAndReceiveIdList);
             linkedHashMap.put("处理转案率",Double.valueOf((sumOfTheDateAndReceiveIdList * 100 / (sumOfTheDateAndReceiveIdList + sumAllNumberOfCaseByClassifiersCodeAndOutTime.size()))) + "%");
@@ -123,13 +123,13 @@ public class HandlingRateOfTransferredCasesService {
         List<Object[]> sumAllNumberOfCaseByClassifiersCodeAndOutTime = detailsOfTheCaseExtRepository.getSumAllNumberOfCaseByClassifiersCodeAndOutTime(parameterVo.getStartDate(), parameterVo.getEndDate(), classifierInfoCode);
         LinkedHashMap linkedHashMap = new LinkedHashMap();
         if((sumAllNumberOfCaseByClassifiersCodeAndOutTime.size() + sumOfTheDateAndReceiveIdList) ==0){
-            linkedHashMap.put("接受分类员部门",parameterVo.getSecondClassify());
+            linkedHashMap.put("接收分类员部门",parameterVo.getSecondClassify());
             linkedHashMap.put("出案案件数",0);
             linkedHashMap.put("转入总次数",0);
             linkedHashMap.put("处理转案率",0);
 
         }else{
-            linkedHashMap.put("接受分类员部门",parameterVo.getSecondClassify());
+            linkedHashMap.put("接收分类员部门",parameterVo.getSecondClassify());
             linkedHashMap.put("出案案件数",sumAllNumberOfCaseByClassifiersCodeAndOutTime.size());
             linkedHashMap.put("转入总次数",sumOfTheDateAndReceiveIdList);
             linkedHashMap.put("处理转案率",Double.valueOf((sumOfTheDateAndReceiveIdList * 100 / (sumOfTheDateAndReceiveIdList + sumAllNumberOfCaseByClassifiersCodeAndOutTime.size()))) + "%");
@@ -225,16 +225,16 @@ public class HandlingRateOfTransferredCasesService {
                     "，转入总数：" + acceptReferralCountNumberByReceiveTimeBetweenAndTipeTitleAndReceiveId +
                     "，出案案件数：" + sumNumberOfCaseByClassifiersCodeAndOutTime +
                     "，百分比：" + accuracy_num);
-            linkedHashMap.put("接受分类员代码",classifierCode);
-            linkedHashMap.put("接受分类员姓名",ename);
+            linkedHashMap.put("接收分类员代码",classifierCode);
+            linkedHashMap.put("接收分类员姓名",ename);
             linkedHashMap.put("出案案件数",sumNumberOfCaseByClassifiersCodeAndOutTime);
             linkedHashMap.put("转入总次数",acceptReferralCountNumberByReceiveTimeBetweenAndTipeTitleAndReceiveId);
             linkedHashMap.put("处理转案率",accuracy_num + "%");
 
             return linkedHashMap;
         }else{
-            linkedHashMap.put("接受分类员代码",classifierCode);
-            linkedHashMap.put("接受分类员姓名",ename);
+            linkedHashMap.put("接收分类员代码",classifierCode);
+            linkedHashMap.put("接收分类员姓名",ename);
             linkedHashMap.put("出案案件数",0);
             linkedHashMap.put("转入总次数",0);
             linkedHashMap.put("处理转案率",0);
