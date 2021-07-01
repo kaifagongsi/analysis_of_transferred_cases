@@ -141,9 +141,11 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <finalName>${project.artifactId}</finalName>
+                    <!--指定启动main方法入口-->
+                    <mainClass>com.kfgs.aotc.AOTCApplication</mainClass>
+                    <!--<finalName>${project.artifactId}</finalName>
                     <outputDirectory>package</outputDirectory>
-                    <fork>true</fork>
+                    <fork>true</fork>-->
                 </configuration>
             </plugin>
             <!-- 跳过启动测试 -->
