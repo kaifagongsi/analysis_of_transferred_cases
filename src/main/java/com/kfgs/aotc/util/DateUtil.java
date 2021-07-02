@@ -1,8 +1,10 @@
 package com.kfgs.aotc.util;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
 
 /**
  * 日期工具类
@@ -98,6 +100,10 @@ public class DateUtil {
         return cal.get(Calendar.DAY_OF_WEEK) == 2;
     }
 
+    public static Boolean isFirstDayOfWeek(Calendar cal){
+        return cal.get(Calendar.DAY_OF_WEEK) == 2;
+    }
+
     /**
      * 判断该日期是否是该月的第一天
      */
@@ -122,5 +128,126 @@ public class DateUtil {
     public static boolean isFirstDayOfQuarter(Date date) {
         String mMdd = new SimpleDateFormat("MMdd").format(date);
         return "0101".equals(mMdd) || "0401".equals(mMdd) || "0701".equals(mMdd) || "1001".equals(mMdd);
+    }
+
+    /**
+     * 获取上周一的日期
+     */
+    public static Date geLastWeekMonday(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(getThisWeekMonday(date));
+        cal.add(Calendar.DATE, -7);
+        return cal.getTime();
+    }
+
+    /**
+     * 获取本周一的日期
+     */
+    public static Date getThisWeekMonday(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        // 获得当前日期是一个星期的第几天
+        int dayWeek = cal.get(Calendar.DAY_OF_WEEK);
+        if (1 == dayWeek) {
+            cal.add(Calendar.DAY_OF_MONTH, -1);
+        }
+        // 设置一个星期的第一天，按中国的习惯一个星期的第一天是星期一
+        cal.setFirstDayOfWeek(Calendar.MONDAY);
+        // 获得当前日期是一个星期的第几天
+        int day = cal.get(Calendar.DAY_OF_WEEK);
+        // 根据日历的规则，给当前日期减去星期几与一个星期第一天的差值
+        cal.add(Calendar.DATE, cal.getFirstDayOfWeek() - day);
+        return cal.getTime();
+
+    }
+
+    /**
+     * 获取下周一的日期
+     */
+    public static Date getNextWeekMonday(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(getThisWeekMonday(date));
+        cal.add(Calendar.DATE, 7);
+        return cal.getTime();
+    }
+
+
+    public static void main(String[] args) {
+        LinkedList list= getWeekByLinkedList(getWeekLinkedList("2021-07-05", "2021-07-25"));
+        System.out.println(list.toString());
+
+    }
+
+    /**
+     * 合并每周一到周日为一个值，放入list
+     * @param week 每周的一和每周日 的list
+     * @return
+     */
+    private static LinkedList getWeekByLinkedList(LinkedList week) {
+        LinkedList linkedList = new LinkedList();
+        int j = 1;
+        for (int i = 0; i < week.size(); i = i+2) {
+            linkedList.add(week.get(i)+"~"+week.get( i + 1 ));
+        }
+        return linkedList;
+    }
+
+    /**
+     * 获取开始日期，和结束日期中间周一和周日
+     * @param startDateStr 开始日期
+     * @param endDateStr 结束日期
+     * @return
+     */
+    public static LinkedList getWeekLinkedList(String startDateStr,String endDateStr){
+        LinkedList linkedList = new LinkedList();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date startdate = sdf.parse(startDateStr);
+            Date endDate = sdf.parse(endDateStr);
+            Date thisWeekSundayOrMondy = getThisWeekSunday(startdate);
+            if(null == thisWeekSundayOrMondy){
+                return linkedList;
+            }
+            // 添加第一个周一
+            linkedList.add(startDateStr);
+            while(!thisWeekSundayOrMondy.equals(endDate)){
+                linkedList.add(sdf.format(thisWeekSundayOrMondy));
+                thisWeekSundayOrMondy = getDateByAddOne(thisWeekSundayOrMondy);
+                linkedList.add(sdf.format(thisWeekSundayOrMondy));
+            }
+            //添加最后一个周日
+            linkedList.add(sdf.format(thisWeekSundayOrMondy));
+            System.out.println("周日" + sdf.format(thisWeekSundayOrMondy));
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return linkedList;
+    }
+
+    /**
+     * 获取当前日期 +1
+     */
+    public static Date getDateByAddOne(Date date){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DAY_OF_YEAR,1);
+        return cal.getTime();
+    }
+
+    /**
+     * 获取本周周日的日期
+     */
+    public static Date getThisWeekSunday(Date date){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        //1.判断是否为周一
+        if(isFirstDayOfWeek(cal)){
+            cal.add(Calendar.DAY_OF_WEEK,6);
+            return cal.getTime();
+        }else{
+            System.out.println("日期非周一");
+            return null;
+        }
     }
 }
