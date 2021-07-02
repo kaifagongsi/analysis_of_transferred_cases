@@ -35,8 +35,7 @@ public class ETOServiceImpl implements ETOService {
     private ClassifierInfoRepository classifierInfoRepository;
     @Autowired
     private TransferProcessRepository transferProcessRepository;
-    /*@Autowired
-    private DetailOfCaseFinishedRepository detailOfCaseFinishedRepository;*/
+
     @Autowired
     DetailsOfTheCaseExtRepository detailsOfTheCaseExtRepository;
 
@@ -109,6 +108,7 @@ public class ETOServiceImpl implements ETOService {
      */
     private Result getEffectiveTransferOutRateDepAll(ParameterVo parameterVo){
         LinkedHashMap<String,String> result = new LinkedHashMap<>();
+        List list= new ArrayList<>();
         //0.查询该部门所有人员
         parameterVo.setRows(1000);
         Page<ClassifierInfo> classifiersCodeByDep1WithPageable = classifierInfoRepository.findClassifiersCodeByDep1WithPageable(parameterVo.getSecondClassify(),(Pageable)parameterVo.getPageable());
@@ -126,6 +126,18 @@ public class ETOServiceImpl implements ETOService {
         Double accuracy_num = 0d;
         int fenmu = receiveTotals + refuseReferral.size();
         int fenzi = receiveTotals + validTrans;
+        if (fenmu == 0){
+            result.put("当前所选",parameterVo.getSecondClassify());
+            result.put("转出总次数","0");
+            result.put("转出接收总次数", "0");
+            result.put("转出退回且出案数","0");
+            result.put("转入退回有效次数","0");
+            result.put("有效转出率","0%");
+            list.add(result);
+            PageInfo pageInfo = PageInfo.ofMap(classifiersCodeByDep1WithPageable,list);
+            Result<PageInfo> of = Result.of(pageInfo);
+            return of;
+        }
         accuracy_num = Double.valueOf(fenzi*100/fenmu);
         result.put("当前所选",parameterVo.getSecondClassify());
         result.put("转出总次数",Integer.toString(fenmu));
@@ -134,7 +146,6 @@ public class ETOServiceImpl implements ETOService {
         result.put("转入退回有效次数",Integer.toString(validTrans));
         result.put("有效转出率",df.format(accuracy_num)+"%");
         System.out.println(result);
-        List list= new ArrayList<>();
         list.add(result);
         PageInfo pageInfo = PageInfo.ofMap(classifiersCodeByDep1WithPageable,list);
         Result<PageInfo> of = Result.of(pageInfo);
@@ -150,6 +161,7 @@ public class ETOServiceImpl implements ETOService {
         PageCondition page = (PageCondition)parameterVo;
         parameterVo.setRows(1000);
         if(parameterVo.getSecondClassify().length() == 4){
+            List list= new ArrayList<>();
             String dep1 = parameterVo.getSecondClassify().substring(0,2);
             String dep2 = parameterVo.getSecondClassify().substring(2,4);
             Page<ClassifierInfo> classifierCode =  classifierInfoRepository.findClassifiersCodeByDep2WithPageable(dep1,dep2,page.getPageable());
@@ -166,6 +178,18 @@ public class ETOServiceImpl implements ETOService {
             Double accuracy_num = 0d;
             int fenmu = receiveTotals + refuseReferral.size();
             int fenzi = receiveTotals + validTrans;
+            if (fenmu == 0){
+                result.put("当前所选",parameterVo.getSecondClassify());
+                result.put("转出总次数","0");
+                result.put("转出接收总次数", "0");
+                result.put("转出退回且出案数","0");
+                result.put("转入退回有效次数","0");
+                result.put("有效转出率","0%");
+                list.add(result);
+                PageInfo pageInfo = PageInfo.ofMap(classifierCode,list);
+                Result<PageInfo> of = Result.of(pageInfo);
+                return of;
+            }
             accuracy_num = Double.valueOf(fenzi*100/fenmu);
             result.put("当前所选",parameterVo.getSecondClassify());
             result.put("转出总次数",Integer.toString(fenmu));
@@ -174,7 +198,6 @@ public class ETOServiceImpl implements ETOService {
             result.put("转入退回有效次数",Integer.toString(validTrans));
             result.put("有效转出率",df.format(accuracy_num)+"%");
             System.out.println(result);
-            List list= new ArrayList<>();
             list.add(result);
             PageInfo pageInfo = PageInfo.ofMap(classifierCode,list);
             Result<PageInfo> of = Result.of(pageInfo);
@@ -189,6 +212,7 @@ public class ETOServiceImpl implements ETOService {
      */
     private Result getEffectiveTransferOutRateByFieldAll(ParameterVo parameterVo){
         LinkedHashMap<String,String> result = new LinkedHashMap<>();
+        List list= new ArrayList<>();
         PageCondition page = (PageCondition)parameterVo;
         //0.查询该部门所有人员
         parameterVo.setRows(1000);
@@ -206,6 +230,18 @@ public class ETOServiceImpl implements ETOService {
         Double accuracy_num = 0d;
         int fenmu = receiveTotals + refuseReferral.size();
         int fenzi = receiveTotals + validTrans;
+        if (fenmu == 0){
+            result.put("当前所选",parameterVo.getSecondClassify());
+            result.put("转出总次数","0");
+            result.put("转出接收总次数", "0");
+            result.put("转出退回且出案数","0");
+            result.put("转入退回有效次数","0");
+            result.put("有效转出率","0%");
+            list.add(result);
+            PageInfo pageInfo = PageInfo.ofMap(classifiersCodeByFieldWithPageable,list);
+            Result<PageInfo> of = Result.of(pageInfo);
+            return of;
+        }
         accuracy_num = Double.valueOf(fenzi*100/fenmu);
         result.put("当前所选",parameterVo.getSecondClassify());
         result.put("转出总次数",Integer.toString(fenmu));
@@ -214,7 +250,6 @@ public class ETOServiceImpl implements ETOService {
         result.put("转入退回有效次数",Integer.toString(validTrans));
         result.put("有效转出率",df.format(accuracy_num)+"%");
         System.out.println(result);
-        List list= new ArrayList<>();
         list.add(result);
         PageInfo pageInfo = PageInfo.ofMap(classifiersCodeByFieldWithPageable,list);
         Result<PageInfo> of = Result.of(pageInfo);
@@ -339,10 +374,11 @@ public class ETOServiceImpl implements ETOService {
             result.put("分类员代码",classifierID);
             result.put("分类员姓名",ename);
             result.put("转案总次数","0");
-            result.put("转案接收总次数","0");
+            result.put("转案接收总次数", "0");
             result.put("转案退回且出案数","0");
             result.put("转案退回有效次数","0");
-            result.put("有效转案率","0%");
+            result.put("有效转出率","0%");
+            return result;
         }else{
             //2.有效转案案件
             validTrans = getRefuseReferralNumber(transferProcessList);

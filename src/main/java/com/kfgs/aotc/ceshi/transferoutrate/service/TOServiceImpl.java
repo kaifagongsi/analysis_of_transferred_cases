@@ -105,6 +105,7 @@ public class TOServiceImpl implements TOService {
      */
     private Result getTransferOutRateByDepAll(ParameterVo parameterVo){
         LinkedHashMap<String,String> result = new LinkedHashMap<>();
+        List list= new ArrayList<>();
         //0.查询该部门所有人员
         parameterVo.setRows(1000);
         Page<ClassifierInfo> classifiersCodeByDep1WithPageable = classifierInfoRepository.findClassifiersCodeByDep1WithPageable(parameterVo.getSecondClassify(),(Pageable)parameterVo.getPageable());
@@ -118,13 +119,22 @@ public class TOServiceImpl implements TOService {
         int transferTotal = transferProcessRepository.getSumOfTheDateAndSendIdList(parameterVo.getStartDate(),parameterVo.getEndDate(),classifierInfoCode);
         //2.分母: 出案案件数
         int transoutNum = detailOfCaseFinishedRepository.getCountTransOutByClassifiersCodes(parameterVo.getStartDate(),parameterVo.getEndDate(),classifierInfoCode);
+        if (transoutNum == 0){
+            result.put("当前所选","0");
+            result.put("转出总次数","0");
+            result.put("出案案件数", "0");
+            result.put("转出案件率","0%");
+            list.add(result);
+            PageInfo pageInfo = PageInfo.ofMap(classifiersCodeByDep1WithPageable,list);
+            Result<PageInfo> of = Result.of(pageInfo);
+            return of;
+        }
         accuracy_num = Double.valueOf(transferTotal*100/transoutNum);
         result.put("当前所选",parameterVo.getSecondClassify());
         result.put("转出总次数",Integer.toString(transferTotal));
         result.put("出案案件数", Integer.toString(transoutNum));
         result.put("转出案件率",df.format(accuracy_num)+"%");
         System.out.println(result);
-        List list= new ArrayList<>();
         list.add(result);
         PageInfo pageInfo = PageInfo.ofMap(classifiersCodeByDep1WithPageable,list);
         Result<PageInfo> of = Result.of(pageInfo);
@@ -160,6 +170,7 @@ public class TOServiceImpl implements TOService {
         PageCondition page = (PageCondition)parameterVo;
         parameterVo.setRows(1000);
         if(parameterVo.getSecondClassify().length() == 4){
+            List list= new ArrayList<>();
             String dep1 = parameterVo.getSecondClassify().substring(0,2);
             String dep2 = parameterVo.getSecondClassify().substring(2,4);
             Page<ClassifierInfo> classifierCode =  classifierInfoRepository.findClassifiersCodeByDep2WithPageable(dep1,dep2,page.getPageable());
@@ -172,13 +183,22 @@ public class TOServiceImpl implements TOService {
             int transferTotal = transferProcessRepository.getSumOfTheDateAndSendIdList(parameterVo.getStartDate(),parameterVo.getEndDate(),classifierInfoCode);
             //2.分母: 出案案件数
             int transoutNum = detailOfCaseFinishedRepository.getCountTransOutByClassifiersCodes(parameterVo.getStartDate(),parameterVo.getEndDate(),classifierInfoCode);
+            if (transoutNum == 0){
+                result.put("当前所选","0");
+                result.put("转出总次数","0");
+                result.put("出案案件数", "0");
+                result.put("转出案件率","0%");
+                list.add(result);
+                PageInfo pageInfo = PageInfo.ofMap(classifierCode,list);
+                Result<PageInfo> of = Result.of(pageInfo);
+                return of;
+            }
             accuracy_num = Double.valueOf(transferTotal*100/transoutNum);
             result.put("当前所选",parameterVo.getSecondClassify());
             result.put("转出总次数",Integer.toString(transferTotal));
             result.put("出案案件数", Integer.toString(transoutNum));
             result.put("转出案件率",df.format(accuracy_num)+"%");
             System.out.println(result);
-            List list= new ArrayList<>();
             list.add(result);
             PageInfo pageInfo = PageInfo.ofMap(classifierCode,list);
             Result<PageInfo> of = Result.of(pageInfo);
@@ -205,6 +225,7 @@ public class TOServiceImpl implements TOService {
      */
     private Result getTransferOutRateByFiledAll(ParameterVo parameterVo){
         LinkedHashMap<String,String> result = new LinkedHashMap<>();
+        List list= new ArrayList<>();
         PageCondition page = (PageCondition)parameterVo;
         //0.查询该部门所有人员
         parameterVo.setRows(1000);
@@ -218,13 +239,22 @@ public class TOServiceImpl implements TOService {
         int transferTotal = transferProcessRepository.getSumOfTheDateAndSendIdList(parameterVo.getStartDate(),parameterVo.getEndDate(),classifierInfoCode);
         //2.分母: 出案案件数
         int transoutNum = detailOfCaseFinishedRepository.getCountTransOutByClassifiersCodes(parameterVo.getStartDate(),parameterVo.getEndDate(),classifierInfoCode);
+        if (transoutNum == 0){
+            result.put("当前所选","0");
+            result.put("转出总次数","0");
+            result.put("出案案件数", "0");
+            result.put("转出案件率","0%");
+            list.add(result);
+            PageInfo pageInfo = PageInfo.ofMap(classifiersCodeByFieldWithPageable,list);
+            Result<PageInfo> of = Result.of(pageInfo);
+            return of;
+        }
         accuracy_num = Double.valueOf(transferTotal*100/transoutNum);
         result.put("当前所选",parameterVo.getSecondClassify());
         result.put("转出总次数",Integer.toString(transferTotal));
         result.put("出案案件数", Integer.toString(transoutNum));
         result.put("转出案件率",df.format(accuracy_num)+"%");
         System.out.println(result);
-        List list= new ArrayList<>();
         list.add(result);
         PageInfo pageInfo = PageInfo.ofMap(classifiersCodeByFieldWithPageable,list);
         Result<PageInfo> of = Result.of(pageInfo);
@@ -250,7 +280,12 @@ public class TOServiceImpl implements TOService {
         //分母
         int fenmu = transferOutNum+caseOutNum;
         if(fenmu == 0){
-            return null;
+            result.put("分类员代码",classifierID);
+            result.put("分类员姓名",ename);
+            result.put("出案案件数","0");
+            result.put("转出总次数","0");
+            result.put("转出案件率","0%");
+            return result;
         }
         accuracy_num = transferOutNum * 100/fenmu;
         result.put("分类员代码",classifierID);

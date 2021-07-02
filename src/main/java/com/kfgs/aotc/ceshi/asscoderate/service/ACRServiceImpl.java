@@ -97,6 +97,7 @@ public class ACRServiceImpl implements ACRService{
         Page<ClassifierInfo> classifiersCodeByDep1WithPageable = classifierInfoRepository.findClassifiersCodeByDep1WithPageable(parameterVo.getSecondClassify(),(Pageable)parameterVo.getPageable());
         List<ClassifierInfo> content = classifiersCodeByDep1WithPageable.getContent();
         List classifierInfoCode = new ArrayList();
+        List list= new ArrayList<>();
         content.forEach((info)->{
             classifierInfoCode.add(info.getClassifiersCode());
         });
@@ -105,17 +106,27 @@ public class ACRServiceImpl implements ACRService{
         int validTrans = 0;
         //2.分母: 转入总次数
         int transInNum = transferProcessRepository.getSumOfTheDateAndReceiveIdList(parameterVo.getStartDate(),parameterVo.getEndDate(),classifierInfoCode);
-        accuracy_num = Double.valueOf(validTrans*100/transInNum);
-        result.put("当前所选",parameterVo.getSecondClassify());
-        result.put("转案退回有效次数",Integer.toString(validTrans));
-        result.put("转入总次数", Integer.toString(transInNum));
-        result.put("加副分率",df.format(accuracy_num)+"%");
-        System.out.println(result);
-        List list= new ArrayList<>();
-        list.add(result);
-        PageInfo pageInfo = PageInfo.ofMap(classifiersCodeByDep1WithPageable,list);
-        Result<PageInfo> of = Result.of(pageInfo);
-        return of;
+        if (transInNum == 0){
+            result.put("当前所选",parameterVo.getSecondClassify());
+            result.put("转案退回有效次数","0");
+            result.put("转入总次数", "0");
+            result.put("加副分率","0%");
+            list.add(result);
+            PageInfo pageInfo = PageInfo.ofMap(classifiersCodeByDep1WithPageable,list);
+            Result<PageInfo> of = Result.of(pageInfo);
+            return of;
+        }else {
+            accuracy_num = Double.valueOf(validTrans * 100 / transInNum);
+            result.put("当前所选", parameterVo.getSecondClassify());
+            result.put("转案退回有效次数", Integer.toString(validTrans));
+            result.put("转入总次数", Integer.toString(transInNum));
+            result.put("加副分率", df.format(accuracy_num) + "%");
+            System.out.println(result);
+            list.add(result);
+            PageInfo pageInfo = PageInfo.ofMap(classifiersCodeByDep1WithPageable, list);
+            Result<PageInfo> of = Result.of(pageInfo);
+            return of;
+        }
     }
 
     /**
@@ -151,6 +162,7 @@ public class ACRServiceImpl implements ACRService{
             String dep2 = parameterVo.getSecondClassify().substring(2,4);
             Page<ClassifierInfo> classifierCode =  classifierInfoRepository.findClassifiersCodeByDep2WithPageable(dep1,dep2,page.getPageable());
             List classifierInfoCode = new ArrayList();
+            List list= new ArrayList<>();
             classifierCode.forEach((info)->{
                 classifierInfoCode.add(info.getClassifiersCode());
             });
@@ -159,17 +171,27 @@ public class ACRServiceImpl implements ACRService{
             int validTrans = 0;
             //2.分母: 转入总次数
             int transInNum = transferProcessRepository.getSumOfTheDateAndReceiveIdList(parameterVo.getStartDate(),parameterVo.getEndDate(),classifierInfoCode);
-            accuracy_num = Double.valueOf(validTrans*100/transInNum);
-            result.put("当前所选",parameterVo.getSecondClassify());
-            result.put("转案退回有效次数",Integer.toString(validTrans));
-            result.put("转入总次数", Integer.toString(transInNum));
-            result.put("加副分率",df.format(accuracy_num)+"%");
-            System.out.println(result);
-            List list= new ArrayList<>();
-            list.add(result);
-            PageInfo pageInfo = PageInfo.ofMap(classifierCode,list);
-            Result<PageInfo> of = Result.of(pageInfo);
-            return of;
+            if (transInNum == 0){
+                result.put("当前所选",parameterVo.getSecondClassify());
+                result.put("转案退回有效次数","0");
+                result.put("转入总次数", "0");
+                result.put("加副分率","0%");
+                list.add(result);
+                PageInfo pageInfo = PageInfo.ofMap(classifierCode,list);
+                Result<PageInfo> of = Result.of(pageInfo);
+                return of;
+            }else {
+                accuracy_num = Double.valueOf(validTrans*100/transInNum);
+                result.put("当前所选",parameterVo.getSecondClassify());
+                result.put("转案退回有效次数",Integer.toString(validTrans));
+                result.put("转入总次数", Integer.toString(transInNum));
+                result.put("加副分率",df.format(accuracy_num)+"%");
+                System.out.println(result);
+                list.add(result);
+                PageInfo pageInfo = PageInfo.ofMap(classifierCode,list);
+                Result<PageInfo> of = Result.of(pageInfo);
+                return of;
+            }
         }else {
             return null;
         }
@@ -198,6 +220,7 @@ public class ACRServiceImpl implements ACRService{
         parameterVo.setRows(1000);
         Page<ClassifierInfo> classifiersCodeByFieldWithPageable = classifierInfoRepository.findClassifiersCodeByFieldWithPageable(parameterVo.getSecondClassify(), page.getPageable());
         List classifierInfoCode = new ArrayList();
+        List list= new ArrayList<>();
         for(ClassifierInfo info : classifiersCodeByFieldWithPageable){
             classifierInfoCode.add(info.getClassifiersCode());
         }
@@ -206,17 +229,27 @@ public class ACRServiceImpl implements ACRService{
         int validTrans = 0;
         //2.分母: 转入总次数
         int transInNum = transferProcessRepository.getSumOfTheDateAndReceiveIdList(parameterVo.getStartDate(),parameterVo.getEndDate(),classifierInfoCode);
-        accuracy_num = Double.valueOf(validTrans*100/transInNum);
-        result.put("当前所选",parameterVo.getSecondClassify());
-        result.put("转案退回有效次数",Integer.toString(validTrans));
-        result.put("转入总次数", Integer.toString(transInNum));
-        result.put("加副分率",df.format(accuracy_num)+"%");
-        System.out.println(result);
-        List list= new ArrayList<>();
-        list.add(result);
-        PageInfo pageInfo = PageInfo.ofMap(classifiersCodeByFieldWithPageable,list);
-        Result<PageInfo> of = Result.of(pageInfo);
-        return of;
+        if (transInNum == 0){
+            result.put("当前所选",parameterVo.getSecondClassify());
+            result.put("转案退回有效次数","0");
+            result.put("转入总次数", "0");
+            result.put("加副分率","0%");
+            list.add(result);
+            PageInfo pageInfo = PageInfo.ofMap(classifiersCodeByFieldWithPageable,list);
+            Result<PageInfo> of = Result.of(pageInfo);
+            return of;
+        }else {
+            accuracy_num = Double.valueOf(validTrans*100/transInNum);
+            result.put("当前所选",parameterVo.getSecondClassify());
+            result.put("转案退回有效次数",Integer.toString(validTrans));
+            result.put("转入总次数", Integer.toString(transInNum));
+            result.put("加副分率",df.format(accuracy_num)+"%");
+            System.out.println(result);
+            list.add(result);
+            PageInfo pageInfo = PageInfo.ofMap(classifiersCodeByFieldWithPageable,list);
+            Result<PageInfo> of = Result.of(pageInfo);
+            return of;
+        }
     }
     /**
      * 根据个人id计算加副分率
@@ -247,6 +280,14 @@ public class ACRServiceImpl implements ACRService{
         }
         //2.分母 转入总次数
         int transInNum = transferProcessRepository.getCountNumberByReceiveTimeBetweenAndReceiveId(startDate,endDate,classifierID);
+        if (transInNum == 0){
+            result.put("分类员代码",classifierID);
+            result.put("分类员姓名",ename);
+            result.put("转案退回有效次数","0");
+            result.put("转入总次数","0");
+            result.put("加副分率","0%");
+            return result;
+        }
         accuracy_num = validTrans * 100 / transInNum;
         result.put("分类员代码",classifierID);
         result.put("分类员姓名",ename);
