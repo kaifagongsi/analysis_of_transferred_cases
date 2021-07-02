@@ -853,3 +853,33 @@ function vaildateForm() {
         return  false;
     }
 }
+
+function checkWeek() {
+    let startDay =  $("#startDate").val().replace(/^(\d{4})(\d{2})(\d{2})$/, "$1-$2-$3");
+    let endDay =  $("#endDate").val().replace(/^(\d{4})(\d{2})(\d{2})$/, "$1-$2-$3");
+    var weekDay = ["星期天","星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+    var start = new Date(Date.parse(startDay));
+    var end = new Date(Date.parse(endDay));
+    if (weekDay[start.getDay()] == "星期一" && weekDay[end.getDay()] == "星期天"){
+        return true;
+    }else {
+        return false;
+    }
+}
+
+//判断当月第一天和最后一天
+function checkMonth() {
+    let startDay =  new Date($("#startDate").val().replace(/^(\d{4})(\d{2})(\d{2})$/, "$1/$2/$3"));
+    let endDay =  $("#endDate").val().replace(/^(\d{4})(\d{2})(\d{2})$/, "$1/$2/$3");
+    if (startDay.getDate() == "1" && isLastDay(endDay)){
+        return true;
+    }else {
+        return false;
+    }
+}
+//判断是否是月末最后一天
+function isLastDay(endDate){
+    var day = new Date(endDate.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1/$2/$3"));
+    var nday = new Date(day.getTime()+24*60*60*1000);//next day
+    return (day.getMonth() != nday.getMonth());
+}
