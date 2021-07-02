@@ -217,8 +217,6 @@ public class DateUtil {
             }
             //添加最后一个周日
             linkedList.add(sdf.format(thisWeekSundayOrMondy));
-            System.out.println("周日" + sdf.format(thisWeekSundayOrMondy));
-
         } catch (ParseException e) {
             e.printStackTrace();
         }
