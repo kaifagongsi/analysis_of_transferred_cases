@@ -1,10 +1,12 @@
 package com.kfgs.aotc.util;
 
+import com.kfgs.aotc.pojo.business.vo.ParameterVo;
+import org.springframework.data.domain.Pageable;
+
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.LinkedList;
+import java.util.*;
 
 /**
  * 日期工具类
@@ -173,8 +175,9 @@ public class DateUtil {
 
 
     public static void main(String[] args) {
-        LinkedList list= getWeekByLinkedList(getWeekLinkedList("2021-07-05", "2021-07-25"));
-        System.out.println(list.toString());
+        //LinkedList list= getWeekByLinkedList(getWeekLinkedList("2021-07-05", "2021-07-25"));
+        /*List list = getBetweenDays("20210705", "20210725");
+        System.out.println(list.toString());*/
 
     }
 
@@ -248,4 +251,31 @@ public class DateUtil {
             return null;
         }
     }
+
+    /**
+     * 获取两日期间的日期(N天)
+     */
+    public static List<String> getBetweenDays(String startDay, String endDay){
+        //返回的日期集合
+        List<String> days = new ArrayList<>();
+        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        try {
+            Date start = dateFormat.parse(startDay);
+            Date end = dateFormat.parse(endDay);
+            Calendar tempStart = Calendar.getInstance();
+            Calendar tempEnd  = Calendar.getInstance();
+            tempStart.setTime(start);
+            tempEnd.setTime(end);
+            tempEnd.add(Calendar.DATE,+1);
+            while (tempStart.before(tempEnd)){
+                days.add(dateFormat.format(tempStart.getTime()));
+                tempStart.add(Calendar.DAY_OF_YEAR,1);
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return days;
+    }
+
 }
