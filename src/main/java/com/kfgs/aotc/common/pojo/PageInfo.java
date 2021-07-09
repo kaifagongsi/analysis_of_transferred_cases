@@ -9,6 +9,7 @@ import org.springframework.data.repository.support.PageableExecutionUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -39,6 +40,25 @@ public class PageInfo<M> {
         pageInfo.setRows(CopyUtil.copyList(page.getContent(), entityModelClass));//分页结果
         pageInfo.setRecords(records);//总记录数
         pageInfo.setTotal(total);//总页数
+        return pageInfo;
+    }
+
+    /**
+     *
+     * @param list 分页数据
+     * @param currentPage 当前页码
+     * @param pagesize 行数
+     * @param records 总记录数
+     * @param total 总页数
+     * @return
+     */
+    public static PageInfo list2Page(List list,int currentPage,int pagesize,int records,int total){
+        PageInfo<List> pageInfo = new PageInfo<>();
+        pageInfo.setPage(currentPage);
+        pageInfo.setPageSize(pagesize);
+        pageInfo.setRows(list); //分页结果
+        pageInfo.setRecords(records);
+        pageInfo.setTotal(total);
         return pageInfo;
     }
 
