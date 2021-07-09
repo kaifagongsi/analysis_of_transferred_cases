@@ -64,6 +64,7 @@ public interface TransferProcessRepository extends CommonRepository<TransferProc
     @Query(value= "select count(CASE_ID) from aotc_transfer_process where send_time between ?1 and ?2 and send_id = ?3 and tips_state='接收转案'",nativeQuery = true)
     public Integer getAcceptReferralCountNumberBySendTimeBetweenAndSendId(String startDate,String endDate,String sendId);
 
+    //某个时间段转出案件数
     @Query(value = "select count(CASE_ID) from aotc_transfer_process where send_time between ?1 and ?2 and send_id = ?3",nativeQuery = true)
     public Integer getCountNumberBySendTimeBetweenAndSendId(String startDate,String endDate,String sendId);
 
@@ -129,6 +130,22 @@ public interface TransferProcessRepository extends CommonRepository<TransferProc
     @Query(nativeQuery = true, value = " select count(tp.case_id) from aotc_transfer_process tp where tp.receive_time between ?1 and ?2 " +
             "and tp.receive_id in (?3) " )
     int getAcceptReferralCountNumberBySendTimeBetweenAndReciveIds(String startDate, String endDate, List<String> asList);
+
+    //某天某分类员转出案件数
+    @Query(value = "select count(CASE_ID) from aotc_transfer_process where send_time = ?1 and send_id = ?2",nativeQuery = true)
+    public Integer getCountNumberBySendTimeAndSendId(String sendtime,String sendId);
+
+    //某天某部门计算转出案件数
+    @Query(value = "select count(tp.case_id) from aotc_transfer_process tp,aotc_classifier_info ci where tp.send_time =?1 and tp.send_id=ci.classifiers_code and ci.dep1 = ?2",nativeQuery = true)
+    Integer getCountNumberBySendTimeAndDep1(String date,String dep1);
+
+    //某天某科室计算转出案件数
+    @Query(value = "select count(tp.case_id) from aotc_transfer_process tp,aotc_classifier_info ci where tp.send_time =?1 and tp.send_id=ci.classifiers_code and ci.dep2 = ?2",nativeQuery = true)
+    Integer getCountNumberBySendTimeAndDep2(String date,String dep2);
+
+    //某天某领域计算转出案件数
+    @Query(value = "select count(tp.case_id) from aotc_transfer_process tp,aotc_classifier_info ci where tp.send_time =?1 and tp.send_id=ci.classifiers_code and ci.filed_group = ?2",nativeQuery = true)
+    Integer getCountNumberBySendTimeAndFiled(String date,String filed);
 
     /**
      * 在某天，分类员的转入总次数
