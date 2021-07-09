@@ -171,10 +171,16 @@ public class DateUtil {
     }
 
 
-    public static void main(String[] args) {
-        LinkedList list= getWeekByLinkedList(getWeekLinkedList("20210705", "20210725"));
+    public static void main(String[] args) throws ParseException {
+        //LinkedList list= getWeekByLinkedList(getWeekLinkedList("20210705", "20210725"));
         /*List list = getBetweenDays("20210705", "20210725");*/
-        System.out.println(list.toString());
+        //System.out.println(list.toString());
+        /*SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+        Date yyyyMMdd = getLastDayInThisMonth(simpleDateFormat.parse("20200209"));
+        System.out.println(simpleDateFormat.format(yyyyMMdd));*/
+
+        List<String> monthsByDays = getMonthsByLinkedList("20210701", "20211231");
+        monthsByDays.forEach((str)-> System.out.println(str));
 
     }
 
@@ -192,6 +198,12 @@ public class DateUtil {
         return linkedList;
     }
 
+    /**
+     * 获取开始日期，和结束日期中间周一和周日
+     * @param startDateStr 开始日期
+     * @param endDateStr 结束日期
+     * @return
+     */
     public static LinkedList getWeekByLinkedList(String startDateStr,String endDateStr) {
         LinkedList week = getWeekLinkedList(startDateStr, endDateStr);
         LinkedList linkedList = new LinkedList();
@@ -208,7 +220,7 @@ public class DateUtil {
      * @param endDateStr 结束日期
      * @return
      */
-    public static LinkedList getWeekLinkedList(String startDateStr,String endDateStr){
+    private static LinkedList getWeekLinkedList(String startDateStr,String endDateStr){
         LinkedList linkedList = new LinkedList();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         try {
@@ -237,7 +249,7 @@ public class DateUtil {
     /**
      * 获取当前日期 +1
      */
-    public static Date getDateByAddOne(Date date){
+    private static Date getDateByAddOne(Date date){
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         cal.add(Calendar.DAY_OF_YEAR,1);
@@ -247,7 +259,7 @@ public class DateUtil {
     /**
      * 获取本周周日的日期
      */
-    public static Date getThisWeekSunday(Date date){
+    private static Date getThisWeekSunday(Date date){
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         //1.判断是否为周一
@@ -286,6 +298,66 @@ public class DateUtil {
         return days;
     }
 
+    /**
+     * 获取两个时间段之间的月份
+     * @param startDayStr
+     * @param endDayStr
+     * @return
+     */
+    public static List<String> getMonthsByLinkedList(String startDayStr,String endDayStr){
+        LinkedList week = getMonthsByDays(startDayStr, endDayStr);
+        LinkedList linkedList = new LinkedList();
+        int j = 1;
+        for (int i = 0; i < week.size(); i = i+2) {
+            linkedList.add(week.get(i)+"~"+week.get( i + 1 ));
+        }
+        return linkedList;
+    }
+
+    /**
+     * 获取两个时间段之间的月份
+     */
+    private static LinkedList<String> getMonthsByDays(String startDayStr,String endDayStr){
+        LinkedList resulList = new LinkedList();
+        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        try {
+            Date startDate = dateFormat.parse(startDayStr);
+            Date endDate = dateFormat.parse(endDayStr);
+            if(isFirstDayOfMonth(startDate)){
+                //1.将第一个1号加入
+                resulList.add(startDayStr);
+                startDate = getLastDayInThisMonth(startDate);
+                while(!startDate.equals(endDate)){
+                    resulList.add(dateFormat.format(startDate));
+                    startDate = getDateByAddOne(startDate);
+                    resulList.add(dateFormat.format(startDate));
+                    startDate = getLastDayInThisMonth(startDate);
+                }
+                //加入最后一天
+                resulList.add(dateFormat.format(startDate));
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return resulList;
+    }
+
+    /**
+     *  获取当前月的最后一天
+     * @param startDate 当前月初时间
+     * @return
+     */
+    private static Date getLastDayInThisMonth(Date startDate) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(startDate);
+        //当前日期加一个月
+        calendar.add(Calendar.MONTH ,1);
+        // 设置为下一个月第一天
+        calendar.set(Calendar.DATE,1);
+        //然后在减去一天
+        calendar.add(Calendar.DATE,-1);
+        return calendar.getTime();
+    }
 
 
 }
