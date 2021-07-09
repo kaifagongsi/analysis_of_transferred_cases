@@ -58,6 +58,16 @@ public class PageInfo<M> {
         return pageInfo;
     }
 
+    public static PageInfo createPageInfo(int records,int pageSize,int total,List list){
+
+        PageInfo<List> pageInfo = new PageInfo<>();
+        pageInfo.setPageSize(pageSize);
+        pageInfo.setRecords(records);
+        pageInfo.setTotal(total);
+        pageInfo.setRows(list);
+        return pageInfo;
+    }
+
     /**
      * 获取JPA的分页对象
      */
