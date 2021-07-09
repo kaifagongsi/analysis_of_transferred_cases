@@ -71,13 +71,13 @@
     <!-- 第一组按钮 -->
     <div class="layui-row">
         <div class="layui-col-md2">
-            <button type="button" class="layui-btn layui-btn-primary layui-border-orange">日处理进案</button>
+            <button type="button" class="layui-btn layui-btn-primary layui-border-orange" onclick="tcbd('day')">日处理进案</button>
         </div>
         <div class="layui-col-md2">
             <button type="button" class="layui-btn layui-btn-primary layui-border-black" >日转出案件</button>
         </div>
         <div class="layui-col-md2">
-            <button type="button" class="layui-btn layui-btn-primary layui-border-orange">周处理进案</button>
+            <button type="button" class="layui-btn layui-btn-primary layui-border-orange"  onclick="tcbd('week')">周处理进案</button>
         </div>
         <div class="layui-col-md2">
             <button type="button" class="layui-btn layui-btn-primary layui-border-black">周转出案件</button>
@@ -144,4 +144,5 @@
 </div>
 </body>
 <script th:src="@{/ceshi/js/ceshi.js}"></script>
+<script th:src="@{/business/transferredcasesdayweekmonth/js/transferredcasesdayweekmonth.js}"></script>
 </html>
