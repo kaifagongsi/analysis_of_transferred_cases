@@ -77,6 +77,13 @@ public interface TransferProcessRepository extends CommonRepository<TransferProc
             "             and dotc.case_id = tp.case_id)", nativeQuery = true)
     List<String> getRefuseReferralByReceiveTimeBetweenAndTipeTitleAndReceiveId(String startDate, String endDate, String tips_state, String secondClassify);
 
+    /**
+     * 在某一个接收时间段内，某些人的转入总次数
+     * @param startDate 接收的开始时间
+     * @param endDate 接收的结束时间
+     * @param codeInfo 分类员代码
+     * @return
+     */
     @Query( nativeQuery = true,value =  "select count(tp.case_id)  from aotc_transfer_process tp where tp.receive_time between ?1 and ?2 " +
             "and receive_id in ( ?3 ) " )
     int getSumOfTheDateAndReceiveIdList(String startDate, String endDate, List<String> codeInfo);
@@ -122,4 +129,17 @@ public interface TransferProcessRepository extends CommonRepository<TransferProc
     @Query(nativeQuery = true, value = " select count(tp.case_id) from aotc_transfer_process tp where tp.receive_time between ?1 and ?2 " +
             "and tp.receive_id in (?3) " )
     int getAcceptReferralCountNumberBySendTimeBetweenAndReciveIds(String startDate, String endDate, List<String> asList);
+
+    /**
+     * 在某天，分类员的转入总次数
+     * @param day  接收时间
+     * @param classifiersCode  分类员代码
+     * @return
+     */
+    @Query(nativeQuery = true,value=" select  count(1) from aotc_transfer_process where receive_time = ?1  and  receive_id = ?2" )
+    int getSumOfTheDateAndReceiveIdEqualsAndReceiveTimeEquals(String day, String classifiersCode);
+
+
+    @Query(nativeQuery = true,value=" select  count(1) from aotc_transfer_process where receive_time = ?1  and  receive_id in (?2) " )
+    int getSumOfTheDateAndReceiveIdListAndReceiveTimeEquals(String day, List classifiers);
 }
