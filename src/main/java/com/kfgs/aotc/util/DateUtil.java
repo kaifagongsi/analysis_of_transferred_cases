@@ -1,8 +1,5 @@
 package com.kfgs.aotc.util;
 
-import com.kfgs.aotc.pojo.business.vo.ParameterVo;
-import org.springframework.data.domain.Pageable;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -175,9 +172,9 @@ public class DateUtil {
 
 
     public static void main(String[] args) {
-        //LinkedList list= getWeekByLinkedList(getWeekLinkedList("2021-07-05", "2021-07-25"));
-        /*List list = getBetweenDays("20210705", "20210725");
-        System.out.println(list.toString());*/
+        LinkedList list= getWeekByLinkedList(getWeekLinkedList("20210705", "20210725"));
+        /*List list = getBetweenDays("20210705", "20210725");*/
+        System.out.println(list.toString());
 
     }
 
@@ -186,7 +183,17 @@ public class DateUtil {
      * @param week 每周的一和每周日 的list
      * @return
      */
-    private static LinkedList getWeekByLinkedList(LinkedList week) {
+    public static LinkedList getWeekByLinkedList(LinkedList week) {
+        LinkedList linkedList = new LinkedList();
+        int j = 1;
+        for (int i = 0; i < week.size(); i = i+2) {
+            linkedList.add(week.get(i)+"~"+week.get( i + 1 ));
+        }
+        return linkedList;
+    }
+
+    public static LinkedList getWeekByLinkedList(String startDateStr,String endDateStr) {
+        LinkedList week = getWeekLinkedList(startDateStr, endDateStr);
         LinkedList linkedList = new LinkedList();
         int j = 1;
         for (int i = 0; i < week.size(); i = i+2) {
@@ -203,7 +210,7 @@ public class DateUtil {
      */
     public static LinkedList getWeekLinkedList(String startDateStr,String endDateStr){
         LinkedList linkedList = new LinkedList();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         try {
             Date startdate = sdf.parse(startDateStr);
             Date endDate = sdf.parse(endDateStr);
@@ -217,6 +224,7 @@ public class DateUtil {
                 linkedList.add(sdf.format(thisWeekSundayOrMondy));
                 thisWeekSundayOrMondy = getDateByAddOne(thisWeekSundayOrMondy);
                 linkedList.add(sdf.format(thisWeekSundayOrMondy));
+                thisWeekSundayOrMondy = getThisWeekSunday(thisWeekSundayOrMondy);
             }
             //添加最后一个周日
             linkedList.add(sdf.format(thisWeekSundayOrMondy));
@@ -277,5 +285,7 @@ public class DateUtil {
         }
         return days;
     }
+
+
 
 }
