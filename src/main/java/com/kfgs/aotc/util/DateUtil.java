@@ -106,9 +106,11 @@ public class DateUtil {
     /**
      * 判断该日期是否是该月的第一天
      */
-    public static boolean isFirstDayOfMonth(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
+    public static boolean isFirstDayOfMonth(Calendar calendar) {
+        return calendar.get(Calendar.DAY_OF_MONTH) == 1;
+    }
+
+    public static boolean isLastDayOfMonth(Calendar calendar) {
         return calendar.get(Calendar.DAY_OF_MONTH) == 1;
     }
 
@@ -172,7 +174,7 @@ public class DateUtil {
 
 
     public static void main(String[] args) {
-        LinkedList list= getWeekByLinkedList(getWeekLinkedList("20210705", "20210725"));
+        LinkedList list= getMonthBetween("20210702", "20210620");
         /*List list = getBetweenDays("20210705", "20210725");*/
         System.out.println(list.toString());
 
@@ -198,6 +200,39 @@ public class DateUtil {
         int j = 1;
         for (int i = 0; i < week.size(); i = i+2) {
             linkedList.add(week.get(i)+"~"+week.get( i + 1 ));
+        }
+        return linkedList;
+    }
+
+    /**
+     * 获取月份列表
+     *
+     */
+    public static LinkedList getMonthBetween(String startDateStr,String endDateStr){
+        LinkedList linkedList = new LinkedList();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        try{
+            Date startdate = sdf.parse(startDateStr);
+            Date endDate = sdf.parse(endDateStr);
+            if (!isMonthStartAndLast(startdate,endDate)){
+                return linkedList;
+            }
+            Calendar min = Calendar.getInstance();
+            Calendar max = Calendar.getInstance();
+            min.setTime(sdf.parse(startDateStr));
+            min.set(min.get(Calendar.YEAR),min.get(Calendar.MONTH),1);
+            max.setTime(sdf.parse(endDateStr));
+            max.set(max.get(Calendar.YEAR),max.get(Calendar.MONTH),2);
+            Calendar start = min;
+            while (start.before(max)){
+                String ss = sdf.format(start.getTime());
+                start.set(Calendar.DAY_OF_MONTH,start.getActualMaximum(Calendar.DAY_OF_MONTH));
+                String ee = sdf.format(start.getTime());
+                linkedList.add(ss+"~"+ee);
+                start.add(Calendar.DAY_OF_MONTH,1);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
         return linkedList;
     }
@@ -260,6 +295,30 @@ public class DateUtil {
         }
     }
 
+    /**
+     * 判断是否月初月末
+     * @param
+     * @return
+     */
+    public static boolean isMonthStartAndLast(Date start,Date end){
+        if (end.before(start)){
+            System.out.println("日期不合法");
+            return false;
+        }
+        Calendar startcalendar = Calendar.getInstance();
+        startcalendar.setTime(start);
+        Calendar lastcalendar = Calendar.getInstance();
+        lastcalendar.setTime(end);
+        lastcalendar.set(Calendar.DATE,(lastcalendar.get(Calendar.DATE)+1));
+        //判断是否为月初和月末
+        if (isFirstDayOfMonth(startcalendar) && isLastDayOfMonth(lastcalendar)){
+            //startcalendar.add(Calendar.DAY_OF_MONTH,0);
+            return true;
+        }else {
+            System.out.println("所选日期不是月初和月末");
+            return false;
+        }
+    }
     /**
      * 获取两日期间的日期(N天)
      */
