@@ -1,5 +1,6 @@
 package com.kfgs.aotc.repository;
 
+import com.kfgs.aotc.annotation.In;
 import com.kfgs.aotc.common.repository.CommonRepository;
 import com.kfgs.aotc.pojo.business.TransferProcess;
 import org.springframework.data.domain.Page;
@@ -126,17 +127,49 @@ public interface TransferProcessRepository extends CommonRepository<TransferProc
 
     //某天某分类员转出案件数
     @Query(value = "select count(CASE_ID) from aotc_transfer_process where send_time = ?1 and send_id = ?2",nativeQuery = true)
-    public Integer getCountNumberBySendTimeAndSendId(String sendtime,String sendId);
+    public Integer getDayCountNumberBySendTimeAndSendId(String sendtime,String sendId);
+
+    //某周某分类员转出案件数
+    @Query(value = "select count(CASE_ID) from aotc_transfer_process where send_time between ?1 and ?2 and send_id = ?3",nativeQuery = true)
+    Integer getWeekCountNumberBySendTimeAndSendId(String Monday,String Sunday,String sendId);
+
+    //某月某分类员转出案件数
+    @Query(value = "select count(CASE_ID) from aotc_transfer_process where send_time between ?1 and ?2 and send_id = ?3",nativeQuery = true)
+    Integer getMonthCountNumberBySendTimeAndSendId(String startDay,String lastDay,String sendId);
 
     //某天某部门计算转出案件数
     @Query(value = "select count(tp.case_id) from aotc_transfer_process tp,aotc_classifier_info ci where tp.send_time =?1 and tp.send_id=ci.classifiers_code and ci.dep1 = ?2",nativeQuery = true)
     Integer getCountNumberBySendTimeAndDep1(String date,String dep1);
 
+    //某周某部门转出案件数
+    @Query(value = "select count(tp.case_id) from aotc_transfer_process tp,aotc_classifier_info ci where tp.send_time between ?1 and ?2 and tp.send_id=ci.classifiers_code and ci.dep1 = ?3",nativeQuery = true)
+    Integer getWeekCountNumberBySendTimeAndDep1(String Monday,String Sunday,String dep1);
+
+    //某月某部门转出案件数
+    @Query(value = "select count(tp.case_id) from aotc_transfer_process tp,aotc_classifier_info ci where tp.send_time between ?1 and ?2 and tp.send_id=ci.classifiers_code and ci.dep1 = ?3",nativeQuery = true)
+    Integer getMonthCountNumberBySendTimeAndDep1(String startDay,String lastDay,String dep1);
+
     //某天某科室计算转出案件数
     @Query(value = "select count(tp.case_id) from aotc_transfer_process tp,aotc_classifier_info ci where tp.send_time =?1 and tp.send_id=ci.classifiers_code and ci.dep2 = ?2",nativeQuery = true)
     Integer getCountNumberBySendTimeAndDep2(String date,String dep2);
 
+    //某周某科室计算转出案件数
+    @Query(value = "select count(tp.case_id) from aotc_transfer_process tp,aotc_classifier_info ci where tp.send_time between ?1 and ?2 and tp.send_id=ci.classifiers_code and ci.dep2 = ?3",nativeQuery = true)
+    Integer getWeekCountNumberBySendTimeAndDep2(String Monday,String Sunday,String dep2);
+
+    //某月某科室计算转出案件数
+    @Query(value = "select count(tp.case_id) from aotc_transfer_process tp,aotc_classifier_info ci where tp.send_time between ?1 and ?2 and tp.send_id=ci.classifiers_code and ci.dep2 = ?3",nativeQuery = true)
+    Integer getMonthCountNumberBySendTimeAndDep2(String startDay,String lastDay,String dep2);
+
     //某天某领域计算转出案件数
-    @Query(value = "select count(tp.case_id) from aotc_transfer_process tp,aotc_classifier_info ci where tp.send_time =?1 and tp.send_id=ci.classifiers_code and ci.filed_group = ?2",nativeQuery = true)
+    @Query(value = "select count(tp.case_id) from aotc_transfer_process tp,aotc_classifier_info ci where tp.send_time =?1 and tp.send_id=ci.classifiers_code and ci.field_group = ?2",nativeQuery = true)
     Integer getCountNumberBySendTimeAndFiled(String date,String filed);
+
+    //某周某领域计算转出案件数
+    @Query(value = "select count(tp.case_id) from aotc_transfer_process tp,aotc_classifier_info ci where tp.send_time between ?1 and ?2 and tp.send_id=ci.classifiers_code and ci.field_group = ?3",nativeQuery = true)
+    Integer getWeekCountNumberBySendTimeAndFiled(String Monday,String Sunday,String filed);
+
+    //某月某领域计算转出案件数
+    @Query(value = "select count(tp.case_id) from aotc_transfer_process tp,aotc_classifier_info ci where tp.send_time between ?1 and ?2 and tp.send_id=ci.classifiers_code and ci.field_group = ?3",nativeQuery = true)
+    Integer getMonthCountNumberBySendTimeAndFiled(String startDay,String lastDay,String filed);
 }

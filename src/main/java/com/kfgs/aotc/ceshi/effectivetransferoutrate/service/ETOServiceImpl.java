@@ -47,22 +47,12 @@ public class ETOServiceImpl implements ETOService {
         switch (parameterVo.getFirstClassify()){
             case 1: //按人计算个人
                 return countAccuracyByPeople(parameterVo);
-                /*LinkedHashMap<String,String> result = countAccuracyByWorkerID(parameterVo.getStartDate(),parameterVo.getEndDate(),parameterVo.getSecondClassify(),"");
-                List<Map<String,String>> resultList = new ArrayList<>();
-                PageInfo pageInfo = new PageInfo();
-                resultList.add(result);
-                pageInfo.setPage(parameterVo.getPage()); //当前页
-                pageInfo.setPageSize(parameterVo.getRows()); //每页条数
-                pageInfo.setRecords(resultList.size()); //总记录数
-                pageInfo.setTotal(1); //总页数
-                pageInfo.setRows(resultList);
-                return Result.of(pageInfo);*/
             case 2: //按部计算个人
-                return countAccuracyByDepartment(parameterVo.getRows(),parameterVo.getPage(),parameterVo.getStartDate(),parameterVo.getEndDate(),parameterVo.getSecondClassify());
+                return countAccuracyByDepartment(parameterVo);
             case 3: //按室计算个人
-                return countAccuracyByBranch(parameterVo.getRows(),parameterVo.getPage(),parameterVo.getStartDate(),parameterVo.getEndDate(),parameterVo.getSecondClassify());
+                return countAccuracyByBranch(parameterVo);
             case 4: //按领域计算个人
-                return countAccuracyByFiled(parameterVo.getRows(),parameterVo.getPage(),parameterVo.getStartDate(),parameterVo.getEndDate(),parameterVo.getSecondClassify());
+                return countAccuracyByField(parameterVo);
             //default:
         }
         return null;
@@ -273,92 +263,62 @@ public class ETOServiceImpl implements ETOService {
 
     /**
      * 按照分类员领域计算
-     * @param rows
-     * @param pageNum
-     * @param startDate
-     * @param endDate
-     * @param filed
+     * @param parameterVo
      * @return
      */
-    private Result countAccuracyByFiled(int rows,int pageNum,String startDate,String endDate,String filed){
-        PageInfo pageInfo = new PageInfo();
+    private Result countAccuracyByField(ParameterVo parameterVo){
         List<Map<String,String>> resultList = new ArrayList<>();
-        Pageable pageable = new PageRequest(pageNum,rows, Sort.Direction.DESC,"dep1");
-        Page<ClassifierInfo> page = classifierInfoRepository.findClassifiersCodeByFieldGroup(filed,pageable);
-        pageInfo.setPage(pageNum); //当前页
-        pageInfo.setPageSize(rows); //每页条数
-        pageInfo.setRecords((int)page.getTotalElements()); //总记录数
-        pageInfo.setTotal(page.getTotalPages()); //总页数
+        PageCondition page = (PageCondition)parameterVo;
+        Page<ClassifierInfo> classifierCode = classifierInfoRepository.findClassifiersCodeByFieldWithPageable(parameterVo.getSecondClassify(),page.getPageable());
         LinkedHashMap<String,String> workerResult = new LinkedHashMap<>();
-        for (ClassifierInfo classifierInfo:page.getContent()){
-            workerResult = countAccuracyByWorkerID(startDate,endDate,classifierInfo.getClassifiersCode(),classifierInfo.getEname());
+        for (ClassifierInfo classifierInfo:classifierCode.getContent()){
+            workerResult = countAccuracyByWorkerID(parameterVo.getStartDate(),parameterVo.getEndDate(),classifierInfo.getClassifiersCode(),classifierInfo.getEname());
             resultList.add(workerResult);
         }
-        pageInfo.setRows(resultList);
+        PageInfo pageInfo = PageInfo.ofMap(classifierCode,resultList);
         return Result.of(pageInfo);
-    }
-    /**
-     * 按科室计算
-     * @param rows
-     * @param pageNum
-     * @param startDate
-     * @param endDate
-     * @param branch
-     * @return
-     */
-    private Result countAccuracyByBranch(int rows,int pageNum,String startDate,String endDate,String branch){
-        PageInfo pageInfo = new PageInfo();
-        List<Map<String,String>> resultList = new ArrayList<>();
-        Pageable pageable = new PageRequest(pageNum,rows, Sort.Direction.DESC,"dep1");
-        String dep1 = branch.substring(0,2);
-        String dep2 = branch.substring(2,4);
-        Page<ClassifierInfo> page = classifierInfoRepository.findClassifiersCodeByDep1AndDep2(dep1,dep2,pageable);
-        pageInfo.setPage(pageNum); //当前页
-        pageInfo.setPageSize(rows); //每页条数
-        pageInfo.setRecords((int)page.getTotalElements()); //总记录数
-        pageInfo.setTotal(page.getTotalPages()); //总页数
-        LinkedHashMap<String,String> workerResult = new LinkedHashMap<>();
-        for (ClassifierInfo classifierInfo:page.getContent()){
-            //System.out.println(classifierInfo.toString());
-            workerResult = countAccuracyByWorkerID(startDate,endDate,classifierInfo.getClassifiersCode(),classifierInfo.getEname());
-            resultList.add(workerResult);
-        }
-        pageInfo.setRows(resultList);
-        return Result.of(pageInfo);
-    }
-    /**
-     * 按部门计算
-     * @param rows
-     * @param pageNum
-     * @param startDate
-     * @param endDate
-     * @param department
-     * @return
-     */
-    private Result countAccuracyByDepartment(int rows, int pageNum, String startDate, String endDate, String department){
-        PageInfo pageInfo = new PageInfo();
-        List<Map<String,String>> resultList = new ArrayList<>();
-        Pageable pageable = new PageRequest(pageNum,rows, Sort.Direction.DESC,"dep2");
-        Page<ClassifierInfo> page = classifierInfoRepository.findClassifiersCodeByDep1WithPageable(department,pageable);
-        //查询结果总行数
-        //System.out.println(page.getTotalElements());
-        //按照当前分页大小，总页数
-        //System.out.println(page.getTotalPages());
-        pageInfo.setPage(pageNum); //当前页
-        pageInfo.setPageSize(rows); //每页条数
-        pageInfo.setRecords((int)page.getTotalElements()); //总记录数
-        pageInfo.setTotal(page.getTotalPages()); //总页数
-        LinkedHashMap<String,String> workerResult = new LinkedHashMap<>();
-        for (ClassifierInfo classifierInfo:page.getContent()){
-            workerResult = countAccuracyByWorkerID(startDate,endDate,classifierInfo.getClassifiersCode(),classifierInfo.getEname());
-            resultList.add(workerResult);
-        }
-        pageInfo.setRows(resultList);
-        return Result.of(pageInfo);
-        //return Result.of(resultList);
     }
 
-    //private Result countAccuracyByWorkerID(String startDate,String endDate,String classifierID) {
+    /**
+     * 按科室计算
+     * @param parameterVo
+     * @return
+     */
+    private Result countAccuracyByBranch(ParameterVo parameterVo){
+        List<Map<String,String>> resultList = new ArrayList<>();
+        PageCondition page = (PageCondition)parameterVo;
+        if(parameterVo.getSecondClassify().length() == 4){
+            String dep1 = parameterVo.getSecondClassify().substring(0,2);
+            String dep2 = parameterVo.getSecondClassify().substring(2,4);
+            Page<ClassifierInfo> classifierCode =  classifierInfoRepository.findClassifiersCodeByDep2WithPageable(dep1,dep2,page.getPageable());
+            for(ClassifierInfo info : classifierCode){
+                resultList.add(countAccuracyByWorkerID(parameterVo.getStartDate(),parameterVo.getEndDate(),info.getClassifiersCode(),info.getEname()));
+            }
+            PageInfo pageInfo = PageInfo.ofMap(classifierCode,resultList);
+            Result<PageInfo> of = Result.of(pageInfo);
+            return of;
+        }else {
+            return null;
+        }
+    }
+
+    /**
+     * 按部计算
+     * @param parameterVo
+     * @return
+     */
+    private Result countAccuracyByDepartment(ParameterVo parameterVo){
+        List<Map<String,String>> resultList = new ArrayList<>();
+        PageCondition page = (PageCondition)parameterVo;
+        Page<ClassifierInfo> classifierCode = classifierInfoRepository.findClassifiersCodeByDep1WithPageable(parameterVo.getSecondClassify(),page.getPageable());
+        for(ClassifierInfo  id : classifierCode.getContent()){
+            resultList.add(countAccuracyByWorkerID(parameterVo.getStartDate(),parameterVo.getEndDate(),id.getClassifiersCode(),id.getEname()));
+        }
+        PageInfo pageInfo = PageInfo.ofMap(classifierCode,resultList);
+        Result<PageInfo> of = Result.of(pageInfo);
+        return of;
+    }
+
     private LinkedHashMap<String, String> countAccuracyByWorkerID(String startDate, String endDate, String classifierID,String ename) { //发送分类员
         double accuracy_num = 0;//有效转案率
         //List<Map<String,String>> resultList = new ArrayList<>();
