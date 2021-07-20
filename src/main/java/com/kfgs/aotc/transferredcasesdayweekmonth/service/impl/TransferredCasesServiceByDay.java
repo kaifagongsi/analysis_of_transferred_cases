@@ -1,6 +1,5 @@
 package com.kfgs.aotc.transferredcasesdayweekmonth.service.impl;
 
-import com.kfgs.aotc.common.pojo.PageCondition;
 import com.kfgs.aotc.common.pojo.PageInfo;
 import com.kfgs.aotc.common.pojo.Result;
 import com.kfgs.aotc.pojo.business.ClassifierInfo;
@@ -40,7 +39,6 @@ public class TransferredCasesServiceByDay implements ITransferredCasesService {
 
     @Override
     public Result calculation(ParameterVo parameterVo) {
-        System.out.println("按照天数开始计算");
         switch (parameterVo.getFirstClassify()){
             case 1:
                 return getTransferredCasesDayByPerson(parameterVo);
@@ -58,18 +56,31 @@ public class TransferredCasesServiceByDay implements ITransferredCasesService {
         //0.初始化参数
         List<LinkedHashMap> resultList = new ArrayList<>();
         //1.获取部门下的所有人员
-        PageCondition page = (PageCondition)parameterVo;
         //0.查询该部门所有人员
-        parameterVo.setRows(1000);
-        Page<ClassifierInfo> classifiersCodeByFieldWithPageable = classifierInfoRepository.findClassifiersCodeByFieldWithPageable(parameterVo.getSecondClassify(), page.getPageable());
+        Page<ClassifierInfo> classifiersCodeByFieldWithPageable = classifierInfoRepository.findClassifiersCodeByFieldWithPageable(parameterVo.getSecondClassify(), null);
         List classifiers = new ArrayList();
         for(ClassifierInfo info : classifiersCodeByFieldWithPageable){
             classifiers.add(info.getClassifiersCode());
         }
         // 2.开始计算
+
         List<String> dayList = DateUtil.getBetweenDays(parameterVo.getStartDate(), parameterVo.getEndDate());
-        for(String day : dayList){
-            resultList.add(getTransferredCasesDayOneDep(day,classifiers,parameterVo.getSecondClassify()));
+        // 自定义分页
+        int pageNum = parameterVo.getPage(); //页码
+        int rows = parameterVo.getRows(); //每页行数
+        int records = dayList.size(); //总记录数
+        int m = records % rows;
+        int total = 0; // 总页数
+        if (m > 0){
+            total = records / rows + 1;
+        }else {
+            total = records / rows;
+        }
+        //计算当前需要显示的数据下标起始值
+        int startIndex = (pageNum -1) * rows;
+        int endIndex = Math.min(startIndex + rows,records);
+        for(int i = startIndex;i < endIndex; i++){
+            resultList.add(getTransferredCasesDayOneDep(dayList.get(i),classifiers,parameterVo.getSecondClassify()));
         }
         PageInfo pageInfo = PageInfo.createPageInfo(dayList.size(),dayList.size(),dayList.size(),resultList);
         return Result.of(pageInfo);
@@ -81,19 +92,31 @@ public class TransferredCasesServiceByDay implements ITransferredCasesService {
             //0.初始化参数
             List<LinkedHashMap> resultList = new ArrayList<>();
             //1.获取部门下的所有人员
-            PageCondition page = (PageCondition)parameterVo;
-            parameterVo.setRows(1000);
             String dep1 = parameterVo.getSecondClassify().substring(0,2);
             String dep2 = parameterVo.getSecondClassify().substring(2,4);
-            Page<ClassifierInfo> dep1WithPageable = classifierInfoRepository.findClassifiersCodeByDep2WithPageable(dep1,dep2,page.getPageable());
+            Page<ClassifierInfo> dep1WithPageable = classifierInfoRepository.findClassifiersCodeByDep2WithPageable(dep1,dep2,null);
             List classifiers = new ArrayList();
             for(ClassifierInfo classifierInfo : dep1WithPageable){
                 classifiers.add(classifierInfo.getClassifiersCode());
             }
             // 2.开始计算
             List<String> dayList = DateUtil.getBetweenDays(parameterVo.getStartDate(), parameterVo.getEndDate());
-            for(String day : dayList){
-                resultList.add(getTransferredCasesDayOneDep(day,classifiers,parameterVo.getSecondClassify()));
+            // 自定义分页
+            int pageNum = parameterVo.getPage(); //页码
+            int rows = parameterVo.getRows(); //每页行数
+            int records = dayList.size(); //总记录数
+            int m = records % rows;
+            int total = 0; // 总页数
+            if (m > 0){
+                total = records / rows + 1;
+            }else {
+                total = records / rows;
+            }
+            //计算当前需要显示的数据下标起始值
+            int startIndex = (pageNum -1) * rows;
+            int endIndex = Math.min(startIndex + rows,records);
+            for(int i = startIndex;i < endIndex; i++){
+                resultList.add(getTransferredCasesDayOneDep(dayList.get(i),classifiers,parameterVo.getSecondClassify()));
             }
             PageInfo pageInfo = PageInfo.createPageInfo(dayList.size(),dayList.size(),dayList.size(),resultList);
             return Result.of(pageInfo);
@@ -107,19 +130,31 @@ public class TransferredCasesServiceByDay implements ITransferredCasesService {
         //0.初始化参数
         List<LinkedHashMap> resultList = new ArrayList<>();
         //1.获取部门下的所有人员
-        PageCondition page = (PageCondition)parameterVo;
-        parameterVo.setRows(1000);
-        Page<ClassifierInfo> dep1WithPageable = classifierInfoRepository.findClassifiersCodeByDep1WithPageable(parameterVo.getSecondClassify(),page.getPageable());
+        Page<ClassifierInfo> dep1WithPageable = classifierInfoRepository.findClassifiersCodeByDep1WithPageable(parameterVo.getSecondClassify(),null);
         List classifiers = new ArrayList();
         for(ClassifierInfo classifierInfo : dep1WithPageable){
             classifiers.add(classifierInfo.getClassifiersCode());
         }
         // 2.开始计算
         List<String> dayList = DateUtil.getBetweenDays(parameterVo.getStartDate(), parameterVo.getEndDate());
-        for(String day : dayList){
-            resultList.add(getTransferredCasesDayOneDep(day,classifiers,parameterVo.getSecondClassify()));
+        // 自定义分页
+        int pageNum = parameterVo.getPage(); //页码
+        int rows = parameterVo.getRows(); //每页行数
+        int records = dayList.size(); //总记录数
+        int m = records % rows;
+        int total = 0; // 总页数
+        if (m > 0){
+            total = records / rows + 1;
+        }else {
+            total = records / rows;
         }
-        PageInfo pageInfo = PageInfo.createPageInfo(dayList.size(),dayList.size(),dayList.size(),resultList);
+        //计算当前需要显示的数据下标起始值
+        int startIndex = (pageNum -1) * rows;
+        int endIndex = Math.min(startIndex + rows,records);
+        for(int i = startIndex;i < endIndex; i++){
+            resultList.add(getTransferredCasesDayOneDep(dayList.get(i),classifiers,parameterVo.getSecondClassify()));
+        }
+        PageInfo pageInfo = PageInfo.createPageInfo(records,rows,total,resultList);
         return Result.of(pageInfo);
     }
     // 获取 部门某一天的结果
@@ -147,14 +182,27 @@ public class TransferredCasesServiceByDay implements ITransferredCasesService {
     private Result getTransferredCasesDayByPerson(ParameterVo parameterVo) {
         List<LinkedHashMap> resultList = new ArrayList<>();
         //1.查询人员
-        Page<ClassifierInfo> classifierCode = classifierInfoRepository.findClassifiersCodeByClassifierCode(parameterVo.getSecondClassify(), parameterVo.getPageable());
+        //Page<ClassifierInfo> classifierCode = classifierInfoRepository.findClassifiersCodeByClassifierCode(parameterVo.getSecondClassify(), parameterVo.getPageable());
+        Page<ClassifierInfo> classifierCode = classifierInfoRepository.findClassifiersCodeByClassifierCode(parameterVo.getSecondClassify(), null);
         List<String> dayList = DateUtil.getBetweenDays(parameterVo.getStartDate(), parameterVo.getEndDate());
-        for(ClassifierInfo info : classifierCode.getContent()){//正常来说只有一个人
-            for(String day : dayList){
-                resultList.add(getTransferredCasesDayOnePerson(day,info.getClassifiersCode(),info.getEname()));
-            }
+        // 自定义分页
+        int pageNum = parameterVo.getPage(); //页码
+        int rows = parameterVo.getRows(); //每页行数
+        int records = dayList.size(); //总记录数
+        int m = records % rows;
+        int total = 0; // 总页数
+        if (m > 0){
+            total = records / rows + 1;
+        }else {
+            total = records / rows;
         }
-        PageInfo pageInfo = PageInfo.ofMap(classifierCode,resultList);
+        //计算当前需要显示的数据下标起始值
+        int startIndex = (pageNum -1) * rows;
+        int endIndex = Math.min(startIndex + rows,records);
+        for(int i=startIndex;i<endIndex;i++){
+            resultList.add(getTransferredCasesDayOnePerson(dayList.get(i),classifierCode.getContent().get(0).getClassifiersCode(),classifierCode.getContent().get(0).getEname()));
+        }
+        PageInfo pageInfo = PageInfo.list2Page(resultList,pageNum,rows,records,total);
         return Result.of(pageInfo);
     }
 
