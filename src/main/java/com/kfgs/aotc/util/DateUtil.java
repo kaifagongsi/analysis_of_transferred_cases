@@ -260,7 +260,7 @@ public class DateUtil {
      * @param endDateStr 结束日期
      * @return
      */
-    private static LinkedList getWeekLinkedList(String startDateStr,String endDateStr){
+    public static LinkedList getWeekLinkedList(String startDateStr,String endDateStr){
         LinkedList linkedList = new LinkedList();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         try {
@@ -289,7 +289,7 @@ public class DateUtil {
     /**
      * 获取当前日期 +1
      */
-    private static Date getDateByAddOne(Date date){
+    public static Date getDateByAddOne(Date date){
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         cal.add(Calendar.DAY_OF_YEAR,1);
