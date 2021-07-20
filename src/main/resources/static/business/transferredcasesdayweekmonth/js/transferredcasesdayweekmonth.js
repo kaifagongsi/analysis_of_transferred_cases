@@ -26,12 +26,11 @@ function tcbd(type) {
                     limit: response.data.rows.length
                 })
             }else{
-                layer.msg('数据加载失败，请稍候重试', {icon: 5})
+                layer.msg(response.msg, {icon: 5})
             }
             layer.close(loadingSpinner);
         })
     }else{
         layer.msg("请正确选择，开始时间、结束时间、以及统计维度")
     }
-
 }
