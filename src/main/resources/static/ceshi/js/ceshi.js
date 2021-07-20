@@ -854,6 +854,8 @@ function caseOutOfDay(page,rows) {
         $.post(ctx + "/count/caseout/totalbyday", infoForm,function (response) {
             tableThead = [];
             tableData = [];
+            tableTheadDep = [];
+            tableDataDep = [];
             if(response.flag){
                 // 获取表头：
                 let entityObj = response.data.rows[0];
@@ -867,6 +869,11 @@ function caseOutOfDay(page,rows) {
                 $.each(response.data.rows,function (index,object) {
                     tableData.push(object)
                 });
+                // 表格重载
+                table.reload('depTable',{
+                    cols: tableTheadDep ,
+                    data: tableDataDep
+                })
                 // 表格重载
                 table.reload('demoTable',{
                     cols: tableThead ,
@@ -911,6 +918,8 @@ function caseOutOfWeek(page,rows) {
         $.post(ctx + "/count/caseout/totalbyweek", infoForm,function (response) {
             tableThead = [];
             tableData = [];
+            tableTheadDep = [];
+            tableDataDep = [];
             if(response.flag){
                 // 获取表头：
                 let entityObj = response.data.rows[0];
@@ -923,6 +932,11 @@ function caseOutOfWeek(page,rows) {
                 // 拼装 数据
                 $.each(response.data.rows,function (index,object) {
                     tableData.push(object)
+                });
+                // 表格重载
+                table.reload('depTable',{
+                    cols: tableTheadDep ,
+                    data: tableDataDep
                 });
                 // 表格重载
                 table.reload('demoTable',{
@@ -968,6 +982,8 @@ function caseOutOfMonth(page,rows) {
         $.post(ctx + "/count/caseout/totalbymonth", infoForm,function (response) {
             tableThead = [];
             tableData = [];
+            tableTheadDep = [];
+            tableDataDep = [];
             if(response.flag){
                 // 获取表头：
                 let entityObj = response.data.rows[0];
@@ -980,6 +996,11 @@ function caseOutOfMonth(page,rows) {
                 // 拼装 数据
                 $.each(response.data.rows,function (index,object) {
                     tableData.push(object)
+                });
+                // 表格重载
+                table.reload('depTable',{
+                    cols: tableTheadDep ,
+                    data: tableDataDep
                 });
                 // 表格重载
                 table.reload('demoTable',{

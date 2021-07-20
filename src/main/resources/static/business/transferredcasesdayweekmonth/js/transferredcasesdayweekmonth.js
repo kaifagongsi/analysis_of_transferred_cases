@@ -7,6 +7,8 @@ function tcbd(type,page,rows) {
             if(response.flag){
                 tableThead = [];
                 tableData = [];
+                tableTheadDep = [];
+                tableDataDep = [];
                 // 获取表头：
                 let entityObj = response.data.rows[0];
                 let h = [];
@@ -20,8 +22,12 @@ function tcbd(type,page,rows) {
                     tableData.push(object)
                 })
                 // 表格重载
+                table.reload('depTable',{
+                    cols: tableTheadDep ,
+                    data: tableDataDep
+                });
+                // 表格重载
                 table.reload('demoTable',{
-
                     cols: tableThead ,
                     data: tableData,
                     limit: response.data.rows.length
