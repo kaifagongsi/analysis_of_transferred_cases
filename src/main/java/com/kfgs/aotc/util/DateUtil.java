@@ -260,7 +260,7 @@ public class DateUtil {
      * @param endDateStr 结束日期
      * @return
      */
-    private static LinkedList getWeekLinkedList(String startDateStr,String endDateStr){
+    public static LinkedList getWeekLinkedList(String startDateStr,String endDateStr){
         LinkedList linkedList = new LinkedList();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         try {
