@@ -43,10 +43,28 @@ public interface DetailsOfTheCaseExtRepository extends CommonRepository<DetailsO
             " and tp.send_id in (?4)  ")
     List<Object[]> getRefuseReferralBySendTimeBetweenAndTipeStateAndSendIds(String startDate, String endDate, String tipsState, List classifierInfoCode);
 
-    @Query(nativeQuery = true,value = "select * " +
+    @Query(nativeQuery = true,value = "select CLASSIFIERS_NAME,CASE_ID,IN_TIME,OUT_TIME,CASE_TITLE,CASE_TYPE,STATE,SIMPLE_CODE,IPCMI,IPCOI,IPCA,CCI,CCA,CSET,ID,CLASSIFIERS_CODE " +
             "  from aotc_detailsofthecase " +
             " where out_time between ?1 and ?2 " +
             "   and " +
             "   classifiers_code in (?3) ")
     List<Object[]> getSumAllNumberOfCaseByClassifiersCodeAndOutTime(String startDate, String endDate, List classifierInfoCode);
+
+    @Query(nativeQuery = true,value = "select COUNT( distinct CASE_ID)" +
+            "  from aotc_detailsofthecase " +
+            " where out_time = ?1 " +
+            "   and   classifiers_code = ?2 ")
+    int getSumAllNumberOfCaseByClassifiersCodeAndOutTimeEquals(String day, String classifiersCode);
+
+    @Query(nativeQuery = true,value = "select COUNT( distinct CASE_ID)" +
+            "  from aotc_detailsofthecase " +
+            " where out_time = ?1 " +
+            "   and classifiers_code in (?2) ")
+    int getSumAllNumberOfCaseByClassifiersCodeListAndOutTimeEquals(String day, List classifiers);
+
+    @Query(nativeQuery = true,value = "select count( distinct CASE_ID) " +
+            "  from aotc_detailsofthecase " +
+            " where out_time between ?1 and ?2 " +
+            "   and  classifiers_code in (?3) ")
+    int getSumNumberOfCaseByClassifiersCodeAndOutTime(String startDate, String endDate, List classifierInfoCode);
 }
