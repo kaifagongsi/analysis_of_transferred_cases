@@ -23,7 +23,7 @@ public class TransferredCasesFactory {
         // 用于放置一些初始化，根据需要选择取舍
         list.clear(); // 每次初始化先清除旧数据
         list.add((ITransferredCasesService)applicationContext.getBean("transferredCasesServiceByDay")); // 这里根据条件判断优先级放入目标对象,先放入的先判断
-        //list.add((ITransferredCasesService)applicationContext.getBean("transferredCasesServiceByWeek"));
+        list.add((ITransferredCasesService)applicationContext.getBean("transferredCasesServiceByWeek"));
         list.add((ITransferredCasesService)applicationContext.getBean("transferredCasesServiceByMonth"));
     }
 
