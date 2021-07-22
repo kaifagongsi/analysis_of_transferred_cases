@@ -71,20 +71,20 @@
     <!-- 第一组按钮 -->
     <div class="layui-row">
         <div class="layui-col-md2">
-            <button type="button" class="layui-btn layui-btn-primary layui-border-orange" onclick="tcbd('day')">日处理进案</button>
+            <button type="button" class="layui-btn layui-btn-primary layui-border-orange" onclick="tcbd('day',1,10)">日处理进案</button>
         </div>
         <div class="layui-col-md2">
             <button type="button" class="layui-btn layui-btn-primary layui-border-black" onclick="caseOutOfDay(1,10)">日转出案件</button>
         </div>
         <div class="layui-col-md2">
             <!--<button type="button" class="layui-btn layui-btn-primary layui-border-orange"  onclick="tcbd('week')">周处理进案</button>-->
-            <button type="button" class="layui-btn layui-btn-primary layui-border-orange"  onclick="tcbd('week')">周处理进案</button>
+            <button type="button" class="layui-btn layui-btn-primary layui-border-orange"  onclick="tcbd('week',1,10)">周处理进案</button>
         </div>
         <div class="layui-col-md2">
             <button type="button" class="layui-btn layui-btn-primary layui-border-black">周转出案件</button>
         </div>
         <div class="layui-col-md2">
-            <button type="button" class="layui-btn layui-btn-primary layui-border-orange">月处理进案</button>
+            <button type="button" class="layui-btn layui-btn-primary layui-border-orange" onclick="tcbd('month',1,10)">月处理进案</button>
         </div>
         <div class="layui-col-md2">
             <button type="button" class="layui-btn layui-btn-primary layui-border-black">月转出进案</button>
