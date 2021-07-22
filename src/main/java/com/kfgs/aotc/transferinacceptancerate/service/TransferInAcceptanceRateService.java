@@ -61,12 +61,12 @@ public class TransferInAcceptanceRateService {
             linkedHashMap.put("转入领域",parameterVo.getSecondClassify());
             linkedHashMap.put("接收转案次数",0);
             linkedHashMap.put("转入总次数",0);
-            linkedHashMap.put("处理转案率", "0%");
+            linkedHashMap.put("转入接收率", "0%");
         }else{
             linkedHashMap.put("转入领域",parameterVo.getSecondClassify());
             linkedHashMap.put("接收转案次数",acceptReferralCountNumberBySendTimeBetweenAndTipeTitleAndSendIds);
             linkedHashMap.put("转入总次数",acceptReferralCountNumberBySendTimeBetweenAndReciveIds);
-            linkedHashMap.put("处理转案率", Double.valueOf((acceptReferralCountNumberBySendTimeBetweenAndTipeTitleAndSendIds *100 ) / acceptReferralCountNumberBySendTimeBetweenAndReciveIds) + "%");
+            linkedHashMap.put("转入接收率", Double.valueOf((acceptReferralCountNumberBySendTimeBetweenAndTipeTitleAndSendIds *100 ) / acceptReferralCountNumberBySendTimeBetweenAndReciveIds) + "%");
         }
         List list= new ArrayList<>();
         list.add(linkedHashMap);
@@ -94,12 +94,12 @@ public class TransferInAcceptanceRateService {
             linkedHashMap.put("转入部门",parameterVo.getSecondClassify());
             linkedHashMap.put("接收转案次数",0);
             linkedHashMap.put("转入总次数",0);
-            linkedHashMap.put("处理转案率", "0%");
+            linkedHashMap.put("转入接收率", "0%");
         }else{
             linkedHashMap.put("转入部门",parameterVo.getSecondClassify());
             linkedHashMap.put("接收转案次数",acceptReferralCountNumberBySendTimeBetweenAndTipeTitleAndSendIds);
             linkedHashMap.put("转入总次数",acceptReferralCountNumberBySendTimeBetweenAndReciveIds);
-            linkedHashMap.put("处理转案率", Double.valueOf((acceptReferralCountNumberBySendTimeBetweenAndTipeTitleAndSendIds *100 ) / acceptReferralCountNumberBySendTimeBetweenAndReciveIds) + "%");
+            linkedHashMap.put("转入接收率", Double.valueOf((acceptReferralCountNumberBySendTimeBetweenAndTipeTitleAndSendIds *100 ) / acceptReferralCountNumberBySendTimeBetweenAndReciveIds) + "%");
         }
         List list= new ArrayList<>();
         list.add(linkedHashMap);
@@ -126,12 +126,12 @@ public class TransferInAcceptanceRateService {
             linkedHashMap.put("转入部门",parameterVo.getSecondClassify());
             linkedHashMap.put("接收转案次数",0);
             linkedHashMap.put("转入总次数",0);
-            linkedHashMap.put("处理转案率", "0%");
+            linkedHashMap.put("转入接收率", "0%");
         }else{
             linkedHashMap.put("转入部门",parameterVo.getSecondClassify());
             linkedHashMap.put("接收转案次数",acceptReferralCountNumberBySendTimeBetweenAndTipeTitleAndSendIds);
             linkedHashMap.put("转入总次数",acceptReferralCountNumberBySendTimeBetweenAndReciveIds);
-            linkedHashMap.put("处理转案率", Double.valueOf((acceptReferralCountNumberBySendTimeBetweenAndTipeTitleAndSendIds *100 ) / acceptReferralCountNumberBySendTimeBetweenAndReciveIds) + "%");
+            linkedHashMap.put("转入接收率", Double.valueOf((acceptReferralCountNumberBySendTimeBetweenAndTipeTitleAndSendIds *100 ) / acceptReferralCountNumberBySendTimeBetweenAndReciveIds) + "%");
         }
         List list= new ArrayList<>();
         list.add(linkedHashMap);
@@ -219,14 +219,14 @@ public class TransferInAcceptanceRateService {
             linkedHashMap.put("接收分类员姓名",ename);
             linkedHashMap.put("接收转案次数",0);
             linkedHashMap.put("转入总次数",0);
-            linkedHashMap.put("处理转案率", "0%");
+            linkedHashMap.put("转入接收率", "0%");
             return linkedHashMap;
         }else{
             linkedHashMap.put("接收分类员代码",classifiersCode);
             linkedHashMap.put("接收分类员姓名",ename);
             linkedHashMap.put("接收转案次数",acceptReferralCountNumberBySendTimeBetweenAndTipeTitleAndSendIds);
             linkedHashMap.put("转入总次数",acceptReferralCountNumberBySendTimeBetweenAndReciveIds);
-            linkedHashMap.put("处理转案率", Double.valueOf((acceptReferralCountNumberBySendTimeBetweenAndTipeTitleAndSendIds *100 ) / acceptReferralCountNumberBySendTimeBetweenAndReciveIds) + "%");
+            linkedHashMap.put("转入接收率", Double.valueOf((acceptReferralCountNumberBySendTimeBetweenAndTipeTitleAndSendIds *100 ) / acceptReferralCountNumberBySendTimeBetweenAndReciveIds) + "%");
             return linkedHashMap;
         }
     }

@@ -786,6 +786,44 @@ function transferInAcceptanceRateAll() {
     }
 }
 
+/**
+ * 加副分率整体
+ */
+function assCodeRateAll() {
+    let infoForm = $("#infoForm").serialize();
+    let firstClassify =  $("#firstClassify").val();
+    if(firstClassify != 0 && firstClassify != 1 ){
+        if(vaildateForm()){
+            if($("#secondClassify").val() != 1){
+                $.post(ctx + "/count/asscoderate/getAssCodeRateAll",infoForm,function (response) {
+                    tableTheadDep = [];
+                    tableDataDep = [];
+                    if(response.flag){
+                        // 获取表头：
+                        let entityObj = response.data.rows[0];
+                        let h = [];
+                        // 拼装表头
+                        $.each(entityObj,function (index,obj) {
+                            h.push({field: index, title: index});
+                        })
+                        tableTheadDep.push(h);
+                        // 拼装 数据
+                        $.each(response.data.rows,function (index,object) {
+                            tableDataDep.push(object)
+                        })
+                        // 表格重载
+                        table.reload('depTable',{
+                            cols: tableTheadDep ,
+                            data: tableDataDep
+                        })
+                    }else{
+                        layer.msg('数据加载失败，请稍候重试', {icon: 5})
+                    }
+                });
+            }
+        }
+    }
+}
 
 /**
  * 加副分率
