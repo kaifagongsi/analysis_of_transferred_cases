@@ -81,12 +81,14 @@
             <button type="button" class="layui-btn layui-btn-primary layui-border-orange"  onclick="tcbd('week',1,10)">周处理进案</button>
         </div>
         <div class="layui-col-md2">
-            <button type="button" class="layui-btn layui-btn-primary layui-border-black">周转出案件</button>
+            <button type="button" class="layui-btn layui-btn-primary layui-border-black" onclick="caseOutOfWeek(1,10)">周转出案件</button>
+            <!--<button type="button" class="layui-btn layui-btn-primary layui-border-black">周转出案件</button>-->
         </div>
         <div class="layui-col-md2">
             <button type="button" class="layui-btn layui-btn-primary layui-border-orange" onclick="tcbd('month',1,10)">月处理进案</button>
         </div>
         <div class="layui-col-md2">
+            <!--<button type="button" class="layui-btn layui-btn-primary layui-border-black" onclick="caseOutOfMonth(1,10)">月转出进案</button>-->
             <button type="button" class="layui-btn layui-btn-primary layui-border-black">月转出进案</button>
         </div>
     </div>
@@ -109,13 +111,13 @@
         </div>
         <div class="layui-col-md2">
             <!--<button type="button" class="layui-btn layui-btn-primary layui-border-black">转入接受率</button>-->
-             <button type="button" class="layui-btn layui-btn-primary layui-border-black" onclick="transferInAcceptanceRate(1,10);transferInAcceptanceRateAll()">转入接受率</button>
+             <button type="button" class="layui-btn layui-btn-primary layui-border-black" onclick="transferInAcceptanceRate(1,10);transferInAcceptanceRateAll()">转入接收率</button>
         </div>
     </div>
     <!-- 第三组按钮 -->
     <div class="layui-row">
         <div class="layui-col-md2">
-            <button type="button" class="layui-btn layui-btn-primary layui-border-orange" onclick="assCodeRate(1,10);">加    副    分    率</button>
+            <button type="button" class="layui-btn layui-btn-primary layui-border-orange" onclick="assCodeRate(1,10);assCodeRateAll()">加    副    分    率</button>
         </div>
     </div>
     <!--<div class="layui-row">
