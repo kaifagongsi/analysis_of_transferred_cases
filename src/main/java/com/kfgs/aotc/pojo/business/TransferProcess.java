@@ -12,7 +12,7 @@ public class TransferProcess implements Serializable {
 
 	@Id
 	@GeneratedValue
-	private Integer id;
+	private String id;
 	//申请号
 	private String caseId;
 	//发送分类员代码
