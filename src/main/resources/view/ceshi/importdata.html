@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>数据导入</title>
+    <meta charset="UTF-8">
+    <script th:replace="common/head::static"></script>
+    <style>
+        .layui-card-body {
+            height: 100px;
+        }
+    </style>
+    <script th:src="@{/common/echarts/echarts.js}"></script>
+</head>
+<body>
+<div class="layui-row layui-col-space15" style="padding: 20px;">
+    <!-- 显示当前已导入的日期 -->
+    <div class="layui-row">
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+            <legend>当前已导入的情况：</legend>
+        </fieldset>
+        <div class="layui-bg-gray" style="padding: 30px;">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md6">
+                    <div class="layui-panel">
+                        <div style="padding: 20px 30px;">当前已导入的转案日期为：<span th:text="${data.maxTransferProcess}"></span></div>
+                    </div>
+                </div>
+                <div class="layui-col-md6">
+                    <div class="layui-panel">
+                        <div style="padding: 20px 30px;">当前已导入的出案日期为：<span th:text="${data.maxDetailsOfTheCase}"></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 转案excel文件上传 -->
+    <div class="layui-row">
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+            <legend>请选择转案excel文件</legend>
+        </fieldset>
+        <div class="layui-upload">
+            <button type="button" class="layui-btn layui-btn-normal" id="fileListZ" >选择多文件</button>
+            <div class="layui-upload-list" style="max-width: 1000px;">
+                <table class="layui-table">
+                    <colgroup>
+                        <col>
+                        <col width="150">
+                        <col width="260">
+                        <col width="150">
+                    </colgroup>
+                    <thead>
+                    <tr><th>文件名</th>
+                        <th>大小</th>
+                        <th>上传进度</th>
+                        <th>操作</th>
+                    </tr></thead>
+                    <tbody id="demoListZ"></tbody>
+                </table>
+            </div>
+            <button type="button" class="layui-btn" id="listActionZ">开始上传</button>
+        </div>
+    </div>
+
+    <!-- 出案excel文件上传 -->
+    <div class="layui-row">
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+            <legend>请选择出案excel文件</legend>
+        </fieldset>
+        <div class="layui-upload">
+            <button type="button" class="layui-btn layui-btn-normal" id="fileListC" >选择多文件</button>
+            <div class="layui-upload-list" style="max-width: 1000px;">
+                <table class="layui-table">
+                    <colgroup>
+                        <col>
+                        <col width="150">
+                        <col width="260">
+                        <col width="150">
+                    </colgroup>
+                    <thead>
+                    <tr><th>文件名</th>
+                        <th>大小</th>
+                        <th>上传进度</th>
+                        <th>操作</th>
+                    </tr></thead>
+                    <tbody id="demoListC"></tbody>
+                </table>
+            </div>
+            <button type="button" class="layui-btn" id="listActionC">开始上传</button>
+        </div>
+    </div>
+
+</div>
+</body>
+<script th:src="@{/importdata/js/importdata.js}"></script>
+</html>
