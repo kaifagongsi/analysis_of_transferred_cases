@@ -30,8 +30,23 @@ spring:
 
   #打印SQL
   jpa:
-    show-sql: true
+    show-sql: false
     database: oracle
+    properties:
+      jdbc:
+        batch_size: 500
+        batch_versioned_data: true
+        order_inserts: true
+  #文件上传控制
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 500MB
+
+SEND_NAME_NEED_TO_EXCLUDE:
+  00U01-金属切削,00U02-塑性加工,00U03-农业印刷,00U05-包装输送,00U06-工程元件,00U07-纺织工程,00U08-建筑道桥,00U09-动力机械,00U10-采矿锁具,00U11-交通运输,00U12-热能,00U13-医疗器械,00U14-测量,00U16-光学影像,00U17-电力工程,00U18-半导体,00U19-电子元器件,00U20-计算机,00U21-通信工程,00U23-化学工程
+
+
 
 #是否需要输入验证码
 captcha:
@@ -48,7 +63,7 @@ spring:
     #username: root
     #password: root
     #driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:oracle:thin:@172.17.2.59:1521:orcl
+    url: jdbc:oracle:thin:@172.17.0.17:1521:orcl
     #url: jdbc:oracle:thin:@192.168.8.117:1521:orcl
     username: zljg
     password: zljg123456
