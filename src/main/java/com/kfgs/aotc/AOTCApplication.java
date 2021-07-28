@@ -34,7 +34,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
-
+//@EnableJpaRepositories(value ="com.kfgs.aotc", repositoryBaseClass = JpaRepositoryReBuild.class) //为了覆写saveAll方法
 @EnableAsync//开启异步调用
 @SpringBootApplication
 public class AOTCApplication {
