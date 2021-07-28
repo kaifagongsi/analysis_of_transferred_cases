@@ -3,10 +3,9 @@ package com.kfgs.aotc.pojo.business.ext;
 import com.kfgs.aotc.pojo.business.DetailsOfTheCase;
 import lombok.Data;
 
-import javax.persistence.Entity;
 import java.io.Serializable;
 
-@Entity
+//@Entity
 @Data
 public class DetailsOfTheCaseExt extends DetailsOfTheCase implements Serializable {
     // ipcmi + ipcoi + ipca
