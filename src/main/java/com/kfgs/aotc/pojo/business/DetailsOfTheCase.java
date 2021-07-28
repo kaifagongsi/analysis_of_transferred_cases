@@ -1,27 +1,28 @@
 package com.kfgs.aotc.pojo.business;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "aotc_detailsofthecase")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class DetailsOfTheCase implements Serializable {
 
-	@Id
-	@GeneratedValue
-	private Integer id;
+
+	private String id;
 	//分类员代码
 	private String classifiersCode;
 	//分类员姓名
 	private String classifiersName;
 	//申请号
+	@Id
 	private String caseId;
 	//进案日期
 	private String inTime;
