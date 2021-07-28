@@ -1,7 +1,7 @@
 package com.kfgs.aotc.repository;
 
 import com.kfgs.aotc.common.repository.CommonRepository;
-import com.kfgs.aotc.pojo.business.ext.DetailsOfTheCaseExt;
+import com.kfgs.aotc.pojo.business.DetailsOfTheCase;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * lxl
  */
-public interface DetailsOfTheCaseExtRepository extends CommonRepository<DetailsOfTheCaseExt,String> {
+public interface DetailsOfTheCaseExtRepository extends CommonRepository<DetailsOfTheCase,String> {
 
 
 
@@ -67,4 +67,7 @@ public interface DetailsOfTheCaseExtRepository extends CommonRepository<DetailsO
             " where out_time between ?1 and ?2 " +
             "   and  classifiers_code in (?3) ")
     int getSumNumberOfCaseByClassifiersCodeAndOutTime(String startDate, String endDate, List classifierInfoCode);
+
+    @Query(nativeQuery = true,value=" select   max(out_time)   from aotc_detailsofthecase   " )
+    String getMaxDetailsOfTheCase();
 }
