@@ -81,6 +81,10 @@ public class TOCTServiceImpl implements TOCTService {
                 return countMonthForEachOne(parameterVo);
             case 2: //按部门计算
                 return countMonthForDep1(parameterVo);
+            case 3: //按科室计算
+                return countMonthForDep2(parameterVo);
+            case 4: //按领域计算
+                return countMonthForFiled(parameterVo);
         }
         return null;
     }
@@ -94,13 +98,24 @@ public class TOCTServiceImpl implements TOCTService {
         List resultList = new ArrayList();
         PageCondition page = (PageCondition)parameterVo;
         LinkedList monthlist = DateUtil.getMonthBetween(parameterVo.getStartDate(),parameterVo.getEndDate());
-        Page<ClassifierInfo> classifierCode = classifierInfoRepository.findClassifiersCodeByClassifierCode(parameterVo.getSecondClassify() ,page.getPageable());
-        for(ClassifierInfo  id : classifierCode.getContent()){
-            for(int i=0;i<monthlist.size();i++){
-                resultList.add(getOutCaseOfMonthByClassifiers(monthlist.get(i).toString(),id.getClassifiersCode(),id.getEname()));
-            }
+        int pageNum = parameterVo.getPage(); //页码
+        int rows = parameterVo.getRows(); //每页行数
+        int records = monthlist.size(); //总记录数
+        int m = records % rows;
+        int total = 0; // 总页数
+        if (m > 0){
+            total = records / rows + 1;
+        }else {
+            total = records / rows;
         }
-        PageInfo pageInfo = PageInfo.ofMap(classifierCode,resultList);
+        //计算当前需要显示的数据下标起始值
+        int startIndex = (pageNum -1) * rows;
+        int endIndex = Math.min(startIndex + rows,records);
+        ClassifierInfo classifierInfo = classifierInfoRepository.findClassifierInfoByClassifiersCode(parameterVo.getSecondClassify());
+        for(int i=startIndex;i<endIndex;i++){
+            resultList.add(getOutCaseOfMonthByClassifiers(monthlist.get(i).toString(),classifierInfo.getClassifiersCode(),classifierInfo.getEname()));
+        }
+        PageInfo pageInfo = PageInfo.list2Page(resultList,pageNum,rows,records,total);
         Result<PageInfo> of = Result.of(pageInfo);
         return of;
     }
@@ -203,13 +218,24 @@ public class TOCTServiceImpl implements TOCTService {
         List resultList = new ArrayList<>();
         PageCondition page = (PageCondition)parameterVo;
         LinkedList weeklist = DateUtil.getWeekByLinkedList(DateUtil.getWeekLinkedList(parameterVo.getStartDate(),parameterVo.getEndDate()));
-        Page<ClassifierInfo> classifierCode = classifierInfoRepository.findClassifiersCodeByClassifierCode(parameterVo.getSecondClassify() ,page.getPageable());
-        for(ClassifierInfo  id : classifierCode.getContent()){
-            for(int i=0;i<weeklist.size();i++){
-                resultList.add(getOutCaseOfWeekByClassifiers(weeklist.get(i).toString(),id.getClassifiersCode(),id.getEname()));
-            }
+        int pageNum = parameterVo.getPage(); //页码
+        int rows = parameterVo.getRows(); //每页行数
+        int records = weeklist.size(); //总记录数
+        int m = records % rows;
+        int total = 0; // 总页数
+        if (m > 0){
+            total = records / rows + 1;
+        }else {
+            total = records / rows;
         }
-        PageInfo pageInfo = PageInfo.ofMap(classifierCode,resultList);
+        //计算当前需要显示的数据下标起始值
+        int startIndex = (pageNum -1) * rows;
+        int endIndex = Math.min(startIndex + rows,records);
+        ClassifierInfo classifierInfo = classifierInfoRepository.findClassifierInfoByClassifiersCode(parameterVo.getSecondClassify());
+        for(int i=startIndex;i<endIndex;i++){
+            resultList.add(getOutCaseOfWeekByClassifiers(weeklist.get(i).toString(),classifierInfo.getClassifiersCode(),classifierInfo.getEname()));
+        }
+        PageInfo pageInfo = PageInfo.list2Page(resultList,pageNum,rows,records,total);
         Result<PageInfo> of = Result.of(pageInfo);
         return of;
     }
