@@ -1,6 +1,8 @@
 package com.kfgs.aotc.pojo.business;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -8,10 +10,11 @@ import java.io.Serializable;
 @Entity
 @Table(name = "aotc_transfer_process")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class TransferProcess implements Serializable {
 
 	@Id
-	@GeneratedValue
 	private String id;
 	//申请号
 	private String caseId;

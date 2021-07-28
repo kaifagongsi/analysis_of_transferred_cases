@@ -4,8 +4,10 @@ import com.kfgs.aotc.common.repository.CommonRepository;
 import com.kfgs.aotc.pojo.business.TransferProcess;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -192,4 +194,12 @@ public interface TransferProcessRepository extends CommonRepository<TransferProc
 
     @Query(nativeQuery = true,value=" select  count(1) from aotc_transfer_process where receive_time = ?1  and  receive_id in (?2) " )
     int getSumOfTheDateAndReceiveIdListAndReceiveTimeEquals(String day, List classifiers);
+
+    @Query(nativeQuery = true,value=" select   MAX(RECEIVE_TIME)  from aotc_transfer_process  " )
+    String getMaxTransferProcess();
+
+    @Modifying
+    @Transactional
+    @Query(nativeQuery = true,value="delete from aotc_transfer_process where send_name in (?1)" )
+    void deleteByNeedToExclude(List sendNameNeedToExclude);
 }
