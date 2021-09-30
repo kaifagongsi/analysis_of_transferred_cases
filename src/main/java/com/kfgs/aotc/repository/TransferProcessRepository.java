@@ -158,16 +158,16 @@ public interface TransferProcessRepository extends CommonRepository<TransferProc
     Integer getMonthCountNumberBySendTimeAndDep1(String startDay,String lastDay,String dep1);
 
     //某天某科室计算转出案件数
-    @Query(value = "select count(tp.case_id) from aotc_transfer_process tp,aotc_classifier_info ci where tp.send_time =?1 and tp.send_id=ci.classifiers_code and ci.dep2 = ?2",nativeQuery = true)
-    Integer getCountNumberBySendTimeAndDep2(String date,String dep2);
+    @Query(value = "select count(tp.case_id) from aotc_transfer_process tp,aotc_classifier_info ci where tp.send_time =?1 and tp.send_id=ci.classifiers_code and ci.dep1 = ?2 and ci.dep2 = ?3",nativeQuery = true)
+    Integer getCountNumberBySendTimeAndDep2(String date,String dep1,String dep2);
 
     //某周某科室计算转出案件数
-    @Query(value = "select count(tp.case_id) from aotc_transfer_process tp,aotc_classifier_info ci where tp.send_time between ?1 and ?2 and tp.send_id=ci.classifiers_code and ci.dep2 = ?3",nativeQuery = true)
-    Integer getWeekCountNumberBySendTimeAndDep2(String Monday,String Sunday,String dep2);
+    @Query(value = "select count(tp.case_id) from aotc_transfer_process tp,aotc_classifier_info ci where tp.send_time between ?1 and ?2 and tp.send_id=ci.classifiers_code and ci.dep1 = ?3 and ci.dep2 = ?4",nativeQuery = true)
+    Integer getWeekCountNumberBySendTimeAndDep2(String Monday,String Sunday,String dep1,String dep2);
 
     //某月某科室计算转出案件数
-    @Query(value = "select count(tp.case_id) from aotc_transfer_process tp,aotc_classifier_info ci where tp.send_time between ?1 and ?2 and tp.send_id=ci.classifiers_code and ci.dep2 = ?3",nativeQuery = true)
-    Integer getMonthCountNumberBySendTimeAndDep2(String startDay,String lastDay,String dep2);
+    @Query(value = "select count(tp.case_id) from aotc_transfer_process tp,aotc_classifier_info ci where tp.send_time between ?1 and ?2 and tp.send_id=ci.classifiers_code and ci.dep1 = ?3 and ci.dep2 = ?4",nativeQuery = true)
+    Integer getMonthCountNumberBySendTimeAndDep2(String startDay,String lastDay,String dep1,String dep2);
 
     //某天某领域计算转出案件数
     @Query(value = "select count(tp.case_id) from aotc_transfer_process tp,aotc_classifier_info ci where tp.send_time =?1 and tp.send_id=ci.classifiers_code and ci.field_group = ?2",nativeQuery = true)

@@ -10,10 +10,8 @@ import com.kfgs.aotc.repository.DetailOfCaseFinishedRepository;
 import com.kfgs.aotc.repository.TransferProcessRepository;
 import com.kfgs.aotc.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import oshi.hardware.platform.linux.LinuxDisks;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -75,6 +73,7 @@ public class TOCTServiceImpl implements TOCTService {
      * @param parameterVo
      * @return
      */
+    @Override
     public Result getTotalByMonth(ParameterVo parameterVo){
         switch (parameterVo.getFirstClassify()){
             case 1: //按人计算
@@ -544,15 +543,17 @@ public class TOCTServiceImpl implements TOCTService {
     /**
      * 按科室计算每月转出案件数
      * @param month
-     * @param dep2
+     * @param dep
      * @return
      */
-    private LinkedHashMap<String ,String> getOutCaseOfMonthByDep2(String month,String dep2){
+    private LinkedHashMap<String ,String> getOutCaseOfMonthByDep2(String month,String dep){
         LinkedHashMap<String,String> result = new LinkedHashMap<>();
         String startDay = month.substring(0,8);
         String lastDay = month.substring(9);
         //科室转出总次数
-        int transferOutNum = transferProcessRepository.getMonthCountNumberBySendTimeAndDep2(startDay,lastDay,dep2);
+        String dep1 = dep.substring(0,2);
+        String dep2 = dep.substring(2);
+        int transferOutNum = transferProcessRepository.getMonthCountNumberBySendTimeAndDep2(startDay,lastDay,dep1,dep2);
         result.put("日期",month);
         result.put("科室",dep2);
         result.put("转案总次数",Integer.toString(transferOutNum));
@@ -611,26 +612,30 @@ public class TOCTServiceImpl implements TOCTService {
     /**
      * 按科室计算每天出案
      * @param date
-     * @param dep2
+     * @param dep
      * @return
      */
-    private LinkedHashMap<String,String> getOutCaseOfDayByDep2(String date,String dep2){
+    private LinkedHashMap<String,String> getOutCaseOfDayByDep2(String date,String dep){
         LinkedHashMap<String,String> result = new LinkedHashMap<>();
         //科室转出总次数
-        int transferOutNum = transferProcessRepository.getCountNumberBySendTimeAndDep2(date,dep2);
+        String dep1 = dep.substring(0,2);
+        String dep2 = dep.substring(2);
+        int transferOutNum = transferProcessRepository.getCountNumberBySendTimeAndDep2(date,dep1,dep2);
         result.put("日期",date);
-        result.put("科室",dep2);
+        result.put("科室",dep);
         result.put("转案总次数",Integer.toString(transferOutNum));
         System.out.println(result);
         return result;
     }
 
-    private LinkedHashMap<String,String> getOutCaseOfWeekByDep2(String week,String dep2){
+    private LinkedHashMap<String,String> getOutCaseOfWeekByDep2(String week,String dep){
         LinkedHashMap<String,String> result = new LinkedHashMap<>();
         String Monday = week.substring(0,8);
         String Sunday = week.substring(9);
         //科室转出总次数
-        int transferOutNum = transferProcessRepository.getWeekCountNumberBySendTimeAndDep2(Monday,Sunday,dep2);
+        String dep1 = dep.substring(0,2);
+        String dep2 = dep.substring(2);
+        int transferOutNum = transferProcessRepository.getWeekCountNumberBySendTimeAndDep2(Monday,Sunday,dep1,dep2);
         result.put("日期",week);
         result.put("科室",dep2);
         result.put("转案总次数",Integer.toString(transferOutNum));
