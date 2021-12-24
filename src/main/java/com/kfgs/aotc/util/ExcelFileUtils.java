@@ -9,6 +9,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -61,6 +63,19 @@ public class ExcelFileUtils {
                 wb = new HSSFWorkbook(file.getInputStream());
             }else if(file.getOriginalFilename().endsWith(".xlsx")){
                 wb = new XSSFWorkbook(file.getInputStream());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return wb;
+    }
+    public static Workbook getWorkBook(File file){
+        Workbook wb = null;
+        try {
+            if(file.getName().endsWith(".xls")){
+                wb = new HSSFWorkbook(new FileInputStream(file));
+            }else if(file.getName().endsWith(".xlsx")){
+                wb = new XSSFWorkbook(new FileInputStream(file));
             }
         } catch (IOException e) {
             e.printStackTrace();
