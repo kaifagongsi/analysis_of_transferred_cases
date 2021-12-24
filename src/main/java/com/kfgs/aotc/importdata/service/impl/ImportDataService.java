@@ -19,7 +19,6 @@ import java.util.Map;
 
 @Service
 @Slf4j
-@Transactional
 public class ImportDataService implements IImportDataService {
 
 
@@ -41,6 +40,7 @@ public class ImportDataService implements IImportDataService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class )
     public boolean parsingTransferProcessExcel( Workbook wb) {
         try{
             List list = new ArrayList<>();
@@ -54,6 +54,7 @@ public class ImportDataService implements IImportDataService {
             }
             log.info("解析成功个数：" + list.size());
             transferProcessRepository.saveAll(list);
+            log.info("数据保存成功");
             return true;
         }catch (Exception e){
             return false;

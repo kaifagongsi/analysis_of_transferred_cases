@@ -1,5 +1,6 @@
 package com.kfgs.aotc.importdata.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.kfgs.aotc.common.pojo.Result;
 import com.kfgs.aotc.config.mq.config.RabbitmqConfig;
 import com.kfgs.aotc.importdata.service.IImportDataService;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -47,9 +49,12 @@ public class ImportDataController {
     public Result uploadTransferProcessDataByMutilsFiles(MultipartFile file){
         try {
             MultipartFileToFile.multipartFileToFile(tpd,file);
-            String message = "可以开始解析文件：" + file.getOriginalFilename();
-            rabbitTemplate.convertAndSend(RabbitmqConfig.EXCHANGE_TOPICS_INFORM,"inform.parse.excel",message);
-            log.info("消息发送成功：'" + message + "'");
+            Map<String,String> msgMap = new HashMap<>();
+            msgMap.put("file",tpd+file.getOriginalFilename());
+            //消息内容
+            String msg = JSON.toJSONString(msgMap);
+            rabbitTemplate.convertAndSend(RabbitmqConfig.EXCHANGE_TOPICS_INFORM,"inform.parse.excel",msg);
+            log.info("消息发送成功：'" + msg + "'");
             return Result.of(null);
         } catch (Exception e) {
             e.printStackTrace();

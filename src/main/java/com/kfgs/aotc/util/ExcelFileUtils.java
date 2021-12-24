@@ -40,9 +40,9 @@ public class ExcelFileUtils {
 
     public static void parsingExcelTransferCase(Row row, List list){
         String caseId = row.getCell(1).getRichStringCellValue().getString();
-        String sendId = row.getCell(2).getRichStringCellValue().getString();
+        Integer sendId = Integer.valueOf(row.getCell(2).getRichStringCellValue().getString());
         String sendName = row.getCell(3).getRichStringCellValue().getString();
-        String receiveId = row.getCell(4).getRichStringCellValue().getString();
+        Integer receiveId = Integer.valueOf(row.getCell(4).getRichStringCellValue().getString());
         String receiveName = row.getCell(5).getRichStringCellValue().getString();
         String sendTime = row.getCell(6).getRichStringCellValue().getString();
         String receiveTime = row.getCell(7).getRichStringCellValue().getString();
