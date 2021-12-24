@@ -10,6 +10,30 @@ import java.io.OutputStream;
 public class MultipartFileToFile {
 
     /**
+     * MultipartFile 转 File 携带修改路径
+     * @param file
+     * @throws Exception
+     */
+    public static File multipartFileToFile(String path,MultipartFile file) throws Exception {
+        // 判断文件夹是否存在，不存在创建
+        File direct = new File(path);
+        if(!direct.exists()){
+            direct.mkdirs();
+        }
+        File toFile = null;
+        if (file.equals("") || file.getSize() <= 0) {
+            file = null;
+        } else {
+            InputStream ins = null;
+            ins = file.getInputStream();
+            toFile = new File(path + file.getOriginalFilename());
+            inputStreamToFile(ins, toFile);
+            ins.close();
+        }
+        return toFile;
+    }
+
+    /**
      * MultipartFile 转 File
      *
      * @param file
