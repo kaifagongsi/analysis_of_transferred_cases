@@ -7,12 +7,12 @@ layui.use(['upload', 'element', 'layer'], function () {
     var uploadListInsZ = upload.render({
         elem: '#fileListZ'
         ,elemList: $('#demoListZ') //列表元素对象
-        ,url: '/importdata/importFileZ'
+        ,url: '/importdata/uploadFileZ'
         ,accept: 'file'
         ,acceptMime: 'application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         ,exts: 'xlsx|xls' //只允许上传excel文件
         ,multiple: true
-        ,number: 10
+        ,number: 3
         ,auto: false
         ,bindAction: '#listActionZ'
         ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
@@ -84,7 +84,7 @@ layui.use(['upload', 'element', 'layer'], function () {
         ,acceptMime: 'application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         ,exts: 'xlsx|xls' //只允许上传excel文件
         ,multiple: true
-        ,number: 10
+        ,number: 3
         ,auto: false
         ,bindAction: '#listActionC'
         ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
