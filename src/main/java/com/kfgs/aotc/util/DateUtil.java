@@ -117,6 +117,11 @@ public class DateUtil {
     public static boolean isLastDayOfMonth(Calendar calendar) {
         return calendar.get(Calendar.DAY_OF_MONTH) == 1;
     }
+    public static boolean isLastDayOfMonth(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.DAY_OF_MONTH) == calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+    }
 
     /**
      * 判断该日期是否是该年的第一天
@@ -178,18 +183,7 @@ public class DateUtil {
 
 
 
-    public static void main(String[] args) throws ParseException {
-        //LinkedList list= getWeekByLinkedList(getWeekLinkedList("20210705", "20210725"));
-        /*List list = getBetweenDays("20210705", "20210725");*/
-        //System.out.println(list.toString());
-        /*SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
-        Date yyyyMMdd = getLastDayInThisMonth(simpleDateFormat.parse("20200209"));
-        System.out.println(simpleDateFormat.format(yyyyMMdd));*/
 
-        List<String> monthsByDays = getMonthsByLinkedList("20210701", "20211231");
-        monthsByDays.forEach((str)-> System.out.println(str));
-
-    }
 
     /**
      * 合并每周一到周日为一个值，放入list
@@ -297,9 +291,11 @@ public class DateUtil {
     }
 
     /**
+     *
      * 获取本周周日的日期
+     * @param date 本周周一的日期
      */
-    private static Date getThisWeekSunday(Date date){
+    public static Date getThisWeekSunday(Date date){
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         //1.判断是否为周一
@@ -424,4 +420,33 @@ public class DateUtil {
     }
 
 
+    /**
+     * 判断当前日期是否为周日
+     * @param date 输入的周日日期
+     * @return
+     */
+    public static Boolean isLastDayOfWeek(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        // 1 表示为周日
+        System.out.println(calendar.get(Calendar.DAY_OF_WEEK) );
+        return calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY;
+    }
+
+    public static void main(String[] args) throws ParseException {
+        //LinkedList list= getWeekByLinkedList(getWeekLinkedList("20210705", "20210725"));
+        /*List list = getBetweenDays("20210705", "20210725");*/
+        //System.out.println(list.toString());
+        /*SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+        Date yyyyMMdd = getLastDayInThisMonth(simpleDateFormat.parse("20200209"));
+        System.out.println(simpleDateFormat.format(yyyyMMdd));*/
+
+        /*List<String> monthsByDays = getMonthsByLinkedList("20210701", "20211231");
+        monthsByDays.forEach((str)-> System.out.println(str));*/
+        /*SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+        System.out.println(isLastDayOfMonth(simpleDateFormat.parse("20200229")));*/
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+        System.out.println(isLastDayOfWeek(simpleDateFormat.parse("20211226") ));
+
+    }
 }
