@@ -19,13 +19,13 @@ public class TransferProcess implements Serializable {
 	//申请号
 	private String caseId;
 	//发送分类员代码
-	private String sendId;
+	private Integer sendId;
 	//发送分类员姓名
 	private String sendName;
 	//发送转案日期
 	private String  sendTime;
 	//接收分类员代码
-	private String receiveId;
+	private Integer receiveId;
 	//接收分类员姓名
 	private String receiveName;
 	//处理转案日期
