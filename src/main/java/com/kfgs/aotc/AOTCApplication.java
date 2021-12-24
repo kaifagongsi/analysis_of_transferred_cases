@@ -17,7 +17,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.stereotype.Controller;
@@ -35,7 +34,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
 //@EnableJpaRepositories(value ="com.kfgs.aotc", repositoryBaseClass = JpaRepositoryReBuild.class) //为了覆写saveAll方法
-@EnableAsync//开启异步调用
+
 @SpringBootApplication
 public class AOTCApplication {
 
