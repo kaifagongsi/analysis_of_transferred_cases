@@ -1,11 +1,15 @@
 package com.kfgs.aotc.importdata.controller;
 
 import com.kfgs.aotc.common.pojo.Result;
+import com.kfgs.aotc.config.mq.config.RabbitmqConfig;
 import com.kfgs.aotc.importdata.service.IImportDataService;
 import com.kfgs.aotc.util.ExcelFileUtils;
+import com.kfgs.aotc.util.MultipartFileToFile;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +27,15 @@ public class ImportDataController {
     @Autowired
     IImportDataService importDataService;
 
+    @Value("${FILE_SAVE.dotcd}")
+    String dotcd;
+
+    @Value("${FILE_SAVE.tpd}")
+    String tpd;
+
+    @Autowired
+    RabbitTemplate rabbitTemplate;
+
 
     @GetMapping("")
     public ModelAndView authority(){
@@ -30,6 +43,19 @@ public class ImportDataController {
         return new ModelAndView("ceshi/importdata","data",map);
     }
 
+    @PostMapping("uploadFileZ")
+    public Result uploadTransferProcessDataByMutilsFiles(MultipartFile file){
+        try {
+            MultipartFileToFile.multipartFileToFile(tpd,file);
+            String message = "可以开始解析文件：" + file.getOriginalFilename();
+            rabbitTemplate.convertAndSend(RabbitmqConfig.EXCHANGE_TOPICS_INFORM,"inform.parse.excel",message);
+            log.info("消息发送成功：'" + message + "'");
+            return Result.of(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.of(null,false,"文件保存异常");
+        }
+    }
 
 
     @PostMapping("importFileZ")
