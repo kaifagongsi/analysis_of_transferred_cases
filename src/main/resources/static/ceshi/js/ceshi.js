@@ -607,7 +607,7 @@ function etirAll( ) {
  */
 function handlingRateOfTransferredCases(page,rows) {
     if(vaildateForm()){
-        let infoForm = $("#infoForm").serialize();
+        let infoForm =  $.param({"rows":rows}) + "&" +  $.param({"page":page}) + "&" + $("#infoForm").serialize(); //$("#infoForm").serialize();
         loadingSpinner = layer.msg('正在加载...', {icon: 16, shade: 0.3, time:0});
         $.post(ctx + "/hrotc/init",infoForm,function (response) {
             if(response.flag){
@@ -637,6 +637,8 @@ function handlingRateOfTransferredCases(page,rows) {
                     ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
                     ,curr: page
                     ,jump: function(obj, first){
+                        console.log(obj)
+                        console.log(first)
                         //obj包含了当前分页的所有参数，比如：
                         //首次不执行
                         if(!first){
