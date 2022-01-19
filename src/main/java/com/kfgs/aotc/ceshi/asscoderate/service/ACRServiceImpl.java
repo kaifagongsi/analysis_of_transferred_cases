@@ -3,6 +3,7 @@ package com.kfgs.aotc.ceshi.asscoderate.service;
 import com.kfgs.aotc.common.pojo.PageCondition;
 import com.kfgs.aotc.common.pojo.PageInfo;
 import com.kfgs.aotc.common.pojo.Result;
+import com.kfgs.aotc.common.utils.ListUtils;
 import com.kfgs.aotc.pojo.business.ClassifierInfo;
 import com.kfgs.aotc.pojo.business.vo.ParameterVo;
 import com.kfgs.aotc.repository.ClassifierInfoRepository;
@@ -96,14 +97,21 @@ public class ACRServiceImpl implements ACRService{
         parameterVo.setRows(1000);
         Page<ClassifierInfo> classifiersCodeByDep1WithPageable = classifierInfoRepository.findClassifiersCodeByDep1WithPageable(parameterVo.getSecondClassify(),(Pageable)parameterVo.getPageable());
         List<ClassifierInfo> content = classifiersCodeByDep1WithPageable.getContent();
+        // 定义人员信息
         List classifierInfoCode = new ArrayList();
+        // 定义结果集
         List list= new ArrayList<>();
-        content.forEach((info)->{
-            classifierInfoCode.add(info.getClassifiersCode());
-        });
+        // 定义所选部门、处室、领域下的分类号
+        List<String> detailCodes = new ArrayList<>();
+        // 定义百分比
         Double accuracy_num = 0d;
+        for(ClassifierInfo info : content){
+            classifierInfoCode.add(info.getClassifiersCode());
+            detailCodes.addAll(CountUtil.CLASSIFIERS_AND_CODE.get(info.getClassifiersCode()));
+        }
+        detailCodes = ListUtils.delRepeatReturnList(detailCodes);
         //1.分子：带分类号的拒绝转案次数(有效退回转案次数)
-        int validTrans = 0;
+        int validTrans = returnValidTrans(detailCodes,parameterVo,classifierInfoCode);
         //2.分母: 转入总次数
         int transInNum = transferProcessRepository.getSumOfTheDateAndReceiveIdList(parameterVo.getStartDate(),parameterVo.getEndDate(),classifierInfoCode);
         if (transInNum == 0){
@@ -163,12 +171,15 @@ public class ACRServiceImpl implements ACRService{
             Page<ClassifierInfo> classifierCode =  classifierInfoRepository.findClassifiersCodeByDep2WithPageable(dep1,dep2,page.getPageable());
             List classifierInfoCode = new ArrayList();
             List list= new ArrayList<>();
-            classifierCode.forEach((info)->{
+            List<String> detailCodes = new ArrayList<>();
+            for(ClassifierInfo info : classifierCode.getContent()){
                 classifierInfoCode.add(info.getClassifiersCode());
-            });
+                detailCodes.addAll(CountUtil.CLASSIFIERS_AND_CODE.get(info.getClassifiersCode()));
+            }
+            detailCodes = ListUtils.delRepeatReturnList(detailCodes);
             Double accuracy_num = 0d;
             //1.分子：带分类号的拒绝转案次数(有效退回转案次数)
-            int validTrans = 0;
+            int validTrans = returnValidTrans(detailCodes,parameterVo,classifierInfoCode);
             //2.分母: 转入总次数
             int transInNum = transferProcessRepository.getSumOfTheDateAndReceiveIdList(parameterVo.getStartDate(),parameterVo.getEndDate(),classifierInfoCode);
             if (transInNum == 0){
@@ -221,12 +232,15 @@ public class ACRServiceImpl implements ACRService{
         Page<ClassifierInfo> classifiersCodeByFieldWithPageable = classifierInfoRepository.findClassifiersCodeByFieldWithPageable(parameterVo.getSecondClassify(), page.getPageable());
         List classifierInfoCode = new ArrayList();
         List list= new ArrayList<>();
-        for(ClassifierInfo info : classifiersCodeByFieldWithPageable){
+        List<String> detailCodes = new ArrayList<>();
+        for(ClassifierInfo info : classifiersCodeByFieldWithPageable.getContent()){
             classifierInfoCode.add(info.getClassifiersCode());
+            detailCodes.addAll(CountUtil.CLASSIFIERS_AND_CODE.get(info.getClassifiersCode()));
         }
+        detailCodes = ListUtils.delRepeatReturnList(detailCodes);
         Double accuracy_num = 0d;
         //1.分子：带分类号的拒绝转案次数(有效退回转案次数)
-        int validTrans = 0;
+        int validTrans = returnValidTrans(detailCodes,parameterVo,classifierInfoCode);
         //2.分母: 转入总次数
         int transInNum = transferProcessRepository.getSumOfTheDateAndReceiveIdList(parameterVo.getStartDate(),parameterVo.getEndDate(),classifierInfoCode);
         if (transInNum == 0){
@@ -297,4 +311,32 @@ public class ACRServiceImpl implements ACRService{
         System.out.println(result);
         return result;
     }
+
+    public int returnValidTrans(List<String> detailCodes, ParameterVo parameterVo,List<String> classifierInfoCode){
+        detailCodes = ListUtils.delRepeatReturnList(detailCodes);
+
+        //1.分子：带分类号的拒绝转案次数(有效退回转案次数)
+        int validTrans = 0;
+        List<String> ipc =  transferProcessRepository.getRefuseReferralByReceiveTimeBetweenAndTipeTitleAndReceiveIds(parameterVo.getStartDate(), parameterVo.getEndDate(), "拒绝转案", classifierInfoCode);
+
+        //获取接收分类员分类号CLASSIFIERS_AND_CODE
+        //List<String> detailCodes = CountUtil.CLASSIFIERS_AND_CODE.get(classifierID);
+
+        // 如何同一个案子前四位均是一样的，那么就会添加两次，那么在，主分和副分均是H01R,那么finishCodes会有两个H01R
+        for(String ipc_str : ipc){
+            // 当前案子的所有前四位分类号
+            String[] finishCodes = ipc_str.split(",");
+            for(int j=0;j<finishCodes.length;j++) {
+                if (finishCodes[j] != null && finishCodes[j].length()>=4){
+                    finishCodes[j] = finishCodes[j].substring(0, 4);
+                }
+            }
+            //比对
+            if (!Collections.disjoint(Arrays.asList(finishCodes),detailCodes)){
+                validTrans ++;
+            }
+        }
+        return  validTrans;
+    }
+
 }

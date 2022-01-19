@@ -80,6 +80,17 @@ public interface TransferProcessRepository extends CommonRepository<TransferProc
             "             and dotc.case_id = tp.case_id)", nativeQuery = true)
     List<String> getRefuseReferralByReceiveTimeBetweenAndTipeTitleAndReceiveId(String startDate, String endDate, String tips_state, String secondClassify);
 
+    @Query(value = " select ipcmi || ',' || ipcoi || ',' || ipca " +
+            "    from aotc_detailsofthecase dotc" +
+            "   where EXISTS (select case_id " +
+            "            from aotc_transfer_process tp " +
+            "           where receive_id  in (?4) " +
+            "             and receive_time between  ?1 and ?2 " +
+            "             and tips_state =  ?3 " +
+            "             and dotc.case_id = tp.case_id)", nativeQuery = true)
+    List<String> getRefuseReferralByReceiveTimeBetweenAndTipeTitleAndReceiveIds(String startDate, String endDate, String tips_state, List<String> codeInfo);
+
+
     /**
      * 在某一个接收时间段内，某些人的转入总次数
      * @param startDate 接收的开始时间
